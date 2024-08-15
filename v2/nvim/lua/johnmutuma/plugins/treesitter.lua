@@ -33,5 +33,5 @@ treesitter.setup({
 
 opt.foldmethod = "expr"
 opt.foldexpr = "nvim_treesitter#foldexpr()"
-opt.foldenable = false --  Disable folding at startup.
--- opt.foldlevel = 1
+opt.foldenable = true --  Enable/Disable folding at startup.
+opt.foldlevel = 2
