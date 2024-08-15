@@ -1,0 +1,1 @@
+~/zsh_custom/themes/typewritten/typewritten.zsh-theme

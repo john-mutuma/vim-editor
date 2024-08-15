@@ -1,0 +1,6 @@
+
+class Demo {
+  constructor() {
+
+  }
+}

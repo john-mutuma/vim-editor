@@ -1,0 +1,8 @@
+{
+  "workspace.rootPatterns": [
+    ".vscode",
+    ".git",
+    ".hg",
+    ".projections.json"
+  ]
+}

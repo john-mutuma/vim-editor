@@ -1,0 +1,5 @@
+# pack-refs with: peeled fully-peeled sorted 
+513c88287e8b1e019572582e81bb5a39a507ea9f refs/remotes/origin/dependabot/npm_and_yarn/salesforce-language-servers/dot-prop-4.2.1
+5998a7f6653cba151b28408d9374fc77e74ac087 refs/remotes/origin/dependabot/npm_and_yarn/salesforce-language-servers/lodash-4.17.19
+a31ee01a44236846deef934847f07a010f2c22ba refs/remotes/origin/develop
+3b70dee435e8456b6e42c8392712256973b9870d refs/remotes/origin/master
