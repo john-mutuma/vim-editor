@@ -25,21 +25,20 @@ if not success then
 end
 
 return packer.startup(function(use)
+	-- use({
+	-- 	"goolord/alpha-nvim",
+	-- 	config = function()
+	-- 		require("alpha").setup(require("alpha.themes.dashboard").config)
+	-- 	end,
+	-- })
 	use("wbthomason/packer.nvim")
 	-- My plugins here
 
-	use({
-		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-			"MunifTanjim/nui.nvim",
-		},
-	})
 	-- use 'foo1/bar1.nvim'
 	-- workspace
-	use("ldelossa/nvim-ide")
+	use({
+		"ldelossa/nvim-ide",
+	})
 	use({
 		"folke/zen-mode.nvim",
 		config = function()
@@ -53,6 +52,7 @@ return packer.startup(function(use)
 	-- lazy.nvim
 	use({
 		"folke/noice.nvim",
+
 		-- event = "VeryLazy",
 		opts = {
 			-- add any options here
@@ -79,7 +79,7 @@ return packer.startup(function(use)
 	use("tomasr/molokai")
 	use("tanvirtin/monokai.nvim")
 	use("Shatur/neovim-ayu")
-	use("Mofiqul/vscode.nvim")
+	-- use("Mofiqul/vscode.nvim")
 	use("ellisonleao/gruvbox.nvim")
 
 	-- higlighting, indentation and folding
@@ -171,26 +171,32 @@ return packer.startup(function(use)
 		end,
 	})
 
+	use("github/copilot.vim")
 	-- linting and formatting
 	use({
-		"jose-elias-alvarez/null-ls.nvim",
+		"nvimtools/none-ls.nvim",
 		requires = {
 			{ "nvim-lua/plenary.nvim" },
 		},
 	})
 	use({
 		"jay-babu/mason-null-ls.nvim",
-		requires = { "jose-elias-alvarez/null-ls.nvim" },
+		requires = { "nvimtools/none-ls.nvim" },
 	})
-	--use("lewis6991/gitsigns.nvim")
+	use("lewis6991/gitsigns.nvim")
 
 	-- working with VCS, git
 	use("tpope/vim-fugitive")
 	use("cedarbaum/fugitive-azure-devops.vim") --  support for GBrowse
 
 	-- Fzf support in NeoVim
-	use("junegunn/fzf")
-	use("junegunn/fzf.vim")
+	use({
+		"junegunn/fzf",
+		run = ":call fzf#install()",
+	})
+	use({
+		"junegunn/fzf.vim",
+	})
 	use("yuki-yano/fzf-preview.vim")
 	use("stsewd/fzf-checkout.vim")
 

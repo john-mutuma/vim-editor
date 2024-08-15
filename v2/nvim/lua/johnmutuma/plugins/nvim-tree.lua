@@ -13,9 +13,6 @@ if not success then
 end
 
 nvimTree.setup({
-	git = {
-		enable = false,
-	},
 	update_focused_file = {
 		enable = true,
 		update_root = true,
@@ -23,7 +20,7 @@ nvimTree.setup({
 		ignore_list = { "node_modules" },
 	},
 	view = {
-		width = 45,
+		width = 50,
 	},
 	renderer = {
 		indent_markers = {
@@ -34,10 +31,12 @@ nvimTree.setup({
 
 vim.cmd([[
   :hi NvimTreeCursorLine guibg=#444548
+  :hi NvimTreeGitDirtyIcon guifg=red
+  :hi NvimTreeModifiedIcon guifg=red
 ]])
 
 if vim.opt.background:get() == "light" then
 	vim.cmd([[
-    :hi NvimTreeCursorLine guibg=#c1c1c1 guifg=white
+    :hi NvimTreeCursorLine guibg=#c1c1c1 guifg=#252525
   ]])
 end

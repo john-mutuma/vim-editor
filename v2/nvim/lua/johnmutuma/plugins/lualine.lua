@@ -7,7 +7,7 @@ end
 
 -- local config = lualine.get_config();
 local Blank = { sections = { lualine_a = { "" } }, filetypes = { "packer", "", "filetree", "bufferlist" } }
-local Git_Branch = { sections = { lualine_b = { "branch" }, lualine_y = { "progress" } }, filetypes = { "NvimTree" } }
+-- local Git_Branch = { sections = { lualine_b = { "branch" }, lualine_y = { "progress" } }, filetypes = { "NvimTree" } }
 
 lualine.setup({
 	sections = {
@@ -20,6 +20,8 @@ lualine.setup({
 			},
 		},
 	},
-	extensions = { Blank, Git_Branch },
+	extensions = {
+		Blank, --[[ Git_Branch  ]]
+	},
 	-- options = { theme = "grubbox" },
 })

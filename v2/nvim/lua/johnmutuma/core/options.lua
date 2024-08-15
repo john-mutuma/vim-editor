@@ -52,7 +52,7 @@ opt.mousemoveevent = true
 
 -- nvim-cmp
 opt.completeopt = "menu,menuone,noselect"
-
+opt.rtp:append(os.getenv("HOME") .. "/.fzf")
 --
 globl.qs_highlight_on_keys = { "f", "F", "t", "T", "/", "?" }
 globl.sonokai_enable_italic = true
