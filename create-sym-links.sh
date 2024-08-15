@@ -15,7 +15,8 @@ ln -sf $(pwd)/toggle-colorscheme.vim ~/.vim/plugin/toggle-colorsheme.vim
 ln -sf $(pwd)/color-devicons.vim ~/.vim/plugin/color-devicons.vim
 # ln -s $(pwd)/dragvisuals.vim ~/.vim/plugin/dragvisuals.vim
 
-ln -sf $(pwd)/init.vim ~/.config/nvim/init.vim
-ln -sf $(pwd)/coc-settings.json ~/.config/nvim/coc-settings.json
 ln -sf $(pwd)/pmd-apex.vim ~/.vim/plugged/ale/ale_linters/apexcode/pmd.vim
 
+ln -sf $(pwd)/v2/nvim/ ~/.config/nvim
+ln -sf $(pwd)/init.vim ~/.config/nvim/init.vim
+ln -sf $(pwd)/coc-settings.json ~/.config/nvim/coc-settings.json
