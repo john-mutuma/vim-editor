@@ -1,11 +1,19 @@
 ```
-db       .d88b.  db    db d88888b   db    db d888888b .88b  d88.      d888888b .88b  d88. db    db db    db
-88      .8P  Y8. 88    88 88'       88    88   `88'   88'YbdP`88      `~~88~~' 88'YbdP`88 88    88 `8b  d8'
-88      88    88 Y8    8P 88ooooo   Y8    8P    88    88  88  88         88    88  88  88 88    88  `8bd8'
-88      88    88 `8b  d8' 88~~~~~   `8b  d8'    88    88  88  88         88    88  88  88 88    88  .dPYb.
-88booo. `8b  d8'  `8bd8'  88.        `8bd8'    .88.   88  88  88 db      88    88  88  88 88b  d88 .8P  Y8.
-Y88888P  `Y88P'     YP    Y88888P      YP    Y888888P YP  YP  YP V8      YP    YP  YP  YP ~Y8888P' YP    YP
-P
+db       .d88b.  db    db d88888b   db    db d888888b .88b  d88.
+88      .8P  Y8. 88    88 88'       88    88   `88'   88'YbdP`88
+88      88    88 Y8    8P 88ooooo   Y8    8P    88    88  88  88
+88      88    88 `8b  d8' 88~~~~~   `8b  d8'    88    88  88  88
+88booo. `8b  d8'  `8bd8'  88.        `8bd8'    .88.   88  88  88 db
+Y88888P  `Y88P'     YP    Y88888P      YP    Y888888P YP  YP  YP V8
+                                                                P
+
+d888888b .88b  d88. db    db db    db
+`~~88~~' 88'YbdP`88 88    88 `8b  d8'
+   88    88  88  88 88    88  `8bd8'
+   88    88  88  88 88    88  .dPYb.
+   88    88  88  88 88b  d88 .8P  Y8.
+   YP    YP  YP  YP ~Y8888P' YP    YP
+
 
 .d888b.     d88888b d88888D d88888b
 8P   8D     88'     YP  d8' 88'
@@ -37,7 +45,7 @@ recommended setting it up in NeoVim. The feel is expected to be similar, though.
 
 ### Add symbolic links for necessary files
 
-In the root directory for this repo, run `zsh ./create-sym-links.sh`. Ignore missing directory for ale linters pmd; it should be created once vim plugins have been installed.
+In the root directory for this repo, run `zsh ./install.sh`. Ignore missing directory for ale linters pmd; it should be created once vim plugins have been installed.
 
 This will help to make sure that set up and configuration files such as:
 
