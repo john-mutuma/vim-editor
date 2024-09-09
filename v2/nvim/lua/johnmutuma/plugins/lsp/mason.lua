@@ -6,7 +6,7 @@ local mason_null_ls_ok, mason_null_ls = pcall(require, "mason-null-ls")
 local set_up_lsp = function()
 	mason_lspconfig.setup({
 		ensure_installed = {
-			"tsserver",
+			"ts_ls",
 			"html",
 			"cssls",
 			-- "jsonls", -- preferring coc-json for workspace features

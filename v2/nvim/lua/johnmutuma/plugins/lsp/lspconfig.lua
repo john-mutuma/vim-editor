@@ -23,7 +23,7 @@ local setup_lsp = function(on_attach)
 		},
 	})
 
-	lspconfig["tsserver"].setup({
+	lspconfig["ts_ls"].setup({
 		capabilities = capabilities,
 		on_attach = on_attach,
 	})
@@ -101,7 +101,7 @@ local on_attach = function(client, bufnr)
 	keymap.set("n", "<leader>wd", "<cmd>Lspsaga show_workspace_diagnostics<CR>", opts)
 	keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
 
-	if client.name == "tsserver" then
+	if client.name == "ts_ls" then
 		keymap.set("n", "<leader>rf", "<cmd>TypescriptRenameFile<CR>", opts)
 	end
 end
