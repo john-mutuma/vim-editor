@@ -189,7 +189,13 @@ return packer.startup(function(use)
 	use("tpope/vim-fugitive")
 	use("cedarbaum/fugitive-azure-devops.vim") --  support for GBrowse
 	use("sindrets/diffview.nvim")
-
+	use({
+		"kdheepak/lazygit.nvim",
+		-- optional for floating window border decoration
+		requires = {
+			"nvim-lua/plenary.nvim",
+		},
+	})
 	-- Fzf support in NeoVim
 	use({
 		"junegunn/fzf",

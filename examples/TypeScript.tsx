@@ -1,11 +1,9 @@
-
 class Demos {
-
   hlo() {
     throw new Error("Method not implemented.");
   }
 
-  getName = () => 0
+  getName = () => 0;
 
   helo() {
     console.log(this.getName());
@@ -23,3 +21,4 @@ mes.hlo();
 mes.helo();
 mes.hello();
 
+// version 13
