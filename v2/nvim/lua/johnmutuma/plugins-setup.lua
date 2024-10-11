@@ -188,6 +188,7 @@ return packer.startup(function(use)
 	-- working with VCS, git
 	use("tpope/vim-fugitive")
 	use("cedarbaum/fugitive-azure-devops.vim") --  support for GBrowse
+	use("sindrets/diffview.nvim")
 
 	-- Fzf support in NeoVim
 	use({

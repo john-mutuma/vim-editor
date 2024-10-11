@@ -9,5 +9,6 @@ local success_background, _ = pcall(vim.cmd, "set background=dark")
 
 if not (success_colorscheme and success_background) then
 	print("Colorscheme not found")
+	print("Colorscheme not found 1")
 	return
 end
