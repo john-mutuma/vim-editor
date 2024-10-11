@@ -56,6 +56,9 @@ opt.rtp:append(os.getenv("HOME") .. "/.fzf")
 --
 globl.qs_highlight_on_keys = { "f", "F", "t", "T", "/", "?" }
 globl.sonokai_enable_italic = true
+<<<<<<< HEAD
+=======
 
 -- lazygit
 globl.lazygit_floating_window_winblend = 2 -- transparency of floating window
+>>>>>>> 99b5170 (fixup! no auto-open nvim-ide panels)

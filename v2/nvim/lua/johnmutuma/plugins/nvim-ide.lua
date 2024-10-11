@@ -68,7 +68,7 @@ require("ide").setup({
   -- workspaces config
   workspaces = {
     -- which panels to open by default, one of: 'left', 'right', 'both', 'none'
-    auto_open = "right",
+    auto_open = "none",
   },
   -- default panel sizes for the different positions
   panel_sizes = {
