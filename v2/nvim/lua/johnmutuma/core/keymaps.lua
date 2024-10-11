@@ -46,3 +46,6 @@ vim.keymap.set("n", "<C-F>y", ":GBranches<CR>", {})
 vim.keymap.set("n", "<C-F>f", ":GFiles<CR>", {})
 vim.keymap.set("n", "<C-F>s", "Rg ", {})
 vim.keymap.set("n", "<C-F>b", ":Buffers<CR>", {})
+
+--lazygit
+vim.keymap.set("n", "<leader>G", ":LazyGit<CR>", {})
