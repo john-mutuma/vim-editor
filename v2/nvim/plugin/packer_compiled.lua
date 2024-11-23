@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1724512491/share/lua/5.1/?.lua;/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1724512491/share/lua/5.1/?/init.lua;/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1724512491/lib/luarocks/rocks-5.1/?.lua;/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1724512491/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1724512491/lib/lua/5.1/?.so"
+local package_path_str = "/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1727870382/share/lua/5.1/?.lua;/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1727870382/share/lua/5.1/?/init.lua;/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1727870382/lib/luarocks/rocks-5.1/?.lua;/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1727870382/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/johnmutuma/.cache/nvim/packer_hererocks/2.1.1727870382/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -94,6 +94,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
     url = "https://github.com/akinsho/bufferline.nvim"
+  },
+  catppuccin = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/catppuccin",
+    url = "https://github.com/catppuccin/nvim"
   },
   ["cmp-buffer"] = {
     loaded = true,
@@ -196,6 +201,11 @@ _G.packer_plugins = {
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
     url = "https://github.com/lukas-reineke/indent-blankline.nvim"
   },
+  ["lazygit.nvim"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/lazygit.nvim",
+    url = "https://github.com/kdheepak/lazygit.nvim"
+  },
   ["lsp-lens.nvim"] = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/lsp-lens.nvim",
@@ -215,6 +225,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
+  },
+  ["markdown-preview.nvim"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/markdown-preview.nvim",
+    url = "https://github.com/iamcco/markdown-preview.nvim"
   },
   ["mason-lspconfig.nvim"] = {
     loaded = true,
@@ -251,6 +266,16 @@ _G.packer_plugins = {
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nerdtree",
     url = "https://github.com/preservim/nerdtree"
   },
+  ["nerdtree-git-plugin"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nerdtree-git-plugin",
+    url = "https://github.com/Xuyuanp/nerdtree-git-plugin"
+  },
+  ["nightfox.nvim"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nightfox.nvim",
+    url = "https://github.com/EdenEast/nightfox.nvim"
+  },
   ["noice.nvim"] = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/noice.nvim",
@@ -276,6 +301,21 @@ _G.packer_plugins = {
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
+  ["nvim-dap"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
+  },
+  ["nvim-dap-vscode-js"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-dap-vscode-js",
+    url = "https://github.com/mxsdev/nvim-dap-vscode-js"
+  },
   ["nvim-ide"] = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-ide",
@@ -285,6 +325,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-nio"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/nvim-nio",
+    url = "https://github.com/nvim-neotest/nvim-nio"
   },
   ["nvim-notify"] = {
     loaded = true,
@@ -362,6 +407,11 @@ _G.packer_plugins = {
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim",
     url = "https://github.com/dracula/vim"
   },
+  ["vim-devicons"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim-devicons",
+    url = "https://github.com/ryanoasis/vim-devicons"
+  },
   ["vim-fugitive"] = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim-fugitive",
@@ -384,6 +434,11 @@ _G.packer_plugins = {
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim-maximizer",
     url = "https://github.com/szw/vim-maximizer"
   },
+  ["vim-nerdtree-syntax-highlight"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim-nerdtree-syntax-highlight",
+    url = "https://github.com/tiagofumo/vim-nerdtree-syntax-highlight"
+  },
   ["vim-peekaboo"] = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim-peekaboo",
@@ -393,6 +448,17 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
+  },
+  ["vscode-js-debug"] = {
+    loaded = false,
+    needs_bufread = false,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/opt/vscode-js-debug",
+    url = "https://github.com/microsoft/vscode-js-debug"
+  },
+  ["vscode.nvim"] = {
+    loaded = true,
+    path = "/Users/johnmutuma/.local/share/nvim/site/pack/packer/start/vscode.nvim",
+    url = "https://github.com/Mofiqul/vscode.nvim"
   },
   ["zen-mode.nvim"] = {
     config = { "\27LJ\2\n`\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\1K\0\1\0\vwindow\1\0\1\vwindow\0\1\0\1\nwidth\3È\1\nsetup\rzen-mode\frequire\0" },

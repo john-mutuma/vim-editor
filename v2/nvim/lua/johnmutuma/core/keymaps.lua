@@ -17,7 +17,8 @@ keymap.set("n", "<leader><CR>", ":nohlsearch<CR>:<CR>")
 -- - window management
 keymap.set("n", "gq", "<C-W>c")
 keymap.set("n", "<C-T>o", ":tabonly<CR>")
-keymap.set("n", "<leader>z", ":MaximizerToggle<CR>")
+keymap.set("n", "<leader>F", ":MaximizerToggle<CR>")
+-- keymap.set("n", "<leader>F", ":ZenMode<CR>")
 
 -- Folds
 -- - -- jump folded with j and k
@@ -29,10 +30,6 @@ keymap.set("n", "<leader>ww", ":noautocmd w<CR>")
 keymap.set("n", "<leader>w<CR>", ":noautocmd w<CR>")
 
 -- Plugins mappings
--- nvim-tree
-keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>:<CR>$")
--- keymap.set("n", "<C-n>", ":Neotree<CR>:<CR>")
-
 -- -- telescope
 local builtin = require("telescope.builtin")
 -- vim.keymap.set("n", "<C-F>f", builtin.find_files, {})
@@ -46,6 +43,3 @@ vim.keymap.set("n", "<C-F>y", ":GBranches<CR>", {})
 vim.keymap.set("n", "<C-F>f", ":GFiles<CR>", {})
 vim.keymap.set("n", "<C-F>s", "Rg ", {})
 vim.keymap.set("n", "<C-F>b", ":Buffers<CR>", {})
-
---lazygit
-vim.keymap.set("n", "<leader>G", ":LazyGit<CR>", {})

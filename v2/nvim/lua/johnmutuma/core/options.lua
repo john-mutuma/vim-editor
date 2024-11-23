@@ -56,7 +56,3 @@ opt.rtp:append(os.getenv("HOME") .. "/.fzf")
 --
 globl.qs_highlight_on_keys = { "f", "F", "t", "T", "/", "?" }
 globl.sonokai_enable_italic = true
-
--- lazygit
-globl.lazygit_floating_window_winblend = 4 -- transparency of floating window
-globl.lazygit_floating_window_scaling_factor = 0.875 -- scaling factor for floating window

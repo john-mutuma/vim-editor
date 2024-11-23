@@ -107,7 +107,6 @@ We can use PMD with ALE plugin to provdie Salesforce's APEX linting abilities.
 
 - Coc.nvim has a lot of plugins for providing language intellisense for many common languages and frameworks. Just do a google search for your favourite language. e.g.
 
-  - `coc-tsserver` - for TypeScript and JavaScript
   - `coc-python` - for ...
   - `coc-angular` - for ...
 

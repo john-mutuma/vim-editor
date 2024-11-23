@@ -8,9 +8,11 @@ require("johnmutuma.core.options")
 require("johnmutuma.plugins.bufferline")
 require("johnmutuma.plugins.lualine")
 require("johnmutuma.plugins.nvim-cmp")
-require("johnmutuma.plugins.nvim-tree")
-require("johnmutuma.plugins.nerdtree")
 require("johnmutuma.plugins.telescope")
+-- swap order to toggle <C-n> handler
+require("johnmutuma.plugins.nerdtree")
+require("johnmutuma.plugins.nvim-tree")
+
 -- - LSP
 require("johnmutuma.plugins.lsp.mason")
 require("johnmutuma.plugins.lsp.lspconfig")
@@ -19,6 +21,9 @@ require("johnmutuma.plugins.lsp.lspsaga")
 require("johnmutuma.plugins.lsp.lsp-lens")
 require("johnmutuma.plugins.lsp.gitsigns")
 require("johnmutuma.plugins.lsp.null-ls")
+require("johnmutuma.plugins.dap.nvim-dap-ui")
+require("johnmutuma.plugins.dap.vscode-js-debug")
+require("johnmutuma.plugins.lazygit")
 
 --
 require("johnmutuma.plugins.autopairs")
