@@ -79,8 +79,10 @@ return packer.startup(function(use)
 	use("tomasr/molokai")
 	use("tanvirtin/monokai.nvim")
 	use("Shatur/neovim-ayu")
-	-- use("Mofiqul/vscode.nvim")
+	use("Mofiqul/vscode.nvim")
 	use("ellisonleao/gruvbox.nvim")
+	use("EdenEast/nightfox.nvim")
+	use({ "catppuccin/nvim", as = "catppuccin" })
 
 	-- higlighting, indentation and folding
 	use({
@@ -109,6 +111,10 @@ return packer.startup(function(use)
 		},
 	})
 	use("preservim/nerdtree")
+	use("Xuyuanp/nerdtree-git-plugin")
+	use("ryanoasis/vim-devicons")
+	use("tiagofumo/vim-nerdtree-syntax-highlight")
+
 	use({
 		"nvim-lualine/lualine.nvim",
 		requires = { "nvim-tree/nvim-web-devicons", opt = true },
@@ -141,6 +147,16 @@ return packer.startup(function(use)
 		requires = { "nvim-lspconfig" },
 	})
 	use("jose-elias-alvarez/typescript.nvim") -- better typescript development
+
+	-- DAP
+	use("mfussenegger/nvim-dap")
+	use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } })
+	use({ "mxsdev/nvim-dap-vscode-js", requires = { "mfussenegger/nvim-dap" } })
+	use({
+		"microsoft/vscode-js-debug",
+		opt = true,
+		run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+	})
 
 	-- completion and snippets
 	use({
@@ -208,6 +224,12 @@ return packer.startup(function(use)
 	use("stsewd/fzf-checkout.vim")
 
 	-- General utility plugins
+	use({
+		"iamcco/markdown-preview.nvim",
+		run = function()
+			vim.fn["mkdp#util#install"]()
+		end,
+	})
 	use("ctrlpvim/ctrlp.vim") -- access recent buffers quickly
 	use("junegunn/vim-peekaboo") -- higlight contents of registers
 	use("mattn/emmet-vim") -- just emmet
