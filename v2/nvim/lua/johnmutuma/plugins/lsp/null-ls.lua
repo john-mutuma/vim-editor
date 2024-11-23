@@ -23,20 +23,10 @@ local set_up_linters_and_formatters = function(on_attach)
 	null_ls.setup({
 		debug = false,
 		sources = {
-			-- code_actions.gitsigns,
+			code_actions.gitsigns,
 			formatting.stylua,
 			formatting.prettier,
-			-- diagnostics.cspell,
-			-- diagnostics.eslint.with({
-			--   name = "vs-code-eslint",
-			--   meta = {
-			--     url = "https://github.com/xojs/xo",
-			--     description = "❤️ JavaScript/TypeScript linter (ESLint wrapper) with great defaults.",
-			--   },
-			--   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-			--   command = "vscode-eslint-language-server",
-			--   args = { "--reporter", "json", "--stdio", "--stdin-filename", "$FILENAME" },
-			-- }),
+			formatting.gofumpt,
 		},
 		on_attach = function(client, bufnr)
 			on_attach(client, bufnr)

@@ -12,6 +12,7 @@ local set_up_lsp = function()
 			-- "jsonls", -- preferring coc-json for workspace features
 			"lua_ls",
 			"eslint",
+			"gopls",
 		},
 	})
 end
@@ -24,6 +25,7 @@ local set_up_linters_and_formatters = function()
 			"stylua",
 			"eslint",
 			"cspell",
+			"gofumpt",
 		},
 	})
 end

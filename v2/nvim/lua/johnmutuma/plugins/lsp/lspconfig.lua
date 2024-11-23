@@ -2,6 +2,13 @@ local lspconfig_ok, lspconfig = pcall(require, "lspconfig")
 local typescript_ok, typescript = pcall(require, "typescript")
 local cmp_nvim_lsp_ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
 
+-- vim.api.nvim_create_autocmd("LspAttach", {
+-- 	callback = function(args)
+-- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
+-- 		client.server_capabilities.semanticTokensProvider = nil
+-- 	end,
+-- })
+
 local setup_lsp = function(on_attach)
 	local capabilities = cmp_nvim_lsp.default_capabilities()
 	--
@@ -31,6 +38,20 @@ local setup_lsp = function(on_attach)
 	lspconfig["cssls"].setup({
 		capabilities = capabilities,
 		on_attach = on_attach,
+	})
+
+	lspconfig["gopls"].setup({
+		capabilities = capabilities,
+		on_attach = on_attach,
+		settings = {
+			gopls = {
+				analyses = {
+					unusedparams = true,
+				},
+				staticcheck = true,
+				gofumpt = true,
+			},
+		},
 	})
 
 	-- lspconfig["jsonls"].setup({ -- preferring coc-json for workspace settings
@@ -79,6 +100,10 @@ end
 
 local keymap = vim.keymap
 local on_attach = function(client, bufnr)
+	-- some language servers crash on semantic tokens when previewing files quickly e.g. Glance previews
+	-- disabling sematic tokens - hihglighting for now will be provided by nvim-treesitter
+	-- client.server_capabilities.semanticTokensProvider = nil
+
 	local opts = { noremap = true, buffer = bufnr, silent = true }
 	-- LSP key bindings
 	keymap.set("n", "gR", "<cmd>Glance references<CR>", opts)
