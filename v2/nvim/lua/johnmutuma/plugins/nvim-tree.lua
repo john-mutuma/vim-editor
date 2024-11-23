@@ -1,8 +1,10 @@
 local globl = vim.g
+local keymap = vim.keymap
 
 -- disable netrw at the very start of your init.lua
 globl.loaded_netrw = 1
 globl.loaded_netrwPlugin = 1
+keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>:<CR>$")
 
 -- settings or options
 
@@ -13,11 +15,26 @@ if not success then
 end
 
 nvimTree.setup({
+	filesystem_watchers = {
+		enable = false,
+		debounce_delay = 50,
+		ignore_dirs = {
+			"node_modules",
+			"lib",
+		},
+	},
 	update_focused_file = {
 		enable = true,
 		update_root = true,
 		update_cwd = true,
 		ignore_list = { "node_modules" },
+	},
+	git = {
+		enable = true,
+		timeout = 3000,
+	},
+	filters = {
+		git_ignored = true,
 	},
 	view = {
 		width = 50,
