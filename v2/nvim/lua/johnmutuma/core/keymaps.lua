@@ -15,7 +15,10 @@ keymap.set("n", "<leader><CR>", ":nohlsearch<CR>:<CR>")
 
 -- Windows
 -- - window management
-keymap.set("n", "gq", "<C-W>c")
+keymap.set("n", "gq", "<C-W>c") -- close current window
+keymap.set("n", "<leader>qq", ":qa<CR>") -- soft quit all windows
+keymap.set("n", "<leader>QQ", ":qa!<CR>") -- hard quit all windows
+
 keymap.set("n", "<C-T>o", ":tabonly<CR>")
 keymap.set("n", "<leader>F", ":MaximizerToggle<CR>")
 -- keymap.set("n", "<leader>F", ":ZenMode<CR>")
