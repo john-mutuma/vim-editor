@@ -32,14 +32,14 @@ keymap.set("n", "<leader>w<CR>", ":noautocmd w<CR>")
 -- Plugins mappings
 -- -- telescope
 local builtin = require("telescope.builtin")
--- vim.keymap.set("n", "<C-F>f", builtin.find_files, {})
--- vim.keymap.set("n", "<C-F>s", builtin.live_grep, {})
--- vim.keymap.set("n", "<C-F>b", builtin.buffers, {})
-vim.keymap.set("n", "<C-F>h", builtin.help_tags, {})
-vim.keymap.set("n", "<C-F>y", ":GBranches<CR>", {})
--- vim.keymap.set("n", "<C-F>y", builtin.git_branches, {})
+-- keymap.set("n", "<C-F>f", builtin.find_files, {})
+-- keymap.set("n", "<C-F>s", builtin.live_grep, {})
+-- keymap.set("n", "<C-F>b", builtin.buffers, {})
+keymap.set("n", "<C-F>h", builtin.help_tags, {})
+keymap.set("n", "<C-F>y", ":GBranches<CR>", {})
+-- keymap.set("n", "<C-F>y", builtin.git_branches, {})
 
 -- fzf.vim
-vim.keymap.set("n", "<C-F>f", ":GFiles<CR>", {})
-vim.keymap.set("n", "<C-F>s", "Rg ", {})
-vim.keymap.set("n", "<C-F>b", ":Buffers<CR>", {})
+keymap.set("n", "<C-F>f", ":GFiles<CR>", {})
+keymap.set("n", "<C-F>s", "Rg ", {})
+keymap.set("n", "<C-F>b", ":Buffers<CR>", {})

@@ -23,7 +23,7 @@ local set_up_linters_and_formatters = function(on_attach)
 	null_ls.setup({
 		debug = false,
 		sources = {
-			code_actions.gitsigns,
+			-- code_actions.gitsigns,
 			formatting.stylua,
 			formatting.prettier,
 			formatting.gofumpt,

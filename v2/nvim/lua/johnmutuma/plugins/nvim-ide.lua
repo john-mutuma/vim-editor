@@ -68,16 +68,19 @@ require("ide").setup({
 	-- workspaces config
 	workspaces = {
 		-- which panels to open by default, one of: 'left', 'right', 'both', 'none'
-		auto_open = "right",
+		auto_open = "none",
 	},
 	-- default panel sizes for the different positions
 	panel_sizes = {
 		left = nil,
-		right = 30,
+		right = 47,
 		bottom = 15,
 	},
 })
 
 icons.global_icon_set.set_icon("Collapsed", "")
 icons.global_icon_set.set_icon("Expanded", "")
-icons.global_icon_set.set_icon("IndentGuide", " ")
+icons.global_icon_set.set_icon("IndentGuide", "|")
+
+--  nvim-ide keymaps
+vim.keymap.set("n", "<leader>tr", ":Workspace RightPanelToggle<CR>", {})
