@@ -31,17 +31,17 @@ local function setHiglightOverrides()
 	else
 		print("Glance: Setting highlight overrides for dark theme")
 		vim.cmd([[
-      :hi GlanceBorderTop gui=underline guifg=#ededed guibg=#10110A
+      :hi GlanceBorderTop gui=underline guifg=#b5bcbd guibg=#10110A
 
       :hi GlanceWinBarFilepath gui=italic guibg=#14140F
       :hi GlanceWinBarFilename gui=none guibg=#14140F
       :hi GlanceWinBarTitle gui=none guibg=#14140F
 
-      :hi GlancePreviewBorderBottom gui=underline guifg=#eeeeee
+      :hi GlancePreviewBorderBottom gui=underline guifg=#b5bcbd
 
       :hi GlanceListCursorLine gui=none guibg=#656661
 
-      :hi GlanceListBorderBottom gui=underline guifg=#eeeeee "guibg=#1D1D1D
+      :hi GlanceListBorderBottom gui=underline guifg=#b5bcbd "guibg=#1D1D1D
       :hi GlanceListNormal gui=italic guifg=e1e1e1
       " :hi GlanceListEndOfBuffer gui=none guibg=#1D1D1D
     ]])

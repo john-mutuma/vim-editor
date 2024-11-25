@@ -13,11 +13,11 @@ cyan=$(tput setaf 87)
 # DOTFILES
 #
 echo "${cyan}  Linking dotfiles ${textreset}"
-echo " zshrc"
+echo "    zshrc ${green}${textreset}"
 ln -sf $(pwd)/.zshrc ~/.zshrc
-echo " vimrc"
+echo "    vimrc ${green}${textreset}"
 ln -sf $(pwd)/.vimrc ~/.vimrc
-echo " tmux.conf"
+echo "    tmux.conf ${green}${textreset}"
 ln -sf $(pwd)/.tmux.conf ~/.tmux.conf
 echo "${green}󰄸  Done ${textreset} - Linked dotfiles\n"
 
