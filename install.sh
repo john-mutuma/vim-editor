@@ -65,7 +65,7 @@ fi
 #
 echo "${cyan}  Installing FZF (Terminal fuzzy finder) ${textreset}"
 brew install --quiet fzf
-echo "${green}󰄸  Done ${textreset} - Installed FZF\n"
+echo "${green}󰄸  Done ${textreset} - Installed FZF"
 # ripgrep
 echo "${cyan}  Installing ripgrep (FZF's companion) ${textreset}"
 brew install --quiet ripgrep

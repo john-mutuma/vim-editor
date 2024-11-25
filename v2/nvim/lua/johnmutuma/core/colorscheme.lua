@@ -1,7 +1,12 @@
 -- colorscheme
 local globl = vim.g
+local keymap = vim.keymap
 
 globl.sonokai_enable_italic = true
+
+keymap.set("n", "<leader>DD", ":colorscheme carbonfox<CR>")
+keymap.set("n", "<leader>LL", ":colorscheme dayfox<CR>")
+
 --
 -- NICE DARK THEMES
 --

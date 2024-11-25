@@ -1,8 +1,8 @@
 require("johnmutuma.plugins-setup")
 
-require("johnmutuma.core.colorscheme")
-require("johnmutuma.core.keymaps")
 require("johnmutuma.core.options")
+require("johnmutuma.core.keymaps")
+require("johnmutuma.core.colorscheme")
 
 -- Plugins
 require("johnmutuma.plugins.bufferline")

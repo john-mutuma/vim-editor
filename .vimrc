@@ -1,3 +1,13 @@
+"
+"
+"
+" LEGACY FILE
+"
+" NOT really used or changed anymore
+"
+"
+"
+
 :set backup                    " keep a backup file
 :set backupdir=$HOME/.vim/_backups
 :set directory=$HOME/.vim/_swp

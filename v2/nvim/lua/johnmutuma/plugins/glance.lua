@@ -5,7 +5,7 @@ local opt = vim.opt
 glance.setup({
 	border = {
 		enable = true,
-		top_char = " ",
+		top_char = "~",
 		bottom_char = " ",
 	},
 })
@@ -50,7 +50,7 @@ end
 
 setHiglightOverrides()
 
-local colorschemechange = vim.api.nvim_create_augroup("colorschemechange", { clear = true })
+vim.api.nvim_create_augroup("colorschemechange", { clear = true })
 vim.api.nvim_create_autocmd({ "ColorScheme" }, {
 	group = "colorschemechange",
 	callback = setHiglightOverrides,
