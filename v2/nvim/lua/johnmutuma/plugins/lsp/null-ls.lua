@@ -38,10 +38,9 @@ local set_up_linters_and_formatters = function(on_attach)
 end
 
 -- Format on save helper
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
 local configure_format_on_save = function(client, bufnr)
 	if client.supports_method("textDocument/formatting") then
-		vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
 		vim.api.nvim_create_autocmd("BufWritePre", {
 			group = augroup,
 			buffer = bufnr,

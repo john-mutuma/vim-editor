@@ -50,9 +50,9 @@ end
 
 setHiglightOverrides()
 
-vim.api.nvim_create_augroup("colorschemechange", { clear = true })
+local colorscheme_augroup = vim.api.nvim_create_augroup("colorschemechange", { clear = true })
 vim.api.nvim_create_autocmd({ "ColorScheme" }, {
-	group = "colorschemechange",
+	group = colorscheme_augroup,
 	callback = setHiglightOverrides,
 	-- pattern = {"*.adoc", "*.md", "*.tex"},
 })
