@@ -1,118 +1,66 @@
-```
-db       .d88b.  db    db d88888b   db    db d888888b .88b  d88.
-88      .8P  Y8. 88    88 88'       88    88   `88'   88'YbdP`88
-88      88    88 Y8    8P 88ooooo   Y8    8P    88    88  88  88
-88      88    88 `8b  d8' 88~~~~~   `8b  d8'    88    88  88  88
-88booo. `8b  d8'  `8bd8'  88.        `8bd8'    .88.   88  88  88 db
-Y88888P  `Y88P'     YP    Y88888P      YP    Y888888P YP  YP  YP V8
-                                                                P
+A NICE configuration for NeoVim with a lot of features and plugins to make your development experience better. Get the best of both worlds with NeoVim as a modern IDE.
 
-d888888b .88b  d88. db    db db    db
-`~~88~~' 88'YbdP`88 88    88 `8b  d8'
-   88    88  88  88 88    88  `8bd8'
-   88    88  88  88 88    88  .dPYb.
-   88    88  88  88 88b  d88 .8P  Y8.
-   YP    YP  YP  YP ~Y8888P' YP    YP
+## Installation
 
+Find a Release version and download the zip file. Extract the zip file in your desired location,
 
-.d888b.     d88888b d88888D d88888b
-8P   8D     88'     YP  d8' 88'
-`Vb d8'     88ooo      d8'  88ooo
- d88C dD    88~~~     d8'   88~~~
-C8' d8D     88       d8' db 88
-`888P Yb    YP      d88888P YP
-```
+- in the root directory of the extracted files, run `./install.sh`
+- sit back and relax as the script installs all the necessary plugins and configurations
+- run `> tmux` and run `> nvim` in your terminal to open NeoVim in a tmux session and start using the IDE
 
-♠️ ♤ Keep rocking 🎸 my text editing experiece 💙💚💜
+### Installation of Neovim plugins
 
-## Getting started
-
-NB: A lot of set up here has been done in NeoVim environment. While it's expected to work similarly in Vim >= 8, I highly
-recommended setting it up in NeoVim. The feel is expected to be similar, though.
-
-### Install the necessary stuff
-
-- Make sure that you have installed the following(_Using Homebrew recommended_):
-  - Vim > 8.\* or NeoVim
-  - [vim Plug](https://github.com/junegunn/vim-plug) - for (Neo)vim plugins
-  - tmux
-    - and [Tmux Plugin Manager](https://github.com/tmux-plugins/tpm)
-  - [oh-my-zsh](https://ohmyz.sh/) - manage your zsh configuration and add themes and plugins
-  - [FZF](https://github.com/junegunn/fzf) - an amazing commandline fuzzy finder for your files a lot of things 🤓. Check it out!!
-  - [ripgrep](https://github.com/BurntSushi/ripgrep) - find files by content(grep) from files. Integrates with FZF to work inside Vim/NeoVim
-  - [grip](https://github.com/joeyespo/grip) - (_to enable Markdown Preview for_)
-  - pmd - static code analyzer. Please use brew or apt to install this.
-
-### Add symbolic links for necessary files
-
-In the root directory for this repo, run `zsh ./install.sh`. Ignore missing directory for ale linters pmd; it should be created once vim plugins have been installed.
-
-This will help to make sure that set up and configuration files such as:
-
-- .vimrc
-- .zshrc
-- .tmux.conf
-- [coc.nvim](https://github.com/neoclide/coc.nvim) configuration file
-
-### Add vim plugins
-
-Run `:PlugInstall` inside (Neo)vim. Or shortcut `<leader>I`
-
-### Add required coc-plugins
-
-`CocInstall coc-fzf-preview`
-
-### Useful mappings
-
-#### Normal mode
-
-- `<C-F>f` - Searches git files with `:CocCommand fzf-preview.GitFiles`
-- `<C-F>c` - Searches git branches with `:CocCommand fzf-preview.GitBranches`
-- `<C-F>b` - Searches recently opened buffers
-- `<Space>c` - Searches Coc.nvim commands with `:CocCommand`
-- `gd` - Go to Definition
-- `gi` - Go to Implementation
-- `gr` - Go to References
-- `j` - Cursor down a line
-- `k` - Cursor up a line
-- `gq` - Quit current buffer
-- `<C-T>o` - Quit all tabs except current
-- `<C-W>o` - Quit all window in current tab except current window
+- run `:PackerInstall` in NeoVim to install all the plugins
+- install your favourite Coc.nvim extensions e.g. `CocInstall coc-eslint`, `CocInstall coc-prettier` etc
+- choose your favourite theme by running `:colorscheme <theme-name>`
 
 ### Setting up terminal devicons
 
-This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons on NERDTree etc.
+This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons on `nvim-tree` or NERDTree etc.
 
 - Download and install a [patched Nerd Font](https://github.com/ryanoasis/nerd-fonts)
   - such as [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip)
   - ensure that the font installed has nerd devicons - You can use Font Book if using MacOS to check out the installed font
 - Open you terminal emulator e.g. ITerm and set the Font Type to the patched font
 
+### Useful keyboard mappings/shortcuts to use the IDE
+
+#### Normal mode
+
+- `<C-n>` - Toggle File Explorer
+- `<leader>tr` - Toggle right panel
+- `<leader>DD` - Toggle dark theme
+- `<leader>LL` - Toggle light theme
+- `<leader>G` - open embedded lazygit
+- `<C-p>` - Searches MRU files with CtrlP
+- `<C-F>f` - Searches git files with `:CocCommand fzf-preview.GitFiles`,. mnemonic: Find files
+- `<C-F>Y` - Searches git branches with `:CocCommand fzf-preview.GitBranches`,. mnemonic: Find Y (branch sign)
+- `<C-F>b` - Searches recently opened buffers,. mnemonic: Find buffers
+- `gd` - Go to Definition
+- `gi` - Go to Implementation
+- `gR` - Go to References
+- `j` - Cursor down a line
+- `k` - Cursor up a line
+- `gq` - Quit current buffer
+- `<C-T>o` - Quit all tabs except current
+- `<C-W>o` - Quit all window in current tab except current window
+- `<Space>c` - Searches Coc.nvim commands with `:CocCommand`
+
+## Screenshots (carbonfox colorscheme)
+
+Definitions and References provided by language servers
+<img width="1792" alt="Screenshot 2021-11-11 at 19 09 49" src="./examples/Workspace3.png">
+
+Embedded lazygit view
+
+<img width="1792" alt="Screenshot 2021-11-11 at 19 09 49" src="./examples/Workspace4.png">
+
+## Other tips
+
 ### Setting up italic text in iTerm2
 
 Follow the instructions
 https://weibeld.net/terminals-and-shells/italics.html
-
-## Setting up coc.nvim language servers
-
-#### Salesforce APEX linting with PMD
-
-We can use PMD with ALE plugin to provdie Salesforce's APEX linting abilities.
-
-- Ensure you have installed PMD with brew. `brew install pmd`
-- Once you have installed your plugins and you have ALE installed, create a symbolic link from the `./pmd-apex.vim` file to `~/.vim/plugged/ale/ale_linters/apexcode/pmd.vim`
-  - `ln -s $(pwd)/pmd-apex.vim ~/.vim/plugged/ale/ale_linters/apexcode/pmd.vim`
-
-### Common language servers
-
-- Coc.nvim has a lot of plugins for providing language intellisense for many common languages and frameworks. Just do a google search for your favourite language. e.g.
-
-  - `coc-python` - for ...
-  - `coc-angular` - for ...
-
-  - etc
-
-<img width="1792" alt="Screenshot 2021-11-11 at 19 09 49" src="./examples/Workspace.png">
 
 ```
 .oPYo.                    8     o                         88 88 88
@@ -124,5 +72,4 @@ We can use PMD with ALE plugin to provdie Salesforce's APEX linting abilities.
 :....8 :.....::.....::.....:::::..::.....::::....8 :.....:.........
 :::::8 :::::::::::::::::::::::::::::::::::::::ooP'.::::::::::::::::
 :::::..:::::::::::::::::::::::::::::::::::::::...::::::::::::::::::
-
 ```
