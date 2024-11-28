@@ -28,7 +28,13 @@ brew install --quiet neovim
 echo "${green}󰄸  Done ${textreset} - Installed neovim"
 # neovim config dir
 echo "${cyan}  Linking nvim configuration ${textreset}"
-ln -sf $(pwd)/v2/nvim ~/.config/nvim
+
+NVIM_DIR=~/.config/nvim
+if [ -d $NVIM_DIR ]; then
+  echo "${yellow}  nvim config already exists. Removing.${textreset}"
+  rm -rf $NVIM_DIR
+fi
+ln -sf $(pwd)/v2/nvim $NVIM_DIR
 echo "${green}󰄸  Done ${textreset} - Linked nvim config to ~/.config/nvim\n"
 
 
