@@ -23,7 +23,23 @@ This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons in t
   - ensure that the font installed has nerd devicons - You can use Font Book if using MacOS to check out the installed font
 - Open you terminal emulator e.g. ITerm and set the Font Type to the patched font
 
-## Useful keyboard mappings/shortcuts to use the IDE
+#### Configuring a mergetool for merge conflicts
+
+Add the following to your `~/.gitconfig` file
+This will open a 3-way merge tool in NeoVim when you have merge conflicts. e.g. when opening a conflicted file within lazygit `:LazyGit` UI
+
+```
+[core]
+	editor = nvim
+[merge]
+  tool = nvim
+[mergetool "nvim"]
+  cmd = nvim -c "DiffviewOpen"
+[mergetool]
+  prompt = false
+```
+
+## Useful keyboard mappings/shortcuts and useful commands to use the IDE
 
 ### Normal mode
 
@@ -44,7 +60,14 @@ This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons in t
 - `gq` - Quit current buffer
 - `<C-T>o` - Quit all tabs except current
 - `<C-W>o` - Quit all window in current tab except current window
-- `<Space>c` - Searches Coc.nvim commands with `:CocCommand`
+
+### Commands
+
+- `:LazyGit` - open embedded lazygit
+- `:G` - open vim-fugitive git status window. A git repo alternatively to lazygit
+- `:colorscheme <Tab><Tab>` - choose your favourite theme
+- `:CtrlP <Tab><Tab>` - CtrlP commands e.g. search MRU files
+- `:<Tab><Tab>` - see all available commands
 
 ## Screenshots (carbonfox colorscheme)
 
