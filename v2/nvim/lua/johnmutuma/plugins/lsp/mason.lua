@@ -27,6 +27,8 @@ local set_up_linters_and_formatters = function()
 			"cspell",
 			"gofumpt",
 		},
+		automaticinstallation = false,
+		handlers = {},
 	})
 end
 
