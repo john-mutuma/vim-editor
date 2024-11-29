@@ -142,7 +142,7 @@ local set_up_lsp = function(on_attach)
 	})
 end
 
-local set_up_linters_and_formatters = function(on_attach)
+local set_up_linters_and_formatters = function()
 	mason_null_ls.setup({
 		ensure_installed = ensure_installed_null_ls,
 		automaticinstallation = false,
@@ -151,10 +151,10 @@ local set_up_linters_and_formatters = function(on_attach)
 end
 
 -- Configure DAP bucket
-local set_up_debuggers = function(on_attach) end
+local set_up_debuggers = function() end
 --
 
-local on_attach = function(client, bufnr)
+local on_attach_lsp = function(client, bufnr)
 	-- some language servers crash on semantic tokens when previewing files quickly e.g. Glance previews
 	-- disabling sematic tokens - hihglighting for now will be provided by nvim-treesitter
 	-- client.server_capabilities.semanticTokensProvider = nil
@@ -186,6 +186,6 @@ local on_attach = function(client, bufnr)
 	end
 end
 
-set_up_lsp(on_attach)
-set_up_linters_and_formatters(on_attach)
-set_up_debuggers(on_attach)
+set_up_lsp(on_attach_lsp)
+set_up_linters_and_formatters()
+set_up_debuggers()
