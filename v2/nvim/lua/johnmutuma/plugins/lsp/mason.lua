@@ -131,23 +131,15 @@ local set_up_lsp = function(on_attach)
 					},
 				})
 			end,
-
-			["typescript"] = function()
-				typescript.setup({
-					server = {
-						capabilities = capabilities,
-						on_attach = on_attach,
-					},
-				})
-			end,
 		},
 	})
-	-- typescript.setup({
-	-- 	server = {
-	-- 		capabilities = capabilities,
-	-- 		on_attach = on_attach,
-	-- 	},
-	-- })
+
+	typescript.setup({
+		server = {
+			capabilities = capabilities,
+			on_attach = on_attach,
+		},
+	})
 end
 
 local set_up_linters_and_formatters = function(on_attach)
