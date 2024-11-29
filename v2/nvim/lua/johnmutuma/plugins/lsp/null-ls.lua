@@ -1,41 +1,12 @@
 local null_ls_ok, null_ls = pcall(require, "null-ls")
--- local eslint_ok, lspconfig = pcall(require, "lspconfig")
 
--- if not eslint_ok then
---   print("ESLint could not be loaded")
---   return
--- end
-
-local formatting = null_ls.builtins.formatting
-local code_actions = null_ls.builtins.code_actions
-local diagnostics = null_ls.builtins.diagnostics
-
--- local eslint = lspconfig["eslint"]
--- eslint.setup({
---   capabilities = require("cmp_nvim_lsp").default_capabilities(),
---   on_attach = function()
---     return nil
---   end,
--- })
---
--- Configure linters, formatters, diagnostics, code actions
-local set_up_linters_and_formatters = function(on_attach)
-	null_ls.setup({
-		debug = false,
-		sources = {
-			-- code_actions.gitsigns,
-			formatting.stylua,
-			formatting.prettier,
-			formatting.gofumpt,
-		},
-		on_attach = function(client, bufnr)
-			on_attach(client, bufnr)
-		end,
-		root_dir = function(_)
-			return nil
-		end,
-	})
+if not null_ls_ok then
+	print("null_ls could not be loaded")
+	return
 end
+
+-- local code_actions = null_ls.builtins.code_actions
+-- local diagnostics = null_ls.builtins.diagnostics
 
 -- Format on save helper
 local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
@@ -52,15 +23,16 @@ local configure_format_on_save = function(client, bufnr)
 		})
 	end
 end
-
--- Configure linting and formatting sources
-local main = function()
-	set_up_linters_and_formatters(configure_format_on_save)
-end
-
-if not null_ls_ok then
-	print("null_ls could not be loaded")
-	return
-end
-
-main()
+--
+-- Configure linters, formatters, diagnostics, code actions
+null_ls.setup({
+	debug = false,
+	-- sources = {
+	-- 	  -- use this section to add sources unsupported by Mason yet
+	-- 	-- code_actions.gitsigns,
+	-- },
+	on_attach = configure_format_on_save,
+	root_dir = function(_)
+		return nil
+	end,
+})

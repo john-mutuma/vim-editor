@@ -54,5 +54,6 @@ local colorscheme_augroup = vim.api.nvim_create_augroup("colorschemechange", { c
 vim.api.nvim_create_autocmd({ "ColorScheme" }, {
 	group = colorscheme_augroup,
 	callback = setHiglightOverrides,
+	-- command = ":lua setHiglightOverrides()",
 	-- pattern = {"*.adoc", "*.md", "*.tex"},
 })

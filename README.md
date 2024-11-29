@@ -2,30 +2,46 @@ A NICE configuration for NeoVim with a lot of features and plugins to make your 
 
 ## Installation
 
+### Prerequisites
+
+#### Automated setup
+
 Find a Release version and download the zip file. Extract the zip file in your desired location,
 
 - in the root directory of the extracted files, run `./install.sh`
 - sit back and relax as the script installs all the necessary plugins and configurations
 - run `> tmux` and run `> nvim` in your terminal to open NeoVim in a tmux session and start using the IDE
-
-### Installation of Neovim plugins
-
 - run `:PackerInstall` in NeoVim to install all the plugins
-- install your favourite Coc.nvim extensions e.g. `CocInstall coc-eslint`, `CocInstall coc-prettier` etc
 - choose your favourite theme by running `:colorscheme <theme-name>`
 
-### Setting up terminal devicons
+#### Setting up terminal devicons
 
-This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons on `nvim-tree` or NERDTree etc.
+This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons in the File Explorer
 
 - Download and install a [patched Nerd Font](https://github.com/ryanoasis/nerd-fonts)
   - such as [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Hack.zip)
   - ensure that the font installed has nerd devicons - You can use Font Book if using MacOS to check out the installed font
 - Open you terminal emulator e.g. ITerm and set the Font Type to the patched font
 
-### Useful keyboard mappings/shortcuts to use the IDE
+#### Configuring a mergetool for merge conflicts
 
-#### Normal mode
+Add the following to your `~/.gitconfig` file
+This will open a 3-way merge tool in NeoVim when you have merge conflicts. e.g. when opening a conflicted file within lazygit `:LazyGit` UI
+
+```
+[core]
+	editor = nvim
+[merge]
+  tool = nvim
+[mergetool "nvim"]
+  cmd = nvim -c "DiffviewOpen"
+[mergetool]
+  prompt = false
+```
+
+## Useful keyboard mappings/shortcuts and useful commands to use the IDE
+
+### Normal mode
 
 - `<C-n>` - Toggle File Explorer
 - `<leader>tr` - Toggle right panel
@@ -44,7 +60,14 @@ This will enable Vim/NeoVim to display nerd icons e.g. File Extension icons on `
 - `gq` - Quit current buffer
 - `<C-T>o` - Quit all tabs except current
 - `<C-W>o` - Quit all window in current tab except current window
-- `<Space>c` - Searches Coc.nvim commands with `:CocCommand`
+
+### Commands
+
+- `:LazyGit` - open embedded lazygit
+- `:G` - open vim-fugitive git status window. A git repo alternatively to lazygit
+- `:colorscheme <Tab><Tab>` - choose your favourite theme
+- `:CtrlP <Tab><Tab>` - CtrlP commands e.g. search MRU files
+- `:<Tab><Tab>` - see all available commands
 
 ## Screenshots (carbonfox colorscheme)
 
@@ -55,7 +78,16 @@ Embedded lazygit view
 
 <img width="1792" alt="Screenshot 2021-11-11 at 19 09 49" src="./examples/Workspace4.png">
 
-## Other tips
+## Advanced
+
+Once you get comfortable and excited, let's go,
+
+#### Working with Language Servers, Debuggers and Linters
+
+- Run `:Mason` and find and install some LSP extensions and Linters you might want
+  - Configure the LSP and Linters with lspconfig
+- Find Coc.nvim extensions that you might like e.g. `CocInstall coc-eslint`
+- Learn to use nvim-dap
 
 ### Setting up italic text in iTerm2
 

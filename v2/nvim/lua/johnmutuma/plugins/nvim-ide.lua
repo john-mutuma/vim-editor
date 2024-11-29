@@ -84,3 +84,4 @@ icons.global_icon_set.set_icon("IndentGuide", "|")
 
 --  nvim-ide keymaps
 vim.keymap.set("n", "<leader>tr", ":Workspace RightPanelToggle<CR>", {})
+vim.keymap.set("n", "<leader>bf", ":Workspace BufferList Focus<CR>", {})
