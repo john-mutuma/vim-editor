@@ -85,7 +85,6 @@ Once you get comfortable and excited, let's go,
 #### Working with Language Servers, Debuggers and Linters
 
 - Run `:Mason` and find and install some LSP extensions and Linters you might want
-  - Configure the LSP and Linters with lspconfig
 - Find Coc.nvim extensions that you might like e.g. `CocInstall coc-eslint`
 - Learn to use nvim-dap
 
