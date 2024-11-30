@@ -12,9 +12,10 @@ keymap.set("n", "<leader>LL", ":colorscheme dayfox<CR>")
 --
 -- local success_colorscheme, _ = pcall(vim.cmd, "colorscheme tokyonight")
 -- local success_colorscheme, _ = pcall(vim.cmd, "colorscheme ayu-dark")
-local success_colorscheme, _ = pcall(vim.cmd, "colorscheme catppuccin-mocha")
+-- local success_colorscheme, _ = pcall(vim.cmd, "colorscheme catppuccin-mocha")
 -- local success_colorscheme, _ = pcall(vim.cmd, "colorscheme catppuccin-macchiato")
 -- local success_colorscheme, _ = pcall(vim.cmd, "colorscheme nightfox")
+local success_colorscheme, _ = pcall(vim.cmd, "colorscheme carbonfox")
 --
 -- NICE LIGHT THEMES
 --
