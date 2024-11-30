@@ -15,7 +15,7 @@ require("johnmutuma.plugins.nvim-tree")
 
 -- - LSP
 require("johnmutuma.plugins.lsp.mason")
--- require("johnmutuma.plugins.lsp.lspconfig")
+require("johnmutuma.plugins.lsp.lspconfig")
 require("johnmutuma.plugins.lsp.coc-nvim")
 require("johnmutuma.plugins.lsp.lspsaga")
 require("johnmutuma.plugins.lsp.lsp-lens")
