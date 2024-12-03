@@ -43,7 +43,7 @@ This will open a 3-way merge tool in NeoVim when you have merge conflicts. e.g. 
 
 ### Normal mode
 
-The <leader> key is set to `,` by default
+The `<leader>` key is set to `,` by default
 
 - `<leader>tr` - Toggle right panel
 - `<leader>DD` - Toggle dark theme
