@@ -39,33 +39,56 @@ This will open a 3-way merge tool in NeoVim when you have merge conflicts. e.g. 
   prompt = false
 ```
 
-## Useful keyboard mappings/shortcuts and useful commands to use the IDE
+## Useful keyboard mappings/shortcuts and useful commands to use the IDE like a pro
 
 ### Normal mode
 
-- `<C-n>` - Toggle File Explorer
+The <leader> key is set to `,` by default
+
 - `<leader>tr` - Toggle right panel
 - `<leader>DD` - Toggle dark theme
 - `<leader>LL` - Toggle light theme
 - `<leader>G` - open embedded lazygit
+
+### Searching
+
 - `<C-p>` - Searches MRU files with CtrlP
-- `<C-F>f` - Searches git files with `:CocCommand fzf-preview.GitFiles`,. mnemonic: Find files
-- `<C-F>Y` - Searches git branches with `:CocCommand fzf-preview.GitBranches`,. mnemonic: Find Y (branch sign)
-- `<C-F>b` - Searches recently opened buffers,. mnemonic: Find buffers
+- `<C-f>f` - Searches git files ,. mnemonic: find files
+- `<C-f>Y` - Searches git branches with ,. mnemonic: find Y (branch sign)
+- `<C-f>b` - Searches recently opened buffers,. mnemonic: find buffers
+- `:Rg <search-term>` - fuzzy search for a term in the project. `<search-term>` can be a regular expression to search powerfully. uses [Ripgrep](https://github.com/BurntSushi/ripgrep) with [FZF](https://github.com/junegunn/fzf)
+
+### Basic Movement
+
+- `j` - Cursor down a line
+- `k` - Cursor up a line
+- `<C-e>` - Scroll down
+- `<C-y>` - Scroll up
+
+### Window and Tab management
+
+- `<C-n>` - Toggle File Explorer
+- `gq` - Quit current buffer/file,. mnemonic: go quit
+- `<C-t>o` - Quit all tabs except current,. mnemonic: Tab only
+- `<C-w>o` - Quit all window in current tab except current window,. mnemonic: Window only
+
+### LSP keymaps
+
 - `gd` - Go to Definition
 - `gi` - Go to Implementation
 - `gR` - Go to References
-- `j` - Cursor down a line
-- `k` - Cursor up a line
-- `gq` - Quit current buffer
-- `<C-T>o` - Quit all tabs except current
-- `<C-W>o` - Quit all window in current tab except current window
+- `<leader>d` - view code diagnostics for the current line,. mnemonic: diagnostics e.g eslint, stylua, gofumpt,.. errors
+- `<leader>D` - view code diagnostics for the current file,. mnemonic: Diagnostics
+- `<leadeer>wd` - view code diagnostics for the workspace,. mnemonic: workspace diagnostics
+- `K` - Hover docs
 
-### Commands
+### Git and version control UIs
 
-- `:Rg <search-term>` - fuzzy search for a term in the project. `<search-term>` can be a regular expression to search powerfully. uses Ripgrep
 - `:LazyGit` - open embedded lazygit
 - `:G` - open vim-fugitive git status window. A git repo alternatively to lazygit
+
+### Others
+
 - `:colorscheme <Tab><Tab>` - choose your favourite theme
 - `:CtrlP <Tab><Tab>` - CtrlP commands e.g. search MRU files
 - `:<Tab><Tab>` - see all available commands
