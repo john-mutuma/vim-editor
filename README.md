@@ -63,6 +63,7 @@ This will open a 3-way merge tool in NeoVim when you have merge conflicts. e.g. 
 
 ### Commands
 
+- `:Rg <search-term>` - fuzzy search for a term in the project. `<search-term>` can be a regular expression to search powerfully. uses Ripgrep
 - `:LazyGit` - open embedded lazygit
 - `:G` - open vim-fugitive git status window. A git repo alternatively to lazygit
 - `:colorscheme <Tab><Tab>` - choose your favourite theme
