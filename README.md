@@ -48,7 +48,6 @@ The `<leader>` key is set to `,` by default
 - `<leader>tr` - Toggle right panel
 - `<leader>DD` - Toggle dark theme
 - `<leader>LL` - Toggle light theme
-- `<leader>G` - open embedded lazygit
 
 ### Searching
 
@@ -85,6 +84,7 @@ The `<leader>` key is set to `,` by default
 ### Git and version control UIs
 
 - `:LazyGit` - open embedded lazygit
+- `<leader>G` - open embedded lazygit
 - `:G` - open vim-fugitive git status window. A git repo alternatively to lazygit
 
 ### Others
