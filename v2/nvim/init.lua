@@ -22,7 +22,7 @@ require("johnmutuma.plugins.lsp.lsp-lens")
 require("johnmutuma.plugins.lsp.gitsigns")
 require("johnmutuma.plugins.lsp.null-ls") -- now called none-ls.nvim
 require("johnmutuma.plugins.dap.nvim-dap-ui")
-require("johnmutuma.plugins.dap.vscode-js-debug")
+require("johnmutuma.plugins.dap.nvim-dap")
 require("johnmutuma.plugins.lazygit")
 
 --

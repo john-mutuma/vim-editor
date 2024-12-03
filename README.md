@@ -109,8 +109,8 @@ Once you get comfortable and excited, let's go,
 #### Working with Language Servers, Debuggers and Linters
 
 - Run `:Mason` and find and install some LSP extensions and Linters you might want
-- Find Coc.nvim extensions that you might like e.g. `CocInstall coc-eslint`
-- Learn to use nvim-dap
+- Find [Coc.nvim](https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions#implemented-coc-extensions) extensions that you might like e.g. `coc-marketplace`
+- `:DapInstall` to edit installed debug adapters file. Learn to install and configure [debug adapters](https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation) with `nvim-dap`. A best practice is to configure with `.vscode/launch.json` configurations after installing the debug adapter
 
 ### Setting up italic text in iTerm2
 

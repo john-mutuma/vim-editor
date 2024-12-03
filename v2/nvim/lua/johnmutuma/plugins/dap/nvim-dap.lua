@@ -1,9 +1,17 @@
 local dap_vscode_js_ok, dap_vscode_js = pcall(require, "dap-vscode-js")
+local dap_ok, dap = pcall(require, "nvim-dap")
 
 if not dap_vscode_js_ok then
 	print("dap-vscode-js could not be loaded")
 	return
 end
+
+vim.api.nvim_create_user_command("DapInstall", function(opts)
+	vim.cmd([[
+    e ~/.config/nvim/lua/johnmutuma/plugins/dap/nvim-dap.lua
+    normal! G
+  ]])
+end, { nargs = nil })
 
 dap_vscode_js.setup({
 	-- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
@@ -30,3 +38,6 @@ dap_vscode_js.setup({
 -- 		},
 -- 	}
 -- end
+--
+
+-- dap.adapters.python = {
