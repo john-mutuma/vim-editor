@@ -64,6 +64,7 @@ return packer.startup(function(use)
 			--   `nvim-notify` is only needed, if you want to use the notification view.
 			--   If not available, we use `mini` as the fallback
 			"rcarriga/nvim-notify",
+			"stevearc/dressing.nvim", -- provide better vim.select ui
 		},
 	})
 	use({ "folke/tokyonight.nvim" })
@@ -234,7 +235,6 @@ return packer.startup(function(use)
 	use("junegunn/vim-peekaboo") -- higlight contents of registers
 	use("mattn/emmet-vim") -- just emmet
 	use("unblevable/quick-scope") -- quickly jump horizontally
-	use("rcarriga/nvim-notify")
 	use({
 		"dnlhc/glance.nvim",
 		config = function()

@@ -23,7 +23,7 @@ local configure_format_on_save = function(client, bufnr)
 		})
 	end
 end
---
+
 -- Configure linters, formatters, diagnostics, code actions
 null_ls.setup({
 	debug = false,
