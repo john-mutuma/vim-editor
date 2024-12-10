@@ -26,6 +26,6 @@ local success_colorscheme, _ = pcall(vim.cmd, "colorscheme carbonfox")
 -- local success_colorscheme, _ = pcall(vim.cmd, "colorscheme dawnfox")
 
 if not success_colorscheme then
-	print("Colorscheme not found")
-	return
+  print("Colorscheme not found")
+  return
 end

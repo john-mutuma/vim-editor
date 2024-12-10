@@ -50,9 +50,9 @@ when opening a conflicted file within lazygit `:LazyGit` UI
 
 ## Useful keyboard mappings/shortcuts and useful commands to use the IDE like a pro
 
-### Normal mode
+The `<leader>` key is `,` by default
 
-The `<leader>` key is set to `,` by default
+### Normal mode
 
 - `<leader>tr` - Toggle right panel
 - `<leader>DD` - Toggle dark theme
@@ -63,7 +63,7 @@ The `<leader>` key is set to `,` by default
 - `<C-p>` - Searches MRU files with CtrlP
 - `<C-f>f` - Searches git files ,. mnemonic: find files
 - `<C-f>Y` - Searches git branches with ,. mnemonic: find Y (branch sign)
-- `<C-f>b` - Searches recently opened buffers,. mnemonic: find buffers
+- `<C-f>b` - Searches for buffers opened recently,. mnemonic: find buffers
 - `:Rg <search-term>` - fuzzy search for a term in the project. `<search-term>`
   can be a regular expression to search powerfully. uses
   [Ripgrep](https://github.com/BurntSushi/ripgrep) with [FZF](https://github.com/junegunn/fzf)
@@ -98,7 +98,7 @@ The `<leader>` key is set to `,` by default
 
 - `:LazyGit` - open embedded lazygit
 - `<leader>G` - open embedded lazygit
-- `:G` - open vim-fugitive git status window. A git repo alternatively to lazygit
+- `:G` - open vim-fugitive git status window. A git repo alternative to lazygit
 
 ### Others
 
@@ -109,11 +109,11 @@ The `<leader>` key is set to `,` by default
 ## Screenshots (carbonfox colorscheme)
 
 Definitions and References provided by language servers
-<img width="1792" alt="Screenshot 2021-11-11 at 19 09 49" src="./examples/Workspace3.png">
+![image](examples/Workspace3.png)
 
 Embedded lazygit view
 
-<img width="1792" alt="Screenshot 2021-11-11 at 19 09 49" src="./examples/Workspace4.png">
+![image](examples/Workspace4.png)
 
 ## Advanced
 
