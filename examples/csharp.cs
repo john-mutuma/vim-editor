@@ -7,8 +7,8 @@ public class AccountData {
         new List<Monthly_Financial_Account_Data__c>();
     if (financialAccountDataList != null &&
         !financialAccountDataList.isEmpty()) {
-      for (Monthly_Financial_Account_Data__c monthlyAcount :
-           financialAccountDataList) {
+      for (Monthly_Financial_Account_Data__c
+               monthlyAcount: financialAccountDataList) {
         Monthly_Financial_Account_Data__c financialAccount;
         financialAccount = new Monthly_Financial_Account_Data__c();
         financialAccount.User_Updated__c = false;
@@ -43,7 +43,8 @@ public class AccountData {
     // add the latest date to the balances latest date
     List<Monthly_Budget_Data__c> subList = new List<Monthly_Budget_Data__c>();
     if (budgetDataList != null && !budgetDataList.isEmpty()) {
-      for (Monthly_Budget_Data__c monthlyBudget : budgetDataList) {
+      for (Monthly_Budget_Data__c monthlyBudget: budgetDataList) {
+
         if (monthlyBudget.Income_Frequency__c != "One-Time/Non-Recurring") {
           Monthly_Budget_Data__c budgetAccount;
           budgetAccount = new Monthly_Budget_Data__c();
