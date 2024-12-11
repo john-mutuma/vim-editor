@@ -9,8 +9,7 @@ require("johnmutuma.plugins.bufferline")
 require("johnmutuma.plugins.lualine")
 require("johnmutuma.plugins.nvim-cmp")
 require("johnmutuma.plugins.telescope")
--- swap order to toggle <C-n> handler
-require("johnmutuma.plugins.nerdtree")
+-- require("johnmutuma.plugins.nerdtree")
 require("johnmutuma.plugins.nvim-tree")
 
 -- - LSP
@@ -20,7 +19,7 @@ require("johnmutuma.plugins.lsp.coc-nvim")
 require("johnmutuma.plugins.lsp.lspsaga")
 require("johnmutuma.plugins.lsp.lsp-lens")
 require("johnmutuma.plugins.lsp.gitsigns")
-require("johnmutuma.plugins.lsp.null-ls") -- now called none-ls.nvim
+require("johnmutuma.plugins.lsp.null-ls") -- now uses none-ls.nvim
 require("johnmutuma.plugins.dap.nvim-dap-ui")
 require("johnmutuma.plugins.dap.nvim-dap")
 require("johnmutuma.plugins.lazygit")
