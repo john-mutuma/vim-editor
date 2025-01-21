@@ -30,5 +30,6 @@ M.eslintCodeActionOnSave = {
 	enable = true,
 	rules = { "!@typescript-eslint/*", "!import/order", "*" },
 }
+M.eslintQuiet = true
 
 return M

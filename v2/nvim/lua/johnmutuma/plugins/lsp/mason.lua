@@ -66,6 +66,7 @@ mason_lspconfig.setup({
 					workingDirectory = workspaceSettings.eslintWorkingDirectory,
 					codeActionOnSave = workspaceSettings.eslintCodeActionOnSave,
 					execArgv = workspaceSettings.eslintExecArgv,
+					quiet = workspaceSettings.eslintQuiet,
 				},
 			})
 		end,
