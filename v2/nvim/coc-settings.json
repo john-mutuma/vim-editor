@@ -44,5 +44,19 @@
     "snippet": "\ue60b",
     "typeParameter": "\uf728",
     "default": "\uf29c"
-  }
+  },
+  "eslint.options": {
+    "resolvePluginsRelativeTo": "../eslint-config"
+  },
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "eslint.codeActionsOnSave.rules": [
+    "!@typescript-eslint/*",
+    "!import/order",
+    "*"
+  ],
+  "eslint.execArgv": ["--max_old_space_size=32568"]
 }
