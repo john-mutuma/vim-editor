@@ -88,6 +88,6 @@ icons.global_icon_set.set_icon("IndentGuide", "|")
 
 --  nvim-ide keymaps
 vim.keymap.set("n", "<leader>tr", ":Workspace RightPanelToggle<CR>", {})
-vim.keymap.set("n", "<leader>tf", ":Workspace Timeline Focus<CR>", {})
-vim.keymap.set("n", "<leader>bf", ":Workspace BufferList Focus<CR>", {})
-vim.keymap.set("n", "<leader>of", ":Workspace Outline Focus<CR>", {})
+vim.keymap.set("n", "<leader>Tf", ":Workspace Timeline Focus<CR>", {})
+vim.keymap.set("n", "<leader>Bf", ":Workspace BufferList Focus<CR>", {})
+vim.keymap.set("n", "<leader>Of", ":Workspace Outline Focus<CR>", {})
