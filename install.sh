@@ -86,7 +86,7 @@ echo "${green}󰄸  Done ${textreset} - Installed bat\n"
 # install lazygit
 echo "${cyan}  Installing lazygit ${textreset}"
 brew install --quiet jesseduffield/lazygit/lazygit
-brew link lazygit
+brew link --overwrite lazygit
 # lazygit config dir
 echo "${cyan}  Setting up lazygit config ${textreset}"
 ln -sf $(pwd)/lazygit_config.yml ~/.config/lazygit/config.yml
