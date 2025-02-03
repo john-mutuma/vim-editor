@@ -27,10 +27,10 @@ end
 -- Configure linters, formatters, diagnostics, code actions
 null_ls.setup({
 	debug = false,
-	-- sources = {
-	-- 	  -- use this section to add sources unsupported by Mason yet
-	-- 	-- code_actions.gitsigns,
-	-- },
+	sources = {
+		-- use this section to add sources unsupported by Mason yet
+		require("none-ls.diagnostics.eslint"),
+	},
 	on_attach = configure_format_on_save,
 	root_dir = function(_)
 		return nil

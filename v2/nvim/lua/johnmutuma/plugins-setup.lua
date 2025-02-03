@@ -191,10 +191,14 @@ return packer.startup(function(use)
 
 	use("github/copilot.vim")
 	-- linting and formatting
+	use("nvimtools/none-ls-extras.nvim")
 	use({
 		"nvimtools/none-ls.nvim",
 		requires = {
-			{ "nvim-lua/plenary.nvim" },
+			{
+				"nvim-lua/plenary.nvim",
+				"nvimtools/none-ls-extras.nvim",
+			},
 		},
 	})
 	use({

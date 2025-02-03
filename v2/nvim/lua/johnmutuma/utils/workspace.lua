@@ -13,7 +13,7 @@ M.ensure_installed_lsp = {
 
 -- Null-ls - Code formatters, linters, fixers, etc. installed with Mason
 M.ensure_installed_null_ls = {
-	"prettier",
+	"prettierd",
 	"stylua",
 	"eslint",
 	"cspell",
@@ -30,6 +30,6 @@ M.eslintCodeActionOnSave = {
 	enable = true,
 	rules = { "!@typescript-eslint/*", "!import/order", "*" },
 }
-M.eslintQuiet = true
+-- M.eslintQuiet = true
 
 return M

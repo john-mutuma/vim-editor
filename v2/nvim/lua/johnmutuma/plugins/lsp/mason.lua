@@ -137,7 +137,7 @@ mason_lspconfig.setup({
 
 mason_null_ls.setup({
 	ensure_installed = workspaceSettings.ensure_installed_null_ls,
-	automaticinstallation = false,
+	automatic_installation = false,
 	handlers = {},
 })
 

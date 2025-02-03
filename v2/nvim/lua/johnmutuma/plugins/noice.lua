@@ -39,7 +39,7 @@ require("noice").setup({
 				col = "50%",
 			},
 			size = {
-				width = 100,
+				width = 110,
 				height = "auto",
 			},
 		},
@@ -49,7 +49,7 @@ require("noice").setup({
 				col = "50%",
 			},
 			size = {
-				width = 100,
+				width = 110,
 				height = "auto",
 			},
 		},
