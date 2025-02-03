@@ -67,8 +67,8 @@ else
   echo "${green}󰄸  Done ${textreset} - Installed oh-my-zsh. You might want to consider a theme like powerlevel10k.\n"
 fi
 
-# FZF and ripgrep
-#
+# FZF, ripgrep, bat
+# FZF
 echo "${cyan}  Installing FZF (Terminal fuzzy finder) ${textreset}"
 brew install --quiet fzf
 echo "${green}󰄸  Done ${textreset} - Installed FZF"
@@ -76,6 +76,10 @@ echo "${green}󰄸  Done ${textreset} - Installed FZF"
 echo "${cyan}  Installing ripgrep (FZF's companion) ${textreset}"
 brew install --quiet ripgrep
 echo "${green}󰄸  Done ${textreset} - Installed ripgrep\n"
+# bat
+echo "${cyan}  Installing bat (cat with syntax hightlighting) ${textreset}"
+brew install --quiet bat
+echo "${green}󰄸  Done ${textreset} - Installed bat\n"
 
 # LAZYGIT
 #
