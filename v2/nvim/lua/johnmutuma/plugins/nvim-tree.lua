@@ -16,7 +16,7 @@ end
 
 nvimTree.setup({
 	filesystem_watchers = {
-		enable = false,
+		enable = true,
 		debounce_delay = 50,
 		ignore_dirs = {
 			"node_modules",

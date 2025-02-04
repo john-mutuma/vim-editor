@@ -16,9 +16,6 @@ require("noice").setup({
 		-- view = "cmdline",
 		format = { cmdline = { icon = "_" } },
 	},
-	messages = {
-		-- view = "messages",
-	},
 	lsp = {
 		-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
 		override = {
@@ -38,31 +35,40 @@ require("noice").setup({
 	views = {
 		cmdline_popup = {
 			position = {
-				row = 5,
+				row = 2,
 				col = "50%",
 			},
 			size = {
-				width = 60,
+				width = 110,
 				height = "auto",
 			},
 		},
-		popupmenu = {
-			relative = "editor",
+		cmdline_popupmenu = {
 			position = {
-				row = 18,
+				row = 4,
 				col = "50%",
 			},
 			size = {
-				width = 60,
-				height = 10,
-			},
-			border = {
-				style = "rounded",
-				padding = { 0, 1 },
-			},
-			win_options = {
-				winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+				width = 110,
+				height = "auto",
 			},
 		},
+		-- popupmenu = {
+		-- 	position = {
+		-- 		row = 4,
+		-- 		col = "50%",
+		-- 	},
+		-- 	size = {
+		-- 		width = 100,
+		-- 		height = 20,
+		-- 	},
+		-- 	border = {
+		-- 		style = "rounded",
+		-- 		padding = { 0, 1 },
+		-- 	},
+		-- 	win_options = {
+		-- 		winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
+		-- 	},
+		-- },
 	},
 })

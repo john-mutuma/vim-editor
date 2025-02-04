@@ -145,6 +145,7 @@ return packer.startup(function(use)
 	use("neovim/nvim-lspconfig")
 	use({
 		"nvimdev/lspsaga.nvim",
+		commit = "13b3cdc9a53ec821b9e693ee71501cc2d6cf206c",
 		requires = { "nvim-lspconfig" },
 	})
 	use("jose-elias-alvarez/typescript.nvim") -- better typescript development
@@ -190,10 +191,14 @@ return packer.startup(function(use)
 
 	use("github/copilot.vim")
 	-- linting and formatting
+	use("nvimtools/none-ls-extras.nvim")
 	use({
 		"nvimtools/none-ls.nvim",
 		requires = {
-			{ "nvim-lua/plenary.nvim" },
+			{
+				"nvim-lua/plenary.nvim",
+				"nvimtools/none-ls-extras.nvim",
+			},
 		},
 	})
 	use({

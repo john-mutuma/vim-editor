@@ -45,7 +45,7 @@ telescope.load_extension("fzf") -- make use of nvim-fzf-native plugin for better
 
 -- Plugins mappings
 -- -- telescope
-keymap.set("n", "<C-F>f", builtin.find_files, {})
+keymap.set("n", "<C-F>f", builtin.git_files, {})
 keymap.set("n", "<C-F>s", builtin.live_grep, {})
 keymap.set("n", "<C-F>b", builtin.buffers, {})
 keymap.set("n", "<C-F>h", builtin.help_tags, {})

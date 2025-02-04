@@ -66,6 +66,7 @@ mason_lspconfig.setup({
 					workingDirectory = workspaceSettings.eslintWorkingDirectory,
 					codeActionOnSave = workspaceSettings.eslintCodeActionOnSave,
 					execArgv = workspaceSettings.eslintExecArgv,
+					quiet = workspaceSettings.eslintQuiet,
 				},
 			})
 		end,
@@ -136,7 +137,7 @@ mason_lspconfig.setup({
 
 mason_null_ls.setup({
 	ensure_installed = workspaceSettings.ensure_installed_null_ls,
-	automaticinstallation = false,
+	automatic_installation = false,
 	handlers = {},
 })
 

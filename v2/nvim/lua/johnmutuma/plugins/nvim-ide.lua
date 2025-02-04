@@ -38,15 +38,18 @@ require("ide").setup({
 			list_directories_first = true,
 		},
 		BufferList = {
-			default_height = 22,
+			default_height = 15,
 		},
-		Bookmarks = {
-			default_height = 60,
+		-- Outline = {
+		-- 	default_height = 40,
+		-- },
+		Timeline = {
+			default_height = 10,
 		},
 	},
 	-- default panel groups to display on left and right.
 	panels = {
-		-- left = "git",
+		left = "git",
 		right = "explorer",
 	},
 	-- panels defined by groups of components, user is free to redefine the defaults
@@ -57,18 +60,19 @@ require("ide").setup({
 			bookmarks.Name,
 			outline.Name,
 			timeline.Name,
-			-- explorer.Name,
 			callhierarchy.Name,
+			-- explorer.Name,
 			-- terminalbrowser.Name,
 			-- git = { changes.Name, commits.Name, branches.Name },
 		},
 		-- terminal = { terminal.Name },
 		-- git = { changes.Name, commits.Name, branches.Name },
+		git = {},
 	},
 	-- workspaces config
 	workspaces = {
 		-- which panels to open by default, one of: 'left', 'right', 'both', 'none'
-		auto_open = "none",
+		auto_open = "right",
 	},
 	-- default panel sizes for the different positions
 	panel_sizes = {
@@ -84,4 +88,6 @@ icons.global_icon_set.set_icon("IndentGuide", "|")
 
 --  nvim-ide keymaps
 vim.keymap.set("n", "<leader>tr", ":Workspace RightPanelToggle<CR>", {})
-vim.keymap.set("n", "<leader>bf", ":Workspace BufferList Focus<CR>", {})
+vim.keymap.set("n", "<leader>Tf", ":Workspace Timeline Focus<CR>", {})
+vim.keymap.set("n", "<leader>Bf", ":Workspace BufferList Focus<CR>", {})
+vim.keymap.set("n", "<leader>Of", ":Workspace Outline Focus<CR>", {})

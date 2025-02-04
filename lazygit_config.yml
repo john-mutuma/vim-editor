@@ -2,5 +2,5 @@ disablestartuppopups: true
 gui:
   theme:
     selectedLineBgColor:
-      - magenta
+      - reverse
   nerdFontsVersion: 3
