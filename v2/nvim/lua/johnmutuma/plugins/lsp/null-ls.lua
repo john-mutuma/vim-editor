@@ -38,9 +38,9 @@ null_ls.setup({
 		require("none-ls.diagnostics.eslint").with({
 			extra_args = eslint_extra_args,
 		}),
-		require("none-ls.code_actions.eslint").with({
-			extra_args = eslint_extra_args,
-		}),
+		-- require("none-ls.code_actions.eslint").with({ -- this has caused a huge performance hit when enabled
+		-- 	extra_args = eslint_extra_args,
+		-- }),
 	},
 	on_attach = configure_format_on_save,
 	root_dir = function(_)
