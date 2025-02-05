@@ -1,17 +1,17 @@
 local autopairs_ok, autopairs = pcall(require, "nvim-autopairs")
 
 if not autopairs_ok then
-  print("autopairs could not be loaded")
-  return
+    print("autopairs could not be loaded")
+    return
 end
 
 autopairs.setup({
-  check_ts = true,
-  ts_config = {
-    lua = { "string" }, -- it will not add a pair on that treesitter node
-    javascript = { "template_string" },
-    java = false,     -- don't check treesitter on java
-  },
+    check_ts = true,
+    ts_config = {
+        lua = { "string" }, -- it will not add a pair on that treesitter node
+        javascript = { "template_string" },
+        java = false, -- don't check treesitter on java
+    },
 })
 
 -- If you want insert `(` after select function or method item

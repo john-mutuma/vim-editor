@@ -9,6 +9,6 @@ opt.list = true
 -- opt.listchars:append("eol:↴")
 
 require("ibl").setup({
-	-- show_end_of_line = true,
-	scope = { enabled = false },
+    -- show_end_of_line = true,
+    scope = { enabled = false },
 })
