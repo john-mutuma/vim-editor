@@ -95,7 +95,7 @@ return packer.startup(function(use)
     })
     use("lukas-reineke/indent-blankline.nvim")
 
-    use("szw/vim-maximizer") -- zoom out and in current buffer
+    use("szw/vim-maximizer")               -- zoom out and in current buffer
     use("tpope/vim-surround")
     use("vim-scripts/ReplaceWithRegister") -- go replace <motion> e.g. graw --> go replace a word, gri{ --> go replace inside {
     use("machakann/vim-highlightedyank")
@@ -162,24 +162,30 @@ return packer.startup(function(use)
 
     -- completion and snippets
     use({
-        "hrsh7th/nvim-cmp", -- completion engine : needs to configure snippet engine in setup config e.g., luasnip, vsnip, ultisnip, snippy
+        "hrsh7th/nvim-cmp",                 -- completion engine : needs to configure snippet engine in setup config e.g., luasnip, vsnip, ultisnip, snippy
         requires = {
-            "L3MON4D3/LuaSnip", -- snippet engine
-            "neovim/nvim-lspconfig", -- support lsp intergration in cmp window
+            "L3MON4D3/LuaSnip",             -- snippet engine
+            "neovim/nvim-lspconfig",        -- support lsp intergration in cmp window
 
-            "saadparwaiz1/cmp_luasnip", -- snippet source for LuaSnip
-            "hrsh7th/cmp-buffer", -- snippet source for buffer
-            "hrsh7th/cmp-cmdline", -- snippet source for cmdline
-            "hrsh7th/cmp-path", -- snippet source for path
+            "saadparwaiz1/cmp_luasnip",     -- snippet source for LuaSnip
+            "hrsh7th/cmp-buffer",           -- snippet source for buffer
+            "hrsh7th/cmp-cmdline",          -- snippet source for cmdline
+            "hrsh7th/cmp-path",             -- snippet source for path
             "rafamadriz/friendly-snippets", -- snippet source for various programming languages
             -- cmp lsp deps
-            "hrsh7th/cmp-nvim-lsp", -- - nvim source for nvims builtin language server client
-            "onsails/lspkind.nvim", -- add pictograms i.e. icons and/or labels to the cmp window
+            "hrsh7th/cmp-nvim-lsp",         -- - nvim source for nvims builtin language server client
+            "onsails/lspkind.nvim",         -- add pictograms i.e. icons and/or labels to the cmp window
         },
     })
 
     -- auto pair, auto-tag, matching completions
-    use("windwp/nvim-autopairs")
+    use({
+        "windwp/nvim-autopairs",
+        event = "InsertEnter",
+        config = function()
+            require("nvim-autopairs").setup({})
+        end,
+    })
     use("windwp/nvim-ts-autotag")
     use({
         "andymass/vim-matchup",
@@ -236,9 +242,9 @@ return packer.startup(function(use)
             vim.fn["mkdp#util#install"]()
         end,
     })
-    use("ctrlpvim/ctrlp.vim") -- access recent buffers quickly
-    use("junegunn/vim-peekaboo") -- higlight contents of registers
-    use("mattn/emmet-vim") -- just emmet
+    use("ctrlpvim/ctrlp.vim")     -- access recent buffers quickly
+    use("junegunn/vim-peekaboo")  -- higlight contents of registers
+    use("mattn/emmet-vim")        -- just emmet
     use("unblevable/quick-scope") -- quickly jump horizontally
     use({
         "dnlhc/glance.nvim",
