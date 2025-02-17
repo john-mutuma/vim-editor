@@ -40,7 +40,9 @@ end
 -- end
 
 -- Set up Mason
-mason.setup()
+mason.setup({
+    ui = { border = "single" },
+})
 
 local capabilities = cmp_nvim_lsp.default_capabilities()
 mason_lspconfig.setup({
