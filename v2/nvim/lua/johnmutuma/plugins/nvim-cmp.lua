@@ -18,7 +18,9 @@ if not success_lspkind then
 end
 
 -- include  rafamadriz/friendly-snippets
-require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_vscode").lazy_load({
+    paths = { "./.vscode/nova.code-snippets", "./.vscode/fluent.code-snippets" },
+})
 
 cmp.setup({
     snippet = {
