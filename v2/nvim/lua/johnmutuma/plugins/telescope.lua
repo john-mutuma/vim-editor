@@ -1,6 +1,8 @@
 local success_telescope, telescope = pcall(require, "telescope")
 local builtin = require("telescope.builtin")
 
+local window_utils = require("johnmutuma.utils.windows")
+
 local keymap = vim.keymap
 
 if not success_telescope then
@@ -50,3 +52,7 @@ keymap.set("n", "<C-F>s", builtin.live_grep, {})
 keymap.set("n", "<C-F>b", builtin.buffers, {})
 keymap.set("n", "<C-F>h", builtin.help_tags, {})
 keymap.set("n", "<C-F>y", builtin.git_branches, {})
+
+-- manually adding a backdrop to telescope prompt to add depth
+-- can remove this when Telescope has added a backdrop internally or if neovim decideds to include backdrops to floating windows for depth
+window_utils.create_win_backdrop("TelescopePrompt")
