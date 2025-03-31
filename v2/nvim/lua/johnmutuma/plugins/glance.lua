@@ -1,5 +1,6 @@
 -- Lua configuration
 local glance = require("glance")
+local window_utils = require("johnmutuma.utils.windows")
 local opt = vim.opt
 -- local actions = glance.actions
 glance.setup({
@@ -57,3 +58,5 @@ vim.api.nvim_create_autocmd({ "ColorScheme" }, {
     -- command = ":lua setHiglightOverrides()",
     -- pattern = {"*.adoc", "*.md", "*.tex"},
 })
+
+window_utils.with_win_backdrop("Glance")

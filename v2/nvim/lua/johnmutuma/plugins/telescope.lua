@@ -55,4 +55,4 @@ keymap.set("n", "<C-F>y", builtin.git_branches, {})
 
 -- manually adding a backdrop to telescope prompt to add depth
 -- can remove this when Telescope has added a backdrop internally or if neovim decideds to include backdrops to floating windows for depth
-window_utils.create_win_backdrop("TelescopePrompt")
+window_utils.with_win_backdrop("TelescopePrompt")

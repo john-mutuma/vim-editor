@@ -9,6 +9,6 @@ keymap.set("n", "<leader>G", ":LazyGit<CR>", {})
 
 -- manually adding a backdrop to lazygit prompt to add depth
 -- can remove this when Telescope has added a backdrop internally or if neovim decideds to include backdrops to floating windows for depth
-window_utils.create_win_backdrop("lazygit")
+window_utils.with_win_backdrop("lazygit")
 
 return {}

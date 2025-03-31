@@ -1,6 +1,6 @@
 local M = {}
 -- Creates backdrop for popup windows
-function create_win_backdrop(target_win)
+function with_win_backdrop(target_win)
     -- CONFIG
     local blend = 60
 
@@ -12,7 +12,7 @@ function create_win_backdrop(target_win)
 
             -- it uses the default value
             -- of `nvim_open_win`, which is 50: https://neovim.io/doc/user/api.html#nvim_open_win()
-            local default_zIndex = 50
+            local default_zIndex = 40
 
             local backdropBufnr = vim.api.nvim_create_buf(false, true)
             local winnr = vim.api.nvim_open_win(backdropBufnr, false, {
@@ -48,6 +48,6 @@ function create_win_backdrop(target_win)
     })
 end
 
-M.create_win_backdrop = create_win_backdrop
+M.with_win_backdrop = with_win_backdrop
 
 return M
