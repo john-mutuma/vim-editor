@@ -1,13 +1,4 @@
-local null_ls_ok, null_ls = pcall(require, "null-ls")
-local workspaceSettings = require("johnmutuma.utils.workspace")
-
-if not null_ls_ok then
-    print("null_ls could not be loaded")
-    return
-end
-
--- local code_actions = null_ls.builtins.code_actions
--- local diagnostics = null_ls.builtins.diagnostics
+local _, null_ls = pcall(require, "null-ls")
 
 -- Format on save helper
 local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
@@ -25,21 +16,13 @@ local configure_format_on_save = function(client, bufnr)
     end
 end
 
-local eslint_extra_args = {
-    "--resolve-plugins-relative-to",
-    workspaceSettings.eslintOptions.resolvePluginsRelativeTo,
-}
-
 -- Configure linters, formatters, diagnostics, code actions
 null_ls.setup({
     debug = false,
     sources = {
         -- use this section to add sources unsupported by Mason yet
-        require("none-ls.diagnostics.eslint").with({
-            extra_args = eslint_extra_args,
-        }),
-        -- require("none-ls.code_actions.eslint").with({ -- this has caused a huge performance hit when enabled
-        -- 	extra_args = eslint_extra_args,
+        -- require("none-ls.diagnostics.eslint").with({
+        --     extra_args = eslint_extra_args,
         -- }),
     },
     on_attach = configure_format_on_save,
