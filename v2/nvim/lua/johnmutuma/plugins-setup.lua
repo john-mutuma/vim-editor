@@ -217,7 +217,7 @@ return packer.startup(function(use)
         requires = { "nvimtools/none-ls.nvim" },
     })
     use("lewis6991/gitsigns.nvim")
-
+    use("rachartier/tiny-inline-diagnostic.nvim")
     -- working with VCS, git
     use("tpope/vim-fugitive")
     use("cedarbaum/fugitive-azure-devops.vim") --  support for GBrowse
