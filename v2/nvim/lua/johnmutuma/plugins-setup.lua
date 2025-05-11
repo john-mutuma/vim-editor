@@ -145,7 +145,6 @@ return packer.startup(function(use)
     use("neovim/nvim-lspconfig")
     use({
         "nvimdev/lspsaga.nvim",
-        -- commit = "13b3cdc9a53ec821b9e693ee71501cc2d6cf206c",
         requires = { "nvim-lspconfig" },
     })
     use("jose-elias-alvarez/typescript.nvim") -- better typescript development
@@ -196,16 +195,22 @@ return packer.startup(function(use)
     })
 
     use("github/copilot.vim")
+    use({
+        "CopilotC-Nvim/CopilotChat.nvim",
+        requires = {
+            { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
+            { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+        },
+        build = "make tiktoken", -- Only on MacOS or Linux
+        opts = {
+            -- See Configuration section for options
+        },
+    })
+    -- See Commands section for default commands if you want to lazy load on them
     -- linting and formatting
-    use("nvimtools/none-ls-extras.nvim")
     use({
         "nvimtools/none-ls.nvim",
-        requires = {
-            {
-                "nvim-lua/plenary.nvim",
-                "nvimtools/none-ls-extras.nvim",
-            },
-        },
+        requires = { "nvim-lua/plenary.nvim" },
     })
     use({
         "jay-babu/mason-null-ls.nvim",
