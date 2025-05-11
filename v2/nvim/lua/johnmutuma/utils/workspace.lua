@@ -15,7 +15,6 @@ M.ensure_installed_lsp = {
 M.ensure_installed_null_ls = {
     "prettierd",
     "stylua",
-    "eslint",
     "cspell",
     "gofumpt",
 }
@@ -30,6 +29,6 @@ M.eslintCodeActionOnSave = {
     enable = true,
     rules = { "!@typescript-eslint/*", "!import/order", "*" },
 }
--- M.eslintQuiet = true
+M.eslintQuiet = false
 
 return M
