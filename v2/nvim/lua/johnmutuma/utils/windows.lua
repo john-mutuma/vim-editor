@@ -4,10 +4,10 @@ function with_win_backdrop(target_win)
     -- CONFIG
     local blend = 60
 
-    vim.api.nvim_create_autocmd("FileType", {
+    vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
         pattern = target_win,
         callback = function(ctx)
-            local backdropName = target_win .. "_backdrop"
+            local backdropName = "floating-win_backdrop"
             local bufnr = ctx.buf
 
             -- it uses the default value
