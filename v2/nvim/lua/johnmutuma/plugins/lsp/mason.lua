@@ -1,34 +1,41 @@
-local _, mason = pcall(require, "mason")
-local _, mason_lspconfig = pcall(require, "mason-lspconfig")
-local _, mason_null_ls = pcall(require, "mason-null-ls")
-local _, workspaceSettings = pcall(require, "johnmutuma.utils.workspace")
+local mason = require("mason")
+local mason_lspconfig = require("mason-lspconfig")
+local mason_null_ls = require("mason-null-ls")
+local workspaceSettings = require("johnmutuma.utils.workspace")
 
--- local _, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
--- local capabilities = cmp_nvim_lsp.default_capabilities()
+-- Extract workspace settings for clarity and performance
+local eslintOptions = workspaceSettings.eslintOptions
+local eslintWorkingDirectories = workspaceSettings.eslintWorkingDirectories
+local eslintCodeActionOnSave = workspaceSettings.eslintCodeActionOnSave
+local eslintExecArgv = workspaceSettings.eslintExecArgv
+local eslintQuiet = workspaceSettings.eslintQuiet
+local ensure_installed_lsp = workspaceSettings.ensure_installed_lsp
+local ensure_installed_null_ls = workspaceSettings.ensure_installed_null_ls
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 vim.lsp.config("eslint", {
     capabilities = capabilities,
     settings = {
-        options = workspaceSettings.eslintOptions,
-        workingDirectory = workspaceSettings.eslintWorkingDirectories and workspaceSettings.eslintWorkingDirectories[1],
-        workingDirectories = workspaceSettings.eslintWorkingDirectories,
-        codeActionOnSave = workspaceSettings.eslintCodeActionOnSave,
-        execArgv = workspaceSettings.eslintExecArgv,
-        quiet = workspaceSettings.eslintQuiet,
+        options = eslintOptions,
+        workingDirectory = eslintWorkingDirectories and eslintWorkingDirectories[1],
+        workingDirectories = eslintWorkingDirectories,
+        codeActionOnSave = eslintCodeActionOnSave,
+        execArgv = eslintExecArgv,
+        quiet = eslintQuiet,
     },
 })
 
--- Set up Mason
 mason.setup({
     ui = { border = "single" },
 })
+
 mason_lspconfig.setup({
-    ensure_installed = workspaceSettings.ensure_installed_lsp,
+    ensure_installed = ensure_installed_lsp,
 })
+
 mason_null_ls.setup({
-    ensure_installed = workspaceSettings.ensure_installed_null_ls,
+    ensure_installed = ensure_installed_null_ls,
     automatic_installation = false,
     handlers = {},
 })
