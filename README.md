@@ -1,8 +1,8 @@
 # NairoVim
 
 A NICE configuration for NeoVim with a lot of features and plugins to make your
-development experience better. Get the best of both worlds with NeoVim as a
-modern IDE.
+development experience better baked with AI with GitHub Copilot. Get the best of
+both worlds with NeoVim as a modern IDE.
 
 ## Installation
 
@@ -94,6 +94,13 @@ The `<leader>` key is `,` by default
 - `<leadeer>wd` - view code diagnostics for the workspace,. mnemonic: workspace diagnostics
 - `K` - Hover docs
 
+#### GitHub Copilot
+
+- `<leader>cp` or `:CopilotChat` - Chat with GitHub Copilot Chat AI inside the
+  IDE - use in normal and visual mode
+- `Copilot <cmd>` - run various commands e.g. `Copilot auth` for authentication
+  and `Copilot status` to check the status of GitHub Copilot
+
 ### Git and version control UIs
 
 - `:LazyGit` - open embedded lazygit
@@ -114,6 +121,9 @@ Definitions and References provided by language servers
 Embedded lazygit view
 
 ![image](examples/Workspace4.png)
+
+GitHub Copilot Chat view
+![GitHub Copilot Chat](examples/Workspace5.png)
 
 ## Advanced
 

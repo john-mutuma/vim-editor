@@ -8,8 +8,6 @@ local _, workspaceSettings = pcall(require, "johnmutuma.utils.workspace")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-print("set6tings: ", vim.inspect(workspaceSettings))
-
 vim.lsp.config("eslint", {
     capabilities = capabilities,
     settings = {
