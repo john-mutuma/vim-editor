@@ -8,11 +8,14 @@ local _, workspaceSettings = pcall(require, "johnmutuma.utils.workspace")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+print("set6tings: ", vim.inspect(workspaceSettings))
+
 vim.lsp.config("eslint", {
     capabilities = capabilities,
     settings = {
         options = workspaceSettings.eslintOptions,
-        workingDirectory = workspaceSettings.eslintWorkingDirectory,
+        workingDirectory = workspaceSettings.eslintWorkingDirectories and workspaceSettings.eslintWorkingDirectories[1],
+        workingDirectories = workspaceSettings.eslintWorkingDirectories,
         codeActionOnSave = workspaceSettings.eslintCodeActionOnSave,
         execArgv = workspaceSettings.eslintExecArgv,
         quiet = workspaceSettings.eslintQuiet,
