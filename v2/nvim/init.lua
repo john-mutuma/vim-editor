@@ -35,3 +35,6 @@ require("johnmutuma.plugins.glance")
 -- ide / workspace
 require("johnmutuma.plugins.nvim-ide")
 require("johnmutuma.plugins.noice")
+
+-- AI
+require("johnmutuma.plugins.copilot-chat")

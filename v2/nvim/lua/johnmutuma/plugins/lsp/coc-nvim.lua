@@ -8,8 +8,8 @@ keymap.set("n", "<space>cc", "<cmd>CocCommand<CR>")
 -- Configure auto-Organize Imports
 local org_augroup = augroup("organizeImports", { clear = true })
 autocmd("BufWritePre", {
-	group = org_augroup,
-	pattern = { "*.ts", "*.js", "*.tsx", "*.jsx" },
-	command = ":silent call CocAction('runCommand', 'editor.action.organizeImport')",
+    group = org_augroup,
+    pattern = { "*.ts", "*.js", "*.tsx", "*.jsx" },
+    command = ":silent call CocAction('runCommand', 'editor.action.organizeImport')",
 })
 vim.api.nvim_create_user_command("OI", ":silent call CocAction('runCommand', 'editor.action.organizeImport')", {})
