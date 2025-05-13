@@ -6,7 +6,7 @@ copilot_chat.setup({
     window = {
         layout = "float",
         width = 0.85,
-        height = 0.8,
+        height = 0.85,
         zindex = 45,
     },
 })

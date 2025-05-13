@@ -1,3 +1,4 @@
+local vim = vim
 local M = {}
 -- Creates backdrop for popup windows
 function with_win_backdrop(target_win)

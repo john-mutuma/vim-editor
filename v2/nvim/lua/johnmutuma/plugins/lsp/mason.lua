@@ -2,6 +2,7 @@ local mason = require("mason")
 local mason_lspconfig = require("mason-lspconfig")
 local mason_null_ls = require("mason-null-ls")
 local workspaceSettings = require("johnmutuma.utils.workspace")
+local vim = vim
 
 -- Extract workspace settings for clarity and performance
 local eslintOptions = workspaceSettings.eslintOptions
