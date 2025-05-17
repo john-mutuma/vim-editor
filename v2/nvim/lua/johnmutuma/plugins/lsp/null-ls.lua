@@ -1,4 +1,4 @@
-local _, null_ls = pcall(require, "null-ls")
+local vim = vim
 
 -- Format on save helper
 local augroup = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
@@ -16,36 +16,44 @@ local configure_format_on_save = function(client, bufnr)
     end
 end
 
--- Configure linters, formatters, diagnostics, code actions
-null_ls.setup({
-    debug = false,
-    sources = {
-        -- use this section to add sources unsupported by Mason yet
-        -- require("none-ls.diagnostics.eslint").with({
-        --     extra_args = eslint_extra_args,
-        -- }),
-    },
-    on_attach = configure_format_on_save,
-    root_dir = function(_)
-        return nil
+return {
+    "nvimtools/none-ls.nvim",
+    event = "LspAttach",
+    config = function()
+        -- Configure linters, formatters, diagnostics, code actions
+    require("null-ls").setup({
+            debug = false,
+
+
+            sources = {
+                -- use this section to add sources unsupported by Mason yet
+                -- require("none-ls.diagnostics.eslint").with({
+                --     extra_args = eslint_extra_args,
+                -- }),
+            },
+            on_attach = configure_format_on_save,
+            root_dir = function(_)
+                return nil
+            end,
+        })
+
+        -- -- setting up diagnostics plugins
+        vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+
+        require("tiny-inline-diagnostic").setup({
+            preset = "powerline",
+            options = {
+                show_source = {
+                    enabled = true,
+                    if_many = false,
+                },
+                break_line = {
+                    -- Enable the feature to break messages after a specific length
+                    enabled = true,
+                    -- Number of characters after which to break the line
+                    after = 95,
+                },
+            },
+        })
     end,
-})
-
--- -- setting up diagnostics plugins
-vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
-
-require("tiny-inline-diagnostic").setup({
-    preset = "powerline",
-    options = {
-        show_source = {
-            enabled = true,
-            if_many = false,
-        },
-        break_line = {
-            -- Enable the feature to break messages after a specific length
-            enabled = true,
-            -- Number of characters after which to break the line
-            after = 95,
-        },
-    },
-})
+}
