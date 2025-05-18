@@ -1,5 +1,4 @@
 local globl = vim.g
-
 local keymap = vim.keymap
 
 return {

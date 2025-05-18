@@ -5,7 +5,6 @@ return {
     dependencies = {
         "mason-org/mason-lspconfig.nvim",
         "jay-babu/mason-null-ls.nvim",
-        "nvimtools/none-ls.nvim",
         "neovim/nvim-lspconfig",
     },
     config = function()
@@ -24,7 +23,6 @@ return {
         local ensure_installed_null_ls = workspaceSettings.ensure_installed_null_ls
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
-
 
         vim.lsp.config("eslint", {
             capabilities = capabilities,

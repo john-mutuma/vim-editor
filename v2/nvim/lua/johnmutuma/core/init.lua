@@ -1,2 +1,2 @@
-require("johnmutuma.core.keymaps")
 require("johnmutuma.core.options")
+require("johnmutuma.core.keymaps")
