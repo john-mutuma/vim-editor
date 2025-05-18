@@ -3,12 +3,12 @@ local vim = vim
 return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        event = { "BufReadPre", "BufNewFile" },
+        -- event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            { "github/copilot.vim" },                       -- or zbirenbaum/copilot.lua
+            { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
             { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
         },
-        build = "make tiktoken",                            -- Only on MacOS or Linux
+        build = "make tiktoken", -- Only on MacOS or Linux
         config = function()
             local window_utils = require("johnmutuma.utils.windows")
             local copilot_chat = require("CopilotChat")

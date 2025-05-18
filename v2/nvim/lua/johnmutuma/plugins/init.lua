@@ -28,12 +28,14 @@ return {
     -- Editing Enhancements
     {
         { "sindrets/diffview.nvim" },
-        { "mattn/emmet-vim" },
+        { "mattn/emmet-vim", event = { "BufReadPre", "BufNewFile"}},
         { "unblevable/quick-scope" },
         { "junegunn/vim-peekaboo" },
-        { "ctrlpvim/ctrlp.vim" },
+        -- { "ctrlpvim/ctrlp.vim" },
         { "windwp/nvim-ts-autotag", event = { "BufReadPre", "BufNewFile" } },
-        { "tpope/vim-surround" },
+        { "tpope/vim-surround", event = { "BufReadPre", "BufNewFile"} },
+        { "vim-scripts/ReplaceWithRegister", event = { "BufReadPre", "BufNewFile"} },
+        { "machakann/vim-highlightedyank", event = { "BufReadPre", "BufNewFile"} },
     },
 
     -- UI/UX
@@ -50,6 +52,59 @@ return {
             opts = {
                 window = {
                     width = 200,
+                },
+            },
+        },
+        {
+            "folke/snacks.nvim",
+            opts = {
+                dashboard = {
+                    preset = {
+                        header = [[
+ _   _       _       __      _______ __  __
+| \ | |     (_)      \ \    / /_   _|  \/  |
+|  \| | __ _ _ _ __ __\ \  / /  | | | \  / |
+| . ` |/ _` | | '__/ _ \ \/ /   | | | |\/| |
+| |\  | (_| | | | | (_) \  /   _| |_| |  | |
+|_| \_|\__,_|_|_|  \___(_)/   |_____|_|  |_|
+
+
+   ]],
+                        keys = {
+                            {
+                                icon = " ",
+                                key = "f",
+                                desc = "Find File",
+                                action = ":lua Snacks.dashboard.pick('files')",
+                            },
+                            { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                            {
+                                icon = " ",
+                                key = "g",
+                                desc = "Find Text",
+                                action = ":lua Snacks.dashboard.pick('live_grep')",
+                            },
+                            {
+                                icon = " ",
+                                key = "r",
+                                desc = "Recent Files",
+                                action = ":lua Snacks.dashboard.pick('oldfiles')",
+                            },
+                            {
+                                icon = " ",
+                                key = "c",
+                                desc = "Config",
+                                action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+                            },
+                            { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+                            -- { icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
+                            { icon = " ", key = "m", desc = "Mason", action = ":Mason" },
+                            { icon = " ", key = "G", desc = "Git", action = ":LazyGit" },
+                            { icon = " ", key = "g", desc = "GitHub Copilot", action = ":CopilotChat" },
+                            { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
+                            { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+                        },
+                    },
                 },
             },
         },

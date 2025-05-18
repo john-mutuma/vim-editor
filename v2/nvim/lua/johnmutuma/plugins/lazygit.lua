@@ -5,6 +5,7 @@ return {
     "kdheepak/lazygit.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
+        "sindrets/diffview.nvim" ,
     },
     config = function()
         local window_utils = require("johnmutuma.utils.windows")
