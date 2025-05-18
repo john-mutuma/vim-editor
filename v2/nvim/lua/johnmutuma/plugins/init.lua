@@ -28,14 +28,14 @@ return {
     -- Editing Enhancements
     {
         { "sindrets/diffview.nvim" },
-        { "mattn/emmet-vim", event = { "BufReadPre", "BufNewFile"}},
+        { "mattn/emmet-vim", event = { "BufReadPre", "BufNewFile" } },
         { "unblevable/quick-scope" },
         { "junegunn/vim-peekaboo" },
         -- { "ctrlpvim/ctrlp.vim" },
         { "windwp/nvim-ts-autotag", event = { "BufReadPre", "BufNewFile" } },
-        { "tpope/vim-surround", event = { "BufReadPre", "BufNewFile"} },
-        { "vim-scripts/ReplaceWithRegister", event = { "BufReadPre", "BufNewFile"} },
-        { "machakann/vim-highlightedyank", event = { "BufReadPre", "BufNewFile"} },
+        { "tpope/vim-surround", event = { "BufReadPre", "BufNewFile" } },
+        { "vim-scripts/ReplaceWithRegister", event = { "BufReadPre", "BufNewFile" } },
+        { "machakann/vim-highlightedyank", event = { "BufReadPre", "BufNewFile" } },
     },
 
     -- UI/UX
@@ -78,10 +78,11 @@ return {
                                 action = ":lua Snacks.dashboard.pick('files')",
                             },
                             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                            { icon = " ", key = "F", desc = "Find/Replace", action = ":GrugFar" },
                             {
                                 icon = " ",
                                 key = "g",
-                                desc = "Find Text",
+                                desc = "Fuzzy Find Text",
                                 action = ":lua Snacks.dashboard.pick('live_grep')",
                             },
                             {
@@ -100,7 +101,7 @@ return {
                             -- { icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
                             { icon = " ", key = "m", desc = "Mason", action = ":Mason" },
                             { icon = " ", key = "G", desc = "Git", action = ":LazyGit" },
-                            { icon = " ", key = "g", desc = "GitHub Copilot", action = ":CopilotChat" },
+                            { icon = " ", key = "C", desc = "GitHub Copilot", action = ":CopilotChat" },
                             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
                             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
                         },
