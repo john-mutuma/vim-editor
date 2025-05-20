@@ -34,15 +34,23 @@ end
 
 M.load_file_from_closest_dir = function(dirname, filename, start_dir)
     local file_path = M.find_file_in_closest_dir(dirname, filename, start_dir)
+    local is_json = filename:match("%.json$")
+
     if not file_path then
         return nil
     end
+
     local settings_content = common_utils.get_file_content(file_path)
+
+    if  not is_json then
+        return common_utils.get_file_content(file_path)
+    end
+
     return common_utils.parse_json_safe(settings_content)
 end
 
 -- Loads and parses a JSON file from the closest VSCode workspace directory.
-M.load_file_from_vscode_workspace_dir = function(filename, start_dir)
+local load_file_from_vscode_workspace_dir = function(filename, start_dir)
     return M.load_file_from_closest_dir(".vscode", filename, start_dir)
 end
 
@@ -64,7 +72,7 @@ M.ensure_installed_null_ls = {
     "gofumpt",
 }
 
-local settings = M.load_file_from_vscode_workspace_dir("settings.json")
+local settings = load_file_from_vscode_workspace_dir("settings.json")
 if settings then
     M.eslintOptions = settings["eslint.options"]
     M.eslintExecArgv = settings["eslint.execArgv"]

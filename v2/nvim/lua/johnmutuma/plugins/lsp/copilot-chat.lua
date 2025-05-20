@@ -1,4 +1,7 @@
 local vim = vim
+local workspace_utils = require("johnmutuma.utils.workspace")
+
+local copilot_instructions = workspace_utils.load_file_from_closest_dir(".github", "copilot-instructions.md")
 
 return {
     {
@@ -19,6 +22,14 @@ return {
                     width = 0.85,
                     height = 0.85,
                     zindex = 45,
+                },
+                prompts = {
+                    WORKSPACE_COPILOT_INSTRUCTIONS = {
+                        system_prompt = copilot_instructions,
+                    },
+                },
+                sticky = {
+                    "/WORKSPACE_COPILOT_INSTRUCTIONS",
                 },
             })
 
