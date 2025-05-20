@@ -2,14 +2,14 @@ local common_utils = require("johnmutuma.utils.common")
 local uv = vim.loop
 local M = {}
 
--- Find the closest .vscode/settings.json file upwards from start_dir
-M.find_closest_vscode_dir = function(start_dir)
+-- Find the closest directory by name upwards from start_dir
+M.find_closest_dir_by_name = function(dirname, start_dir)
     local dir = start_dir or uv.cwd()
     while dir and dir ~= "" do
-        local vscode_path = dir .. "/.vscode"
-        local stat = uv.fs_stat(vscode_path)
+        local candidate = dir .. "/" .. dirname
+        local stat = uv.fs_stat(candidate)
         if stat and stat.type == "directory" then
-            return vscode_path
+            return candidate
         end
         local parent = dir:match("^(.*)/[^/]+$")
         if not parent or parent == dir then
@@ -20,41 +20,32 @@ M.find_closest_vscode_dir = function(start_dir)
     return nil
 end
 
-local function find_file_in_closest_vscode_dir(filename, start_dir)
-    local vscode_dir = M.find_closest_vscode_dir(start_dir)
-    if vscode_dir then
-        local settings_path = vscode_dir .. "/" .. filename
-        local stat = uv.fs_stat(settings_path)
+M.find_file_in_closest_dir = function(dirname, filename, start_dir)
+    local dir = M.find_closest_dir_by_name(dirname, start_dir)
+    if dir then
+        local file_path = dir .. "/" .. filename
+        local stat = uv.fs_stat(file_path)
         if stat and stat.type == "file" then
-            return settings_path
+            return file_path
         end
     end
     return nil
 end
 
---- Loads and parses a JSON file from the closest VSCode workspace directory.
--- Cache parsed settings for performance
--- @param filename string: The name of the file to load (e.g., 'settings.json').
--- @return table|nil: Parsed JSON table if the file exists and is valid, otherwise nil.
-M.load_file_from_vscode_workspace_dir = function(filename)
-    local settings_path = find_file_in_closest_vscode_dir(filename)
-    if not settings_path then
+M.load_file_from_closest_dir = function(dirname, filename, start_dir)
+    local file_path = M.find_file_in_closest_dir(dirname, filename, start_dir)
+    if not file_path then
         return nil
     end
-    local settings_content = common_utils.get_file_content(settings_path)
+    local settings_content = common_utils.get_file_content(file_path)
     return common_utils.parse_json_safe(settings_content)
 end
 
---
---
---
---
---
---
--- need to move this from here to a separate workspace settings file
---
---
--- LSP (Language server) clients to ensure are installed with Mason
+-- Loads and parses a JSON file from the closest VSCode workspace directory.
+M.load_file_from_vscode_workspace_dir = function(filename, start_dir)
+    return M.load_file_from_closest_dir(".vscode", filename, start_dir)
+end
+
 M.ensure_installed_lsp = {
     "ts_ls",
     "html",
@@ -65,11 +56,11 @@ M.ensure_installed_lsp = {
     "jsonls",
 }
 
--- Null-ls - Code formatters, linters, fixers, etc. installed with Mason
 M.ensure_installed_null_ls = {
     "prettierd",
     "stylua",
     "cspell",
+    "gofumpt",
     "gofumpt",
 }
 
