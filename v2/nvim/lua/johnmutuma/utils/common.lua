@@ -25,7 +25,7 @@ M.get_file_content = function(file_path)
         end
         return content
     else
-        print("File not found: " .. file_path)
+        print("File path is nil")
     end
 end
 
