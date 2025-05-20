@@ -59,6 +59,9 @@ return {
             "folke/snacks.nvim",
             opts = {
                 dashboard = {
+                    pick = function(arg)
+                        return Snacks.picker.pick(arg)
+                    end,
                     preset = {
                         header = [[
  _   _       _       __      _______ __  __
@@ -66,9 +69,10 @@ return {
 |  \| | __ _ _ _ __ __\ \  / /  | | | \  / |
 | . ` |/ _` | | '__/ _ \ \/ /   | | | |\/| |
 | |\  | (_| | | | | (_) \  /   _| |_| |  | |
-|_| \_|\__,_|_|_|  \___(_)/   |_____|_|  |_|
+|_| \_|\__,_|_|_|  \___/ \/   |_____|_|  |_|
 
 
+Hey there! Welcome. Enjoy a focused dev experience with NairoVIM.
    ]],
                         keys = {
                             {

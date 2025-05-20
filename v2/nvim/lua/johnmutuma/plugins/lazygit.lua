@@ -5,12 +5,13 @@ return {
     "kdheepak/lazygit.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        "sindrets/diffview.nvim" ,
+        "sindrets/diffview.nvim",
     },
-    config = function()
+
+    init = function()
         local window_utils = require("johnmutuma.utils.windows")
 
-        globl.lazygit_floating_window_winblend = 4          -- transparency of floating window
+        globl.lazygit_floating_window_winblend = 4 -- transparency of floating window
         globl.lazygit_floating_window_scaling_factor = 0.85 -- scaling factor for floating window
         keymap.set("n", "<leader>G", ":LazyGit<CR>", {})
 
