@@ -10,15 +10,15 @@ return {
     -- Colorschemes
     {
         {
-            "Shatur/neovim-ayu",
+            "EdenEast/nightfox.nvim",
             priority = 1000,
             init = function()
-                keymap.set("n", "<leader>DD", ":colorscheme ayu-mirage<CR>")
+                keymap.set("n", "<leader>DD", ":colorscheme carbonfox<CR>")
                 keymap.set("n", "<leader>LL", ":colorscheme dayfox<CR>")
-                vim.cmd("colorscheme ayu-mirage")
+                vim.cmd("colorscheme carbonfox")
             end,
         },
-        { "EdenEast/nightfox.nvim", event = { "VeryLazy" } },
+        { "Shatur/neovim-ayu", event = { "VeryLazy" } },
         -- { "ellisonleao/gruvbox.nvim" },
         -- { "Mofiqul/vscode.nvim" },
         -- { "folke/tokyonight.nvim" },
