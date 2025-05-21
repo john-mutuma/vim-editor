@@ -3,6 +3,9 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
         require("gitsigns").setup({
+            preview_config = {
+                border = "single",
+            },
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
 
@@ -46,7 +49,8 @@ return {
                 map("n", "<leader>hu", gs.undo_stage_hunk)
                 map("n", "<leader>hR", gs.reset_buffer)
                 map("n", "<leader>hp", gs.preview_hunk)
-                map("n", "<leader>hb", function()
+                map("n", "<leader>hb", gs.blame_line)
+                map("n", "<leader>hB", function()
                     gs.blame_line({ full = true })
                 end)
                 map("n", "<leader>tb", gs.toggle_current_line_blame)
