@@ -9,20 +9,20 @@ globl.sonokai_enable_italic = true
 return {
     -- Colorschemes
     {
+        { "Shatur/neovim-ayu", event = { "VeryLazy" } },
+        { "ellisonleao/gruvbox.nvim", event = { "VeryLazy" } },
+        { "Mofiqul/vscode.nvim", event = { "VeryLazy" } },
+        { "folke/tokyonight.nvim", event = { "VeryLazy" } },
+        { "catppuccin/nvim", name = "catppuccin", event = { "VeryLazy" } },
         {
             "EdenEast/nightfox.nvim",
             priority = 1000,
             init = function()
-                keymap.set("n", "<leader>DD", ":colorscheme carbonfox<CR>")
+                keymap.set("n", "<leader>DD", ":colorscheme tokyonight-night<CR>")
                 keymap.set("n", "<leader>LL", ":colorscheme dayfox<CR>")
-                vim.cmd("colorscheme carbonfox")
+                vim.cmd("colorscheme tokyonight-night")
             end,
         },
-        { "Shatur/neovim-ayu", event = { "VeryLazy" } },
-        -- { "ellisonleao/gruvbox.nvim" },
-        -- { "Mofiqul/vscode.nvim" },
-        -- { "folke/tokyonight.nvim" },
-        -- { "catppuccin/nvim",         name = "catppuccin" },
     },
 
     -- Editing Enhancements
