@@ -32,7 +32,7 @@ opt.hlsearch = true
 opt.cursorline = true
 opt.termguicolors = true
 -- opt.background = "dark"
-opt.colorcolumn = "118"
+opt.colorcolumn = ""
 
 -- backspace
 opt.backspace = "indent,eol,start"

@@ -5,14 +5,21 @@ return {
     dependencies = {
         "MunifTanjim/nui.nvim",
         "rcarriga/nvim-notify",
-        "stevearc/dressing.nvim", -- provide better vim.select ui
+        "stevearc/dressing.nvim", -- better vim.select UI
     },
-    config = function(_, opts)
-        require("notify").setup({
+    config = function()
+        ----------------------------------------------------------------------
+        -- 1. Setup nvim-notify
+        ----------------------------------------------------------------------
+        local notify = require("notify")
+        notify.setup({
             max_width = 130,
             merge_duplicates = true,
         })
 
+        ----------------------------------------------------------------------
+        -- 2. Setup noice.nvim
+        ----------------------------------------------------------------------
         require("noice").setup({
             routes = {
                 {
@@ -24,7 +31,6 @@ return {
                 },
             },
             cmdline = {
-                -- view = "cmdline",
                 format = { cmdline = { icon = "_" } },
             },
             lsp = {
@@ -35,8 +41,6 @@ return {
                     ["cmp.entry.get_documentation"] = false,
                 },
             },
-
-            -- you can enable a preset for easier configuration
             presets = {
                 bottom_search = true, -- use a classic bottom cmdline for search
                 command_palette = true, -- position the cmdline and popupmenu together
@@ -65,23 +69,6 @@ return {
                         height = "auto",
                     },
                 },
-                -- popupmenu = {
-                --     position = {
-                --         row = 4,
-                --         col = "50%",
-                --     },
-                --     size = {
-                --         width = 100,
-                --         height = 20,
-                --     },
-                --     border = {
-                --         style = "rounded",
-                --         padding = { 0, 1 },
-                --     },
-                --     win_options = {
-                --         winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
-                --     },
-                -- },
             },
         })
     end,
