@@ -9,7 +9,7 @@ return {
 
         vim.api.nvim_create_user_command("GitsignsBlameLineFull", function()
             local gitsigns = require("gitsigns")
-            gitsigns.blame_line()
+            gitsigns.blame_line({ full = true })
         end, { desc = "Toggle full blame line" })
 
         require("gitsigns").setup({
