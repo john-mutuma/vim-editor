@@ -46,6 +46,7 @@ return {
                     vim.opt_local.relativenumber = false
                     vim.opt_local.number = false
                     vim.opt_local.conceallevel = 0
+                    vim.opt_local.colorcolumn = ""
                 end,
             })
 
@@ -91,6 +92,5 @@ return {
                 window_utils.with_win_backdrop("copilot-overlay")
             end
         end,
-
     },
 }
