@@ -4,3 +4,12 @@
 
 Always use Lua when generating code.
 We use lazy.nvim to install neovim plugins.
+
+## Pull Requests and Commit  Message Format
+
+### Instructions for commit messages for plugin update with lazy.nvim
+
+- When creating a commit messages title for lazy-lock.json file, include a timestamp
+  in the format YYYY-MM-DD in the title. The title should be prefixed with `chore(update-plugins):`
+- Also note the packages updated in the commit message body.
+- Refer to the lazy-lock.json file for the packages updated.
