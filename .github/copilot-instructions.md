@@ -22,6 +22,8 @@ In the description, include the following:
 
 ```markdown
 ## What does this PR do?
+  - Start with a short paragraph summary of the changes made in the PR
+  - Include a list of the changes made in the PR
 ## Why is it needed?
 ## How have the changes been tested?
 ## Screenshots (if applicable)
