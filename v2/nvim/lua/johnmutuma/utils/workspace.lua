@@ -42,7 +42,7 @@ M.load_file_from_closest_dir = function(dirname, filename, start_dir)
 
     local settings_content = common_utils.get_file_content(file_path)
 
-    if  not is_json then
+    if not is_json then
         return common_utils.get_file_content(file_path)
     end
 
@@ -70,6 +70,10 @@ M.ensure_installed_null_ls = {
     "cspell",
     "gofumpt",
     "markdownlint",
+}
+
+M.copilot_chat = {
+    layout = "vertical",
 }
 
 local settings = load_file_from_vscode_workspace_dir("settings.json")
