@@ -1,40 +1,15 @@
-require("johnmutuma.plugins-setup")
+require("johnmutuma.core")
+require("johnmutuma.lazy")
 
-require("johnmutuma.core.options")
-require("johnmutuma.core.keymaps")
-require("johnmutuma.core.colorscheme")
-
--- Plugins
-require("johnmutuma.plugins.bufferline")
-require("johnmutuma.plugins.lualine")
-require("johnmutuma.plugins.nvim-cmp")
-require("johnmutuma.plugins.telescope")
--- require("johnmutuma.plugins.nerdtree")
-require("johnmutuma.plugins.nvim-tree")
-
--- - LSP
-require("johnmutuma.plugins.lsp.mason")
-require("johnmutuma.plugins.lsp.lspconfig")
-require("johnmutuma.plugins.lsp.coc-nvim")
-require("johnmutuma.plugins.lsp.lspsaga")
-require("johnmutuma.plugins.lsp.lsp-lens")
-require("johnmutuma.plugins.lsp.gitsigns")
-require("johnmutuma.plugins.lsp.null-ls") -- now uses none-ls.nvim
-require("johnmutuma.plugins.dap.nvim-dap-ui")
-require("johnmutuma.plugins.dap.nvim-dap")
-require("johnmutuma.plugins.lazygit")
-
---
-require("johnmutuma.plugins.autopairs")
-require("johnmutuma.plugins.treesitter")
-require("johnmutuma.plugins.indent-blankline")
-require("johnmutuma.plugins.vim-fugitive")
-
-require("johnmutuma.plugins.glance")
-
--- ide / workspace
-require("johnmutuma.plugins.nvim-ide")
-require("johnmutuma.plugins.noice")
-
--- AI
-require("johnmutuma.plugins.copilot-chat")
+-- Autosave on InsertLeave and FocusLost
+-- TODO: add this auto save functionality when needed and ready
+-- vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost" }, {
+--     pattern = "*",
+--     callback = function()
+--         if vim.bo.modified and vim.bo.filetype ~= "" and vim.fn.expand("%") ~= "" then
+--             vim.cmd("silent! write")
+--             print("Autosaved ")
+--         end
+--     end,
+--     desc = "Autosave on insert leave or focus lost",
+-- })

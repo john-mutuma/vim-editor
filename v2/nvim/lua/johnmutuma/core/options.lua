@@ -2,6 +2,7 @@ local opt = vim.opt
 local globl = vim.g
 
 globl.mapleader = ","
+globl.maplocalleader = "<space>"
 
 -- shell
 opt.shell = "/bin/bash"
