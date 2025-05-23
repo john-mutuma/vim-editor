@@ -69,7 +69,7 @@ M.ensure_installed_null_ls = {
     "stylua",
     "cspell",
     "gofumpt",
-    "gofumpt",
+    "markdownlint",
 }
 
 local settings = load_file_from_vscode_workspace_dir("settings.json")
