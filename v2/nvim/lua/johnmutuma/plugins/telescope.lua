@@ -52,6 +52,7 @@ return {
         keymap.set("n", "<C-F>f", builtin.git_files, {})
         keymap.set("n", "<C-F>s", builtin.live_grep, {})
         keymap.set("n", "<C-F>b", builtin.buffers, {})
+        keymap.set("n", "<C-F>r", builtin.oldfiles, {})
         keymap.set("n", "<C-F>h", builtin.help_tags, {})
         keymap.set("n", "<C-F>y", builtin.git_branches, {})
 
