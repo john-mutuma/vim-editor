@@ -101,7 +101,6 @@ return {
             ----------------------------------------------------------------------
             vim.api.nvim_create_user_command("OpenCopilotChat", function()
                 if layout == "vertical" then
-                    -- vim.cmd("silent! Workspace RightPanelClose")
                     vim.cmd("silent! Workspace RightPanelClose")
                     vim.cmd("CopilotChat")
                 else
