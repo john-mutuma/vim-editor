@@ -1,96 +1,92 @@
-local vim = vim
-
 return {
     {
         "CopilotC-Nvim/CopilotChat.nvim",
-        -- event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            { "github/copilot.vim" }, -- or zbirenbaum/copilot.lua
-            { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log and async functions
+            { "github/copilot.vim" },
+            { "nvim-lua/plenary.nvim", branch = "master" },
         },
-        build = "make tiktoken", -- Only on MacOS or Linux
+        build = "make tiktoken",
 
         config = function()
+            -- Lazy requires for performance
             local copilot_chat = require("CopilotChat")
-
             local workspace_utils = require("johnmutuma.utils.workspace")
             local window_utils = require("johnmutuma.utils.windows")
 
-            local copilot_chat_layout = workspace_utils.copilot_chat.layout
+            ----------------------------------------------------------------------
+            -- 1. Workspace & Window Configuration
+            ----------------------------------------------------------------------
+            local layout = workspace_utils.copilot_chat.layout
+            local instructions = workspace_utils.load_file_from_closest_dir(".github", "copilot-instructions.md")
+            local chat_width = layout == "float" and 0.85 or 0.25
 
-            local copilot_instructions =
-                workspace_utils.load_file_from_closest_dir(".github", "copilot-instructions.md")
-
-            local chat_window_size = 0.33
-            if copilot_chat_layout == "float" then
-                chat_window_size = 0.85
-            end
-
-            vim.api.nvim_create_user_command("OpenCopilotChat", function()
-                if copilot_chat_layout == "vertical" then
-                    vim.cmd([[
-                        Workspace RightPanelClose
-                        CopilotChat
-                    ]])
-                else
-                    vim.cmd([[
-                        CopilotChat
-                    ]])
-                end
-            end, { desc = "Open Copilot instructions file" })
-
-            vim.api.nvim_create_autocmd("BufEnter", {
-                pattern = { "copilot-chat", "copilot-overlay" },
-                callback = function()
-                    -- Set buffer-local options
-                    vim.opt_local.relativenumber = false
-                    vim.opt_local.number = false
-                    vim.opt_local.conceallevel = 0
-                    vim.opt_local.colorcolumn = ""
-                end,
-            })
-
+            ----------------------------------------------------------------------
+            -- 2. CopilotChat Setup
+            ----------------------------------------------------------------------
             copilot_chat.setup({
                 window = {
-                    layout = copilot_chat_layout,
-                    width = chat_window_size,
+                    layout = layout,
+                    width = chat_width,
                     height = 0.85,
                     zindex = 45,
                 },
                 prompts = {
                     WORKSPACE_COPILOT_INSTRUCTIONS = {
-                        system_prompt = copilot_instructions,
+                        system_prompt = instructions,
                     },
                 },
                 sticky = {
-                    "/WORKSPACE_COPILOT_INSTRUCTIONS",
                     "Today: " .. os.date("%Y-%m-%d"),
+                    "/WORKSPACE_COPILOT_INSTRUCTIONS",
                 },
                 question_header = " John Mutuma ",
                 answer_header = "  Copilot ",
             })
 
-            local grp = vim.api.nvim_create_augroup("copilot_lspattach_augroup", { clear = true })
-            vim.api.nvim_create_autocmd("LspAttach", {
-                group = grp,
-                callback = function(args)
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if client and client.name == "GitHub Copilot" then
-                        vim.keymap.set(
-                            { "n", "v" },
-                            "<leader>cp",
-                            "<cmd>OpenCopilotChat<CR>",
-                            { noremap = true, buffer = args.buf, silent = true }
-                        )
-                    end
+            ----------------------------------------------------------------------
+            -- 3. Autocmds (Grouped)
+            ----------------------------------------------------------------------
+            -- Buffer-local options for CopilotChat windows
+            vim.api.nvim_create_autocmd("BufEnter", {
+                pattern = { "copilot-chat", "copilot-overlay" },
+                callback = function()
+                    vim.opt_local.relativenumber = false
+                    vim.opt_local.number = false
+                    vim.opt_local.colorcolumn = ""
+                    vim.opt_local.conceallevel = 0
                 end,
             })
 
-            if copilot_chat_layout == "float" then
-                -- Add backdrop to Copilot floating windows for depth
+            ----------------------------------------------------------------------
+            -- 4. UI/UX: Window Backdrop
+            ----------------------------------------------------------------------
+            if layout == "float" then
                 window_utils.with_win_backdrop("copilot-chat")
                 window_utils.with_win_backdrop("copilot-overlay")
             end
+
+            ----------------------------------------------------------------------
+            -- 5. User Commands
+            ----------------------------------------------------------------------
+            vim.api.nvim_create_user_command("OpenCopilotChat", function()
+                if layout == "vertical" then
+                    -- vim.cmd("silent! Workspace RightPanelClose")
+                    vim.cmd("silent! Workspace RightPanelClose")
+                    vim.cmd("CopilotChat")
+                else
+                    vim.cmd("CopilotChat")
+                end
+            end, { desc = "Open Copilot instructions file" })
+
+            ----------------------------------------------------------------------
+            -- 6. Keymaps (Global, with description for discoverability)
+            ----------------------------------------------------------------------
+            vim.keymap.set(
+                { "n", "v" },
+                "<leader>cp",
+                "<cmd>OpenCopilotChat<CR>",
+                { noremap = true, silent = true, desc = "Open Copilot Chat" }
+            )
         end,
     },
 }
