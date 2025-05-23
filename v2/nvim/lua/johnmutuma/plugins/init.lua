@@ -35,7 +35,7 @@ return {
         { "windwp/nvim-ts-autotag", event = { "BufReadPre", "BufNewFile" } },
         { "tpope/vim-surround", event = { "BufReadPre", "BufNewFile" } },
         { "vim-scripts/ReplaceWithRegister", event = { "BufReadPre", "BufNewFile" } },
-        { "machakann/vim-highlightedyank", event = { "BufReadPre", "BufNewFile" } },
+        { "machakann/vim-highlightedyank", event = { "VeryLazy" } },
     },
 
     -- UI/UX
