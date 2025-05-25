@@ -1,10 +1,19 @@
-local opt = vim.opt
+----------------------------------------------------------------------
+-- 1. Treesitter Folding Settings (Buffer-local for performance)
+----------------------------------------------------------------------
+vim.api.nvim_create_autocmd({ "FileType" }, {
+    pattern = { "*" },
+    callback = function()
+        vim.opt_local.foldmethod = "expr"
+        vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+        vim.opt_local.foldenable = true
+        vim.opt_local.foldlevel = 2
+    end,
+})
 
-opt.foldmethod = "expr"
-opt.foldexpr = "nvim_treesitter#foldexpr()"
-opt.foldenable = true --  Enable/Disable folding at startup.
-opt.foldlevel = 2
-
+----------------------------------------------------------------------
+-- 2. Treesitter Plugin Setup
+----------------------------------------------------------------------
 return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPre", "BufNewFile" },
@@ -18,13 +27,14 @@ return {
         "windwp/nvim-ts-autotag",
     },
     config = function()
-        local treesitter = require("nvim-treesitter.configs")
-        local treesitter_autotag = require("nvim-ts-autotag")
+        ----------------------------------------------------------------------
+        -- 3. Treesitter Core Configuration
+        ----------------------------------------------------------------------
 
-        treesitter.setup({
+        require("nvim-treesitter.configs").setup({
             highlight = { enable = true },
             indent = { enable = true },
-            auto_tag = { enable = true },
+            autotag = { enable = true }, -- Correct key is 'autotag'
             ensure_installed = {
                 "json",
                 "javascript",
@@ -45,14 +55,6 @@ return {
             },
             auto_install = true,
         })
-
-        treesitter_autotag.setup({
-            opts = {
-                -- Defaults
-                enable_close = true,          -- Auto close tags
-                enable_rename = true,         -- Auto rename pairs of tags
-                enable_close_on_slash = true, -- Auto close on trailing </
-            },
-        })
+        -- No need to call require("nvim-ts-autotag").setup() separately
     end,
 }
