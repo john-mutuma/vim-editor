@@ -4,7 +4,7 @@
 
 - Always use Lua when generating code.
 - We use lazy.nvim to install neovim plugins.
-- User section banner when grouping code into sections. Use this format:
+- Use section banner when grouping code into sections. Use this format:
 
 ```txt
 ----------------------------------------------------------------------
