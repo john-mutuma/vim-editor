@@ -1,64 +1,102 @@
+----------------------------------------------------------------------
+-- 1. Leader and Localleader
+----------------------------------------------------------------------
 local opt = vim.opt
-local globl = vim.g
+local g = vim.g
 
-globl.mapleader = ","
-globl.maplocalleader = "<space>"
+g.mapleader = ","
+g.maplocalleader = "<space>"
 
--- shell
+----------------------------------------------------------------------
+-- 2. Shell
+----------------------------------------------------------------------
 opt.shell = "/bin/bash"
 
--- line numbers
-opt.relativenumber = true
+----------------------------------------------------------------------
+-- 3. Line Numbers
+----------------------------------------------------------------------
 opt.number = true
+opt.relativenumber = true
 
--- sign column -- column
+----------------------------------------------------------------------
+-- 4. Sign Column
+----------------------------------------------------------------------
 opt.signcolumn = "yes:1"
 
--- tabs and indentation
+----------------------------------------------------------------------
+-- 5. Tabs and Indentation
+----------------------------------------------------------------------
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 opt.autoindent = true
 
--- wrapping
+----------------------------------------------------------------------
+-- 6. Wrapping
+----------------------------------------------------------------------
 opt.wrap = false
 
--- search settings
+----------------------------------------------------------------------
+-- 7. Search Settings
+----------------------------------------------------------------------
 opt.ignorecase = true
 opt.smartcase = true
 opt.hlsearch = true
 
--- other appearance settings
+----------------------------------------------------------------------
+-- 8. Appearance
+----------------------------------------------------------------------
 opt.cursorline = true
 opt.termguicolors = true
--- opt.background = "dark"
 opt.colorcolumn = ""
 
--- backspace
-opt.backspace = "indent,eol,start"
+----------------------------------------------------------------------
+-- 9. Backspace
+----------------------------------------------------------------------
+opt.backspace = { "indent", "eol", "start" }
 
--- clipboard linking with Vim
+----------------------------------------------------------------------
+-- 10. Clipboard
+----------------------------------------------------------------------
 opt.clipboard:append("unnamedplus")
 
--- split windows
+----------------------------------------------------------------------
+-- 11. Split Windows
+----------------------------------------------------------------------
 opt.splitright = true
 opt.splitbelow = false
 
+----------------------------------------------------------------------
+-- 12. Keyword Characters
+----------------------------------------------------------------------
 opt.iskeyword:append("-")
 
--- Plugins  mappings
--- nvim tree
-opt.termguicolors = true
-
--- bufferline
+----------------------------------------------------------------------
+-- 13. Mouse and Bufferline
+----------------------------------------------------------------------
 opt.mousemoveevent = true
 
--- nvim-cmp
-opt.completeopt = "menu,menuone,noselect"
-opt.rtp:append(os.getenv("HOME") .. "/.fzf")
---
-globl.qs_highlight_on_keys = { "f", "F", "t", "T", "/", "?" }
+----------------------------------------------------------------------
+-- 14. Completion
+----------------------------------------------------------------------
+opt.completeopt = { "menu", "menuone", "noselect" }
 
--- " Enable blinking together with different cursor shapes for insert/command mode, and cursor highlighting:
-opt.guicursor =
-    "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+----------------------------------------------------------------------
+-- 15. Runtime Path (FZF)
+----------------------------------------------------------------------
+local home = os.getenv("HOME")
+if home then
+    opt.rtp:append(home .. "/.fzf")
+end
+
+----------------------------------------------------------------------
+-- 16. Plugin-specific Globals
+----------------------------------------------------------------------
+g.qs_highlight_on_keys = { "f", "F", "t", "T", "/", "?" }
+
+----------------------------------------------------------------------
+-- 17. Cursor Shape and Blinking
+----------------------------------------------------------------------
+opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,"
+    .. "a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,"
+    .. "sm:block-blinkwait175-blinkoff150-blinkon175"
