@@ -12,6 +12,7 @@ return {
             local copilot_chat = require("CopilotChat")
             local workspace_utils = require("johnmutuma.utils.workspace")
             local window_utils = require("johnmutuma.utils.windows")
+            local git_utils = require("johnmutuma.utils.git")
 
             ----------------------------------------------------------------------
             -- 1. Workspace & Window Configuration
@@ -33,6 +34,36 @@ return {
                 prompts = {
                     WORKSPACE_COPILOT_INSTRUCTIONS = {
                         system_prompt = instructions,
+                    },
+                    PullRequestDescription = {
+                        prompt = "Generate a pull request title and description based on the provided code changes.",
+                    },
+                },
+                contexts = {
+                    git = {
+                        input = function(callback)
+                            local git_branches, err = git_utils.get_git_branches()
+                            if err or not git_branches then
+                                vim.notify("Error fetching git branches: " .. err, vim.log.levels.ERROR)
+                                return
+                            end
+
+                            vim.ui.select(
+                                { "staged", "unstaged", unpack(git_branches) },
+                                { prompt = "Select anchor to diff against: " },
+                                callback
+                            )
+                        end,
+                        resolve = function(input, source)
+                            local diff = git_utils.get_git_diff(input, source.cwd())
+                            return {
+                                {
+                                    content = diff,
+                                    filetype = "diff",
+                                    filename = "git_diff-@-" .. input,
+                                },
+                            }
+                        end,
                     },
                 },
                 sticky = {
