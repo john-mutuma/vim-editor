@@ -9,6 +9,7 @@ return {
     config = function()
         local glance = require("glance")
         local window_utils = require("johnmutuma.utils.windows")
+        local palette = require("johnmutuma.utils.theme").palette
 
         ----------------------------------------------------------------------
         -- Glance Setup
@@ -25,32 +26,31 @@ return {
         ----------------------------------------------------------------------
         -- Highlight Overrides Based on Colorscheme
         ----------------------------------------------------------------------
+
         local function setHighlightOverrides()
             local bg = vim.opt.background:get()
-            if bg == "light" then
-                vim.cmd([[
-                  hi GlanceBorderTop gui=underline guifg=black guibg=white
-                  hi GlanceWinBarFilepath gui=italic guibg=#c1c1c1
-                  hi GlanceWinBarFilename gui=italic guifg=black guibg=#c1c1c1
-                  hi GlanceWinBarTitle gui=bold guifg=#010101 guibg=#c1c1c1
-                  hi GlancePreviewBorderBottom gui=underline guifg=black
-                  hi GlanceListCursorLine gui=none guibg=#aaaaaa
-                  hi GlanceListBorderBottom gui=underline guifg=black
-                  hi GlanceListNormal gui=italic guifg=indigo
-                ]])
-                return
+            local c = palette[bg == "light" and "light" or "dark"]
+
+            local highlights = {
+                GlanceBorderTop = { gui = "underline", guifg = c.border, guibg = c.border_bg },
+                GlanceWinBarFilepath = { gui = "italic", guibg = c.highlight },
+                GlanceWinBarFilename = { gui = "italic", guifg = c.fg, guibg = c.highlight },
+                GlanceWinBarTitle = { gui = "bold", guifg = c.fg, guibg = c.highlight },
+                GlancePreviewBorderBottom = { gui = "underline", guifg = c.border },
+                GlanceListCursorLine = { gui = "none", guibg = c.subtle },
+                GlanceListBorderBottom = { gui = "underline", guifg = c.border },
+                GlanceListNormal = { gui = "italic", guifg = c.accent },
+            }
+
+            for group, opts in pairs(highlights) do
+                local cmd = "hi " .. group
+                for k, v in pairs(opts) do
+                    if v and v ~= "" then
+                        cmd = cmd .. " " .. k .. "=" .. v
+                    end
+                end
+                vim.cmd(cmd)
             end
-            -- dark theme
-            vim.cmd([[
-              hi GlanceBorderTop gui=underline guifg=#b5bcbd guibg=#10110A
-              hi GlanceWinBarFilepath gui=italic guibg=#14140F
-              hi GlanceWinBarFilename gui=none guibg=#14140F
-              hi GlanceWinBarTitle gui=none guibg=#14140F
-              hi GlancePreviewBorderBottom gui=underline guifg=#b5bcbd
-              hi GlanceListCursorLine gui=none guibg=#656661
-              hi GlanceListBorderBottom gui=underline guifg=#b5bcbd
-              hi GlanceListNormal gui=italic guifg=e1e1e1
-            ]])
         end
 
         setHighlightOverrides()
