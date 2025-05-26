@@ -8,8 +8,8 @@ return {
     cmd = "Glance",
     config = function()
         local glance = require("glance")
-        local window_utils = require("johnmutuma.utils.windows")
-        local palette = require("johnmutuma.utils.theme").palette
+        local window_utils = require("nairovim.utils.windows")
+        local palette = require("nairovim.utils.theme").palette
 
         ----------------------------------------------------------------------
         -- Glance Setup

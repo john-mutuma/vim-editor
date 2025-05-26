@@ -1,5 +1,5 @@
-require("johnmutuma.core")
-require("johnmutuma.lazy")
+require("nairovim.core")
+require("nairovim.lazy")
 
 -- Autosave on InsertLeave and FocusLost
 -- TODO: add this auto save functionality when needed and ready

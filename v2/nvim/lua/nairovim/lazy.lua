@@ -21,9 +21,9 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     spec = {
         -- import your plugins
-        { import = "johnmutuma.plugins" },
-        { import = "johnmutuma.plugins.lsp" },
-        { import = "johnmutuma.plugins.dap" },
+        { import = "nairovim.plugins" },
+        { import = "nairovim.plugins.lsp" },
+        { import = "nairovim.plugins.dap" },
     },
     -- Configure any other settings here. See the documentation for more details.
     -- colorscheme that will be used when installing plugins.

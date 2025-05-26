@@ -1,4 +1,4 @@
-local common_utils = require("johnmutuma.utils.common")
+local common_utils = require("nairovim.utils.common")
 local uv = vim.loop
 
 local M = {}

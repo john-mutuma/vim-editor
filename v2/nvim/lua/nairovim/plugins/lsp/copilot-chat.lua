@@ -10,9 +10,9 @@ return {
         config = function()
             -- Lazy requires for performance
             local copilot_chat = require("CopilotChat")
-            local workspace_utils = require("johnmutuma.utils.workspace")
-            local window_utils = require("johnmutuma.utils.windows")
-            local git_utils = require("johnmutuma.utils.git")
+            local workspace_utils = require("nairovim.utils.workspace")
+            local window_utils = require("nairovim.utils.windows")
+            local git_utils = require("nairovim.utils.git")
 
             ----------------------------------------------------------------------
             -- 1. Workspace & Window Configuration
