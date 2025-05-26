@@ -18,8 +18,10 @@ return {
             detached = true,
             border = {
                 enable = true,
-                top_char = "~",
-                bottom_char = " ",
+            },
+            theme = {
+                enable = true,
+                mode = "auto",
             },
         })
 
@@ -32,14 +34,11 @@ return {
             local c = palette[bg == "light" and "light" or "dark"]
 
             local highlights = {
-                GlanceBorderTop = { gui = "underline", guifg = c.border, guibg = c.border_bg },
                 GlanceWinBarFilepath = { gui = "italic", guibg = c.highlight },
                 GlanceWinBarFilename = { gui = "italic", guifg = c.fg, guibg = c.highlight },
                 GlanceWinBarTitle = { gui = "bold", guifg = c.fg, guibg = c.highlight },
-                GlancePreviewBorderBottom = { gui = "underline", guifg = c.border },
-                GlanceListCursorLine = { gui = "none", guibg = c.subtle },
-                GlanceListBorderBottom = { gui = "underline", guifg = c.border },
-                GlanceListNormal = { gui = "italic", guifg = c.accent },
+                -- GlanceListCursorLine = { gui = "none", guibg = c.subtle },
+                GlanceListNormal = { gui = "italic" },
             }
 
             for group, opts in pairs(highlights) do
@@ -51,6 +50,10 @@ return {
                 end
                 vim.cmd(cmd)
             end
+
+            vim.api.nvim_set_hl(0, "GlanceBorderTop", { link = "FloatBorder" })
+            vim.api.nvim_set_hl(0, "GlancePreviewBorderBottom", { link = "FloatBorder" })
+            vim.api.nvim_set_hl(0, "GlanceListBorderBottom", { link = "FloatBorder" })
         end
 
         setHighlightOverrides()

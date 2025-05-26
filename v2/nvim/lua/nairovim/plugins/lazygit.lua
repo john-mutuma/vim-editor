@@ -1,4 +1,4 @@
-local globl = vim.g
+local g = vim.g
 local keymap = vim.keymap
 
 return {
@@ -11,9 +11,25 @@ return {
     init = function()
         local window_utils = require("nairovim.utils.windows")
 
-        globl.lazygit_floating_window_winblend = 4 -- transparency of floating window
-        globl.lazygit_floating_window_scaling_factor = 0.85 -- scaling factor for floating window
-        keymap.set("n", "<leader>G", ":LazyGit<CR>", {})
+        g.lazygit_floating_window_winblend = 4 -- transparency of floating window
+        g.lazygit_floating_window_scaling_factor = 0.85 -- scaling factor for floating window
+        keymap.set("n", "<leader>G", ":LazyGit<CR>")
+
+        local function set_lazygit_border_highlight()
+            vim.api.nvim_set_hl(0, "LazyGitBorder", { link = "FloatBorder" })
+            -- Add your custom highlights here
+        end
+
+        -- Set highlight on startup
+        set_lazygit_border_highlight()
+
+        -- Set highlight on colorscheme change
+        local lazygit_hl_augroup = vim.api.nvim_create_augroup("LazyGitHighlightOverrides", { clear = true })
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            pattern = "*",
+            group = lazygit_hl_augroup,
+            callback = set_lazygit_border_highlight,
+        })
 
         -- manually adding a backdrop to lazygit prompt to add depth
         -- can remove this when Telescope has added a backdrop internally or if neovim decideds to include backdrops to floating windows for depth

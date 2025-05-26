@@ -10,7 +10,7 @@ return {
         ----------------------------------------------------------------------
         require("gitsigns").setup({
             preview_config = {
-                border = "single",
+                border = "rounded",
             },
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
