@@ -54,12 +54,16 @@ return {
                             vim.ui.select(options, { prompt = "Select anchor to diff against: " }, callback)
                         end,
                         resolve = function(input, source)
-                            local diff = git_utils.get_git_diff(input, source.cwd())
+                            local cwd = source.cwd()
+                            local diff = git_utils.get_git_diff(input, cwd)
+                            local content = diff or "No changes detected"
+                            local filename = string.format("git_diff-@-%s", input)
+
                             return {
                                 {
-                                    content = diff,
+                                    content = content,
                                     filetype = "diff",
-                                    filename = "git_diff-@-" .. input,
+                                    filename = filename,
                                 },
                             }
                         end,
