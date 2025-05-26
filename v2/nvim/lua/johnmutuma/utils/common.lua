@@ -41,4 +41,18 @@ M.parse_json_safe = function(json_str)
     return result
 end
 
+-- Utility to run a shell command and capture output or error
+function M.run_command(cmd)
+    local handle = io.popen(cmd)
+    if not handle then
+        return nil, "Failed to run command: " .. cmd
+    end
+    local result = handle:read("*a")
+    handle:close()
+    if not result or result == "" then
+        return nil, "No output from command: " .. cmd
+    end
+    return result
+end
+
 return M
