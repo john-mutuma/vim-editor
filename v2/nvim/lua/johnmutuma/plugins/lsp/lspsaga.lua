@@ -6,7 +6,7 @@ return {
         require("lspsaga").setup({
             ui = {
                 code_action = "",
-                border = "double",
+                border = "rounded",
             },
             finder = {
                 keys = {
