@@ -15,7 +15,7 @@ return {
         ----------------------------------------------------------------------
         local telescope = require("telescope")
         local builtin = require("telescope.builtin")
-        local window_utils = require("johnmutuma.utils.windows")
+        local window_utils = require("nairovim.utils.windows")
 
         ----------------------------------------------------------------------
         -- 3. Telescope Setup

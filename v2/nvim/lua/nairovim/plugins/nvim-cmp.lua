@@ -13,7 +13,7 @@ return {
         "onsails/lspkind.nvim",
     },
     config = function()
-        local workspace_utils = require("johnmutuma.utils.workspace")
+        local workspace_utils = require("nairovim.utils.workspace")
         local vs_path = workspace_utils.find_file_in_closest_dir(".vscode", "nova.code-snippets")
         if vs_path then
             require("luasnip.loaders.from_vscode").lazy_load({ paths = { vs_path } })

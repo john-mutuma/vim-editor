@@ -1,4 +1,4 @@
-local run_command = require("johnmutuma.utils.common").run_command
+local run_command = require("nairovim.utils.common").run_command
 
 local M = {}
 

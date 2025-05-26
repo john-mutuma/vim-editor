@@ -14,7 +14,7 @@ return {
         local mason = require("mason")
         local mason_lspconfig = require("mason-lspconfig")
         local mason_null_ls = require("mason-null-ls")
-        local workspace = require("johnmutuma.utils.workspace")
+        local workspace = require("nairovim.utils.workspace")
 
         ----------------------------------------------------------------------
         -- 2. Workspace Settings Extraction

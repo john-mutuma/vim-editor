@@ -9,7 +9,7 @@ return {
     },
 
     init = function()
-        local window_utils = require("johnmutuma.utils.windows")
+        local window_utils = require("nairovim.utils.windows")
 
         globl.lazygit_floating_window_winblend = 4 -- transparency of floating window
         globl.lazygit_floating_window_scaling_factor = 0.85 -- scaling factor for floating window
