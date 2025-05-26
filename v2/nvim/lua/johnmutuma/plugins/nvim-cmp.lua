@@ -1,47 +1,41 @@
 return {
-    "hrsh7th/nvim-cmp",                 -- completion engine : needs to configure snippet engine in setup config e.g., luasnip, vsnip, ultisnip, snippy
-    event = { "InsertEnter" },          -- lazy load when enter insert mode
+    "hrsh7th/nvim-cmp",
+    event = { "InsertEnter" },
     dependencies = {
-        "L3MON4D3/LuaSnip",             -- snippet engine
-        "neovim/nvim-lspconfig",        -- support lsp intergration in cmp window
-
-        "saadparwaiz1/cmp_luasnip",     -- snippet source for LuaSnip
-        "hrsh7th/cmp-buffer",           -- snippet source for buffer
-        "hrsh7th/cmp-cmdline",          -- snippet source for cmdline
-        "hrsh7th/cmp-path",             -- snippet source for path
-        "rafamadriz/friendly-snippets", -- snippet source for various programming languages
-        -- cmp lsp deps
-        "hrsh7th/cmp-nvim-lsp",         -- - nvim source for nvims builtin language server client
-        "onsails/lspkind.nvim",         -- add pictograms i.e. icons and/or labels to the cmp window
+        "L3MON4D3/LuaSnip",
+        "neovim/nvim-lspconfig",
+        "saadparwaiz1/cmp_luasnip",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-path",
+        "rafamadriz/friendly-snippets",
+        "hrsh7th/cmp-nvim-lsp",
+        "onsails/lspkind.nvim",
     },
     config = function()
-        require("luasnip.loaders.from_vscode").lazy_load({
-            paths = { "./.vscode/nova.code-snippets", "./.vscode/fluent.code-snippets" },
-        })
+        local workspace_utils = require("johnmutuma.utils.workspace")
+        local vs_path = workspace_utils.find_file_in_closest_dir(".vscode", "nova.code-snippets")
+        if vs_path then
+            require("luasnip.loaders.from_vscode").lazy_load({ paths = { vs_path } })
+        end
+
         local lspkind = require("lspkind")
         local luasnip = require("luasnip")
         local cmp = require("cmp")
 
         cmp.setup({
             snippet = {
-                -- REQUIRED - you must specify a snippet engine
                 expand = function(args)
-                    luasnip.lsp_expand(args.body) -- For `luasnip` users.
-                    -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-                    -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-                    -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+                    luasnip.lsp_expand(args.body)
                 end,
             },
             formatting = {
                 format = lspkind.cmp_format({
-                    mode = "symbol_text",  -- show only symbol annotations
-                    maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-                    ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-
-                    -- The function below will be called before any actual modifications from lspkind
-                    -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-                    before = function(entry, vim_item)
-                        -- ...
+                    mode = "symbol_text",
+                    maxwidth = 50,
+                    ellipsis_char = "...",
+                    -- Removed unused 'entry' parameter for clarity
+                    before = function(_, vim_item)
                         return vim_item
                     end,
                 }),
@@ -55,14 +49,11 @@ return {
                 ["<C-f>"] = cmp.mapping.scroll_docs(4),
                 ["<C-Space>"] = cmp.mapping.complete(),
                 ["<C-c>"] = cmp.mapping.abort(),
-                ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                ["<CR>"] = cmp.mapping.confirm({ select = true }),
             }),
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
-                { name = "luasnip" }, -- For luasnip users.
-                -- { name = 'vsnip' }, -- For vsnip users.
-                -- { name = 'ultisnips' }, -- For ultisnips users.
-                -- { name = 'snippy' }, -- For snippy users.
+                { name = "luasnip" },
                 { name = "buffer" },
             }),
         })

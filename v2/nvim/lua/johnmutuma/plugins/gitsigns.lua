@@ -1,17 +1,13 @@
+----------------------------------------------------------------------
+-- 1. Plugin Specification & Setup
+----------------------------------------------------------------------
 return {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-        vim.api.nvim_create_user_command("GitsignsBlameLine", function()
-            local gitsigns = require("gitsigns")
-            gitsigns.blame_line()
-        end, { desc = "Toggle blame line" })
-
-        vim.api.nvim_create_user_command("GitsignsBlameLineFull", function()
-            local gitsigns = require("gitsigns")
-            gitsigns.blame_line({ full = true })
-        end, { desc = "Toggle full blame line" })
-
+        ----------------------------------------------------------------------
+        -- 3. Gitsigns Setup & Keymaps
+        ----------------------------------------------------------------------
         require("gitsigns").setup({
             preview_config = {
                 border = "single",
@@ -19,56 +15,59 @@ return {
             on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
 
-                local function map(mode, l, r, opts)
+                -- Helper for mapping keys
+                local function map(mode, lhs, rhs, opts)
                     opts = opts or {}
                     opts.buffer = bufnr
-                    vim.keymap.set(mode, l, r, opts)
+                    vim.keymap.set(mode, lhs, rhs, opts)
                 end
 
-                -- Navigation
+                ----------------------------------------------------------------------
+                -- 3.1 Navigation Keymaps
+                ----------------------------------------------------------------------
                 map("n", "]c", function()
                     if vim.wo.diff then
                         return "]c"
                     end
-                    vim.schedule(function()
-                        gs.next_hunk()
-                    end)
+                    vim.schedule(gs.next_hunk)
                     return "<Ignore>"
-                end, { expr = true })
+                end, { expr = true, desc = "Next Hunk" })
 
                 map("n", "[c", function()
                     if vim.wo.diff then
                         return "[c"
                     end
-                    vim.schedule(function()
-                        gs.prev_hunk()
-                    end)
+                    vim.schedule(gs.prev_hunk)
                     return "<Ignore>"
-                end, { expr = true })
+                end, { expr = true, desc = "Previous Hunk" })
 
                 -- Actions
-                map("n", "<leader>hs", ":Gitsigns stage_hunk<CR>")
-                map("n", "<leader>hr", ":Gitsigns reset_hunk<CR>")
+                map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage Hunk" })
+                map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset Hunk" })
                 map("v", "<leader>hs", function()
                     gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
                 end)
                 map("v", "<leader>hr", function()
                     gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
                 end)
-                map("n", "<leader>hS", "<cmd>Gitsigns stage_buffer<CR>")
-                map("n", "<leader>hu", "<cmd>Gitsigns undo_stage_hunk<CR>")
-                map("n", "<leader>hR", "<cmd>Gitsigns reset_buffer<CR>")
-                map("n", "<leader>hp", "<cmd>Gitsigns preview_hunk<CR>")
-                map("n", "<leader>hb", "<cmd>GitsignsBlameLine<CR>")
-                map("n", "<leader>hB", "<cmd>GitsignsBlameLineFull<CR>")
-                map("n", "<leader>htb", "<cmd>Gitsigns toggle_current_line_blame<CR>")
-                map("n", "<leader>hd", "<cmd>Gitsigns diffthis<CR>")
+                map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage entire buffer" })
+                map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
+                map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset entire buffer" })
+                map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
+                map("n", "<leader>hb", gs.blame_line, { desc = "Blame current line" })
+                map("n", "<leader>hB", function()
+                    gs.blame_line({ full = true })
+                end, { desc = "Full blame for current line" })
+                map("n", "<leader>htb", gs.toggle_current_line_blame, { desc = "Toggle current line blame" })
+                map("n", "<leader>hd", gs.diffthis, { desc = "Diff this buffer" })
                 map("n", "<leader>hD", function()
                     gs.diffthis("~")
-                end)
-                map("n", "<leader>td", "<cmd>Gitsigns toggle_deleted<CR>")
+                end, { desc = "Diff against last commit" })
+                map("n", "<leader>td", gs.toggle_deleted, { desc = "Toggle deleted" })
 
-                -- Text object
+                ----------------------------------------------------------------------
+                -- 3.3 Text Object
+                ----------------------------------------------------------------------
                 map({ "o", "x" }, "ih", "<cmd><C-U>Gitsigns select_hunk<CR>")
             end,
         })

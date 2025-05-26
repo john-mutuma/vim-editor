@@ -44,15 +44,14 @@ return {
                         input = function(callback)
                             local git_branches, err = git_utils.get_git_branches()
                             if err or not git_branches then
-                                vim.notify("Error fetching git branches: " .. err, vim.log.levels.ERROR)
+                                vim.notify("Error fetching git branches: " .. (err or ""), vim.log.levels.ERROR)
                                 return
                             end
 
-                            vim.ui.select(
-                                { "staged", "unstaged", unpack(git_branches) },
-                                { prompt = "Select anchor to diff against: " },
-                                callback
-                            )
+                            local options = { "staged", "unstaged" }
+                            vim.list_extend(options, git_branches)
+
+                            vim.ui.select(options, { prompt = "Select anchor to diff against: " }, callback)
                         end,
                         resolve = function(input, source)
                             local diff = git_utils.get_git_diff(input, source.cwd())
@@ -101,7 +100,6 @@ return {
             ----------------------------------------------------------------------
             vim.api.nvim_create_user_command("OpenCopilotChat", function()
                 if layout == "vertical" then
-                    -- vim.cmd("silent! Workspace RightPanelClose")
                     vim.cmd("silent! Workspace RightPanelClose")
                     vim.cmd("CopilotChat")
                 else

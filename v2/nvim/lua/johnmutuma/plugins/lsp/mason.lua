@@ -8,49 +8,68 @@ return {
         "neovim/nvim-lspconfig",
     },
     config = function()
+        ----------------------------------------------------------------------
+        -- 1. Module & Workspace Caching
+        ----------------------------------------------------------------------
         local mason = require("mason")
         local mason_lspconfig = require("mason-lspconfig")
         local mason_null_ls = require("mason-null-ls")
-        local workspaceSettings = require("johnmutuma.utils.workspace")
-        -- Extract workspace settings for clarity and performance
-        local eslintOptions = workspaceSettings.eslintOptions
-        local eslintWorkingDirectories = workspaceSettings.eslintWorkingDirectories
-        local eslintCodeActionOnSave = workspaceSettings.eslintCodeActionOnSave
-        local eslintExecArgv = workspaceSettings.eslintExecArgv
+        local workspace = require("johnmutuma.utils.workspace")
 
-        local eslintQuiet = workspaceSettings.eslintQuiet
-        local ensure_installed_lsp = workspaceSettings.ensure_installed_lsp
-        local ensure_installed_null_ls = workspaceSettings.ensure_installed_null_ls
+        ----------------------------------------------------------------------
+        -- 2. Workspace Settings Extraction
+        ----------------------------------------------------------------------
+        local eslint_opts = {
+            options = workspace.eslintOptions,
+            workingDirectory = workspace.eslintWorkingDirectories and workspace.eslintWorkingDirectories[1] or nil,
+            workingDirectories = workspace.eslintWorkingDirectories,
+            codeActionOnSave = workspace.eslintCodeActionOnSave,
+            execArgv = workspace.eslintExecArgv,
+            quiet = workspace.eslintQuiet,
+        }
+        local ensure_lsp = workspace.ensure_installed_lsp
+        local ensure_null_ls = workspace.ensure_installed_null_ls
 
+        ----------------------------------------------------------------------
+        -- 3. LSP Capabilities
+        ----------------------------------------------------------------------
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+        ----------------------------------------------------------------------
+        -- 4. ESLint LSP Setup
+        ----------------------------------------------------------------------
         vim.lsp.config("eslint", {
             capabilities = capabilities,
-            settings = {
-                options = eslintOptions,
-                workingDirectory = eslintWorkingDirectories and eslintWorkingDirectories[1],
-                workingDirectories = eslintWorkingDirectories,
-                codeActionOnSave = eslintCodeActionOnSave,
-                execArgv = eslintExecArgv,
-                quiet = eslintQuiet,
-            },
+            settings = eslint_opts,
         })
+
+        ----------------------------------------------------------------------
+        -- 5. Mason UI Setup
+        ----------------------------------------------------------------------
         mason.setup({
-            ui = { border = "single" },
+            ui = { border = "rounded" },
         })
 
+        ----------------------------------------------------------------------
+        -- 6. Mason LSPConfig Setup
+        ----------------------------------------------------------------------
         mason_lspconfig.setup({
-            ensure_installed = ensure_installed_lsp,
+            ensure_installed = ensure_lsp,
         })
 
+        ----------------------------------------------------------------------
+        -- 7. Mason Null-LS Setup
+        ----------------------------------------------------------------------
         mason_null_ls.setup({
-
-            ensure_installed = ensure_installed_null_ls,
+            ensure_installed = ensure_null_ls,
             automatic_installation = false,
             handlers = {},
         })
 
-        -- Configure DAP bucket
-        -- Configure mason-nvim-dap Debuggers
+        -- --------------------------------------------------------------------
+        -- 8. (Optional) DAP Configuration Placeholders
+        -- --------------------------------------------------------------------
+        -- -- Configure DAP bucket
+        -- -- Configure mason-nvim-dap Debuggers
     end,
 }

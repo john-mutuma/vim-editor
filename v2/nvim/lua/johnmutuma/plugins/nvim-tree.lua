@@ -1,12 +1,3 @@
-local vim = vim
-local globl = vim.g
-local keymap = vim.keymap
-
--- disable netrw at the very start of your init.lua
-globl.loaded_netrw = 1
-globl.loaded_netrwPlugin = 1
-keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>:<CR>$")
-
 return {
     "nvim-tree/nvim-tree.lua",
     dependencies = {
@@ -14,14 +5,15 @@ return {
     },
     event = { "VeryLazy" },
     config = function()
+        -- Disable netrw at the very start
+        vim.g.loaded_netrw = 1
+        vim.g.loaded_netrwPlugin = 1
+
         require("nvim-tree").setup({
             filesystem_watchers = {
                 enable = false,
                 debounce_delay = 50,
-                ignore_dirs = {
-                    "node_modules",
-                    "lib",
-                },
+                ignore_dirs = { "node_modules", "lib" },
             },
             update_focused_file = {
                 enable = true,
@@ -46,14 +38,23 @@ return {
             },
         })
 
-        vim.cmd([[
-          :hi NvimTreeCursorLine guibg=#444548
-          :hi NvimTreeGitDirtyIcon guifg=red
-          :hi NvimTreeModifiedIcon guifg=red
-        ]])
+        -- Keymap: Toggle NvimTree with <C-n>
+        vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>:<CR>$", { silent = true })
 
-        if vim.opt.background:get() == "light" then
-            vim.cmd([[ :hi NvimTreeCursorLine guibg=#c1c1c1 guifg=#252525 ]])
+        -- Highlight groups for NvimTree
+        local highlights = {
+            NvimTreeCursorLine = vim.opt.background:get() == "light" and { guibg = "#c1c1c1", guifg = "#252525" }
+                or { guibg = "#444548" },
+            NvimTreeGitDirtyIcon = { guifg = "red" },
+            NvimTreeModifiedIcon = { guifg = "red" },
+        }
+
+        for group, opts in pairs(highlights) do
+            local cmd = "hi " .. group
+            for k, v in pairs(opts) do
+                cmd = cmd .. " " .. k .. "=" .. v
+            end
+            vim.cmd(cmd)
         end
     end,
 }
