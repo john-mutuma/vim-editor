@@ -18,9 +18,7 @@ return {
         common_utils.map(mappings)
 
         -- Highlight groups for LazyGit
-        local function get_hightlights()
-            return require("nairovim.plugins.customizations.highlights.lazygit").highlights
-        end
+        local get_hightlights = require("nairovim.plugins.customizations.highlights.lazygit").get
         common_utils.apply_highlights(get_hightlights, "lazygit_highlights_overrides_augroup")
 
         -- manually adding a backdrop to lazygit prompt to add depth
