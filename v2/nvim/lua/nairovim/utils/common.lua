@@ -115,7 +115,7 @@ function M.apply_highlights(get_highlights, highlights_groupname)
     vim.api.nvim_create_autocmd("ColorScheme", {
         group = vim.api.nvim_create_augroup(highlights_groupname, { clear = true }),
         callback = function()
-            M.apply_highlights(get_highlights(), highlights_groupname)
+            M.apply_highlights(get_highlights, highlights_groupname)
         end,
     })
 end

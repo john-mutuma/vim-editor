@@ -43,25 +43,9 @@ return {
         common_utils.map(mappings)
 
         -- Highlight groups for NvimTree
-        local function setHighlightOverrides()
-            --- @type nairovim.highlightspec
-            local highlights = {
-                NvimTreeGitDirtyIcon = { fg = "red" },
-                NvimTreeModifiedIcon = { fg = "red" },
-            }
-
-            for group, opts in pairs(highlights) do
-                vim.api.nvim_set_hl(0, group, opts)
-            end
+        local function get_hightlights()
+            return require("nairovim.plugins.customizations.highlights.nvim-tree").highlights
         end
-
-        setHighlightOverrides()
-        ----------------------------------------------------------------------
-        -- Autocmd: Update Highlights on Colorscheme Change
-        ----------------------------------------------------------------------
-        vim.api.nvim_create_autocmd("ColorScheme", {
-            group = vim.api.nvim_create_augroup("NvimTreeHighlightOverrides", { clear = true }),
-            callback = setHighlightOverrides,
-        })
+        common_utils.apply_highlights(get_hightlights, "nvim-tree_highlights_overrides_augroup")
     end,
 }
