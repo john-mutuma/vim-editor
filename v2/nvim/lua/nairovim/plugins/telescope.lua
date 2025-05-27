@@ -40,24 +40,14 @@ return {
         end)
 
         ----------------------------------------------------------------------
-        -- 5. Keymap Helper
+        -- 5. Telescope Keymaps
         ----------------------------------------------------------------------
-        local function map(lhs, func, desc)
-            vim.keymap.set("n", lhs, func, { desc = desc })
-        end
+        local mappings = require("nairovim.plugins.customizations.keymaps.telescope").mappings
+        local common_utils = require("nairovim.utils.common")
+        common_utils.map(mappings)
 
         ----------------------------------------------------------------------
-        -- 6. Telescope Keymaps
-        ----------------------------------------------------------------------
-        map("<C-F>f", builtin.git_files, "Telescope: Git Files")
-        map("<C-F>s", builtin.live_grep, "Telescope: Live Grep")
-        map("<C-F>b", builtin.buffers, "Telescope: Buffers")
-        map("<C-F>r", builtin.oldfiles, "Telescope: Recent Files")
-        map("<C-F>h", builtin.help_tags, "Telescope: Help Tags")
-        map("<C-F>y", builtin.git_branches, "Telescope: Git Branches")
-
-        ----------------------------------------------------------------------
-        -- 7. Add Backdrop for Depth
+        -- 6. Add Backdrop for Depth
         ----------------------------------------------------------------------
         window_utils.with_win_backdrop("TelescopePrompt")
     end,
