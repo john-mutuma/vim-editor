@@ -83,7 +83,9 @@ function M.map(mappings, bufnr)
         local key_sequence = map_def.key_sequence
         local handler = map_def.handler
         local opts = map_def.opts or {}
-        opts.buffer = bufnr or 0 -- Set buffer if provided, default to 0 (global)
+        if bufnr then
+            opts.buffer = bufnr
+        end
         vim.keymap.set(mode, key_sequence, handler, opts)
     end
 end
