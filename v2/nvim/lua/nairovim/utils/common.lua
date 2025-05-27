@@ -5,8 +5,8 @@ local M = {}
 ----------------------------------------------------------------------
 
 --- Strips single-line comments (//) from a JSON string.
--- @param str string: The JSON string with possible comments.
--- @return string: The JSON string without comments.
+--- @param str string: The JSON string with possible comments.
+--- @return string: The JSON string without comments.
 function M.strip_json_comments(str)
     local lines = {}
     for line in str:gmatch("[^\r\n]+") do
@@ -22,8 +22,8 @@ end
 ----------------------------------------------------------------------
 
 --- Reads the entire content of a file.
--- @param file_path string: Path to the file.
--- @return string|nil: File content or nil if error.
+--- @param file_path string: Path to the file.
+--- @return string|nil: File content or nil if error.
 function M.get_file_content(file_path)
     if not file_path then
         vim.notify("File path is nil", vim.log.levels.WARN)
@@ -48,8 +48,8 @@ end
 ----------------------------------------------------------------------
 
 --- Safely parses a JSON string, stripping comments first.
--- @param json_str string: The JSON string to parse.
--- @return table|nil: Parsed table or nil if error.
+--- @param json_str string: The JSON string to parse.
+--- @return table|nil: Parsed table or nil if error.
 function M.parse_json_safe(json_str)
     local clean_str = M.strip_json_comments(json_str)
     local ok, result = pcall(vim.fn.json_decode, clean_str)
@@ -90,4 +90,33 @@ function M.map(mappings, bufnr)
     end
 end
 
+--- Applies a set of highlight groups using Neovim's API, and ensures
+---   they persist across colorscheme changes.
+--- @param get_highlights fun(): nairovim.highlightspec
+---   Function that returns a `nairovim.highlightspec` table, where each key is a highlight group name
+---   and each value is a table of highlight options (e.g., fg, bg, bold, italic, etc.).
+--- @param highlights_groupname string
+---   The name of the augroup to use for reapplying highlights on ColorScheme events.
+--- @usage
+---   M.apply_highlights(function()
+---     return {
+---       Normal = { fg = "#ffffff", bg = "#000000" },
+---       Comment = { fg = "#888888", italic = true },
+---     }
+---   end, "MyHighlightGroup")
+---
+--- This function is colorscheme aware: it automatically reapplies the
+---   specified highlights whenever the colorscheme changes.
+function M.apply_highlights(get_highlights, highlights_groupname)
+    for group, opts in pairs(get_highlights()) do
+        vim.api.nvim_set_hl(0, group, opts)
+    end
+
+    vim.api.nvim_create_autocmd("ColorScheme", {
+        group = vim.api.nvim_create_augroup(highlights_groupname, { clear = true }),
+        callback = function()
+            M.apply_highlights(get_highlights(), highlights_groupname)
+        end,
+    })
+end
 return M
