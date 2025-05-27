@@ -1,6 +1,4 @@
 local g = vim.g
-local keymap = vim.keymap
-
 return {
     "kdheepak/lazygit.nvim",
     dependencies = {
@@ -13,7 +11,11 @@ return {
 
         g.lazygit_floating_window_winblend = 4 -- transparency of floating window
         g.lazygit_floating_window_scaling_factor = 0.85 -- scaling factor for floating window
-        keymap.set("n", "<leader>G", ":LazyGit<CR>")
+
+        -- Keymaps for LazyGit
+        local mappings = require("nairovim.plugins.customizations.keymaps.lazygit").mappings
+        local common_utils = require("nairovim.utils.common")
+        common_utils.map(mappings)
 
         local function set_lazygit_border_highlight()
             vim.api.nvim_set_hl(0, "LazyGitBorder", { link = "FloatBorder" })

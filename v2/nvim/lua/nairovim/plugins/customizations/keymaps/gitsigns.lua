@@ -2,7 +2,7 @@ local M = {}
 
 local gs = package.loaded.gitsigns
 
---- @type KeymapDef[]
+--- @type nairovim.KeymapDef[]
 M.mappings = {
     -- Navigation
     {

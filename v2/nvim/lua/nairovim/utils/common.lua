@@ -75,7 +75,7 @@ function M.run_command(cmd)
 end
 
 --- Map a list of keymaps using vim.keymap.set
---- @param mappings KeymapDef[] List of keymap definitions
+--- @param mappings nairovim.KeymapDef[] List of keymap definitions
 --- @param bufnr integer|nil Buffer number to set the mapping for (optional, defaults to 0 for global)
 function M.map(mappings, bufnr)
     for _, map_def in ipairs(mappings) do

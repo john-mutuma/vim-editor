@@ -1,6 +1,6 @@
 local M = {}
 
---- @type KeymapDef[]
+--- @type nairovim.KeymapDef[]
 M.mappings = {
     {
         mode = { "n", "v" },
