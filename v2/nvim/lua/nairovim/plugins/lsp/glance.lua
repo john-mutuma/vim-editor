@@ -27,9 +27,7 @@ return {
         ----------------------------------------------------------------------
         -- Highlight Overrides Based on Colorscheme
         ----------------------------------------------------------------------
-        local function get_hightlights()
-            return require("nairovim.plugins.customizations.highlights.glance").highlights
-        end
+        local get_hightlights = require("nairovim.plugins.customizations.highlights.glance").get
 
         local common_utils = require("nairovim.utils.common")
         common_utils.apply_highlights(get_hightlights, "glance_highlights_overrides_augroup")

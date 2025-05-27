@@ -1,9 +1,10 @@
 local M = {}
 ---
---- @type nairovim.highlightspec
-M.highlights = {
-    NvimTreeGitDirtyIcon = { fg = "red" },
-    NvimTreeModifiedIcon = { fg = "red" },
-}
-
+function M.get()
+    --- @type nairovim.highlightspec
+    return {
+        NvimTreeGitDirtyIcon = { fg = "red" },
+        NvimTreeModifiedIcon = { fg = "red" },
+    }
+end
 return M

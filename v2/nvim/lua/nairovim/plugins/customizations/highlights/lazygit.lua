@@ -1,10 +1,10 @@
-local palette = require("nairovim.utils.theme").palette
-
 local M = {}
 
---- @type nairovim.highlightspec
-M.highlights = {
-    LazyGitBorder = { link = "FloatBorder" },
-}
+function M.get()
+    --- @type nairovim.highlightspec
+    return {
+        LazyGitBorder = { link = "FloatBorder" },
+    }
+end
 
 return M

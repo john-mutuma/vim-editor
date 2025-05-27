@@ -43,9 +43,7 @@ return {
         common_utils.map(mappings)
 
         -- Highlight groups for NvimTree
-        local function get_hightlights()
-            return require("nairovim.plugins.customizations.highlights.nvim-tree").highlights
-        end
+        local get_hightlights = require("nairovim.plugins.customizations.highlights.nvim-tree").get
         common_utils.apply_highlights(get_hightlights, "nvim-tree_highlights_overrides_augroup")
     end,
 }
