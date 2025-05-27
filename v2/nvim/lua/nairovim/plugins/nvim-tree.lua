@@ -38,23 +38,30 @@ return {
             },
         })
 
-        -- Keymap: Toggle NvimTree with <C-n>
-        vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>:<CR>$", { silent = true })
+        local mappings = require("nairovim.plugins.customizations.keymaps.nvim-tree").mappings
+        local common_utils = require("nairovim.utils.common")
+        common_utils.map(mappings)
 
         -- Highlight groups for NvimTree
-        local highlights = {
-            NvimTreeCursorLine = vim.opt.background:get() == "light" and { guibg = "#c1c1c1", guifg = "#252525" }
-                or { guibg = "#444548" },
-            NvimTreeGitDirtyIcon = { guifg = "red" },
-            NvimTreeModifiedIcon = { guifg = "red" },
-        }
+        local function setHighlightOverrides()
+            --- @type highlightspec
+            local highlights = {
+                NvimTreeGitDirtyIcon = { fg = "red" },
+                NvimTreeModifiedIcon = { fg = "red" },
+            }
 
-        for group, opts in pairs(highlights) do
-            local cmd = "hi " .. group
-            for k, v in pairs(opts) do
-                cmd = cmd .. " " .. k .. "=" .. v
+            for group, opts in pairs(highlights) do
+                vim.api.nvim_set_hl(0, group, opts)
             end
-            vim.cmd(cmd)
         end
+
+        setHighlightOverrides()
+        ----------------------------------------------------------------------
+        -- Autocmd: Update Highlights on Colorscheme Change
+        ----------------------------------------------------------------------
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            group = vim.api.nvim_create_augroup("NvimTreeHighlightOverrides", { clear = true }),
+            callback = setHighlightOverrides,
+        })
     end,
 }

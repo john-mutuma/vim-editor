@@ -54,9 +54,8 @@ return {
         ----------------------------------------------------------------------
         -- Autocmd: Update Highlights on Colorscheme Change
         ----------------------------------------------------------------------
-        local glance_hl_augroup = vim.api.nvim_create_augroup("GlanceHighlightOverrides", { clear = true })
         vim.api.nvim_create_autocmd("ColorScheme", {
-            group = glance_hl_augroup,
+            group = vim.api.nvim_create_augroup("GlanceHighlightOverrides", { clear = true }),
             callback = setHighlightOverrides,
         })
 
