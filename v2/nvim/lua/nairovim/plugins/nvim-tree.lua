@@ -44,7 +44,7 @@ return {
 
         -- Highlight groups for NvimTree
         local function setHighlightOverrides()
-            --- @type highlightspec
+            --- @type nairovim.highlightspec
             local highlights = {
                 NvimTreeGitDirtyIcon = { fg = "red" },
                 NvimTreeModifiedIcon = { fg = "red" },
