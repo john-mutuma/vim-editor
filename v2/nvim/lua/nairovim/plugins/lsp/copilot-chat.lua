@@ -56,7 +56,7 @@ return {
                         resolve = function(input, source)
                             local cwd = source.cwd()
                             local diff = git_utils.get_git_diff(input, cwd)
-                            local content = diff or "No changes detected"
+                            local content = diff or ""
                             local filename = string.format("git_diff-@-%s", input)
 
                             return {
