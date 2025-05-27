@@ -33,27 +33,20 @@ return {
             local bg = vim.opt.background:get()
             local c = palette[bg == "light" and "light" or "dark"]
 
+            --- @type highlightspec
             local highlights = {
-                GlanceWinBarFilepath = { gui = "italic", guibg = c.highlight },
-                GlanceWinBarFilename = { gui = "italic", guifg = c.fg, guibg = c.highlight },
-                GlanceWinBarTitle = { gui = "bold", guifg = c.fg, guibg = c.highlight },
-                -- GlanceListCursorLine = { gui = "none", guibg = c.subtle },
-                GlanceListNormal = { gui = "italic" },
+                GlanceWinBarFilepath = { italic = true, bg = c.highlight },
+                GlanceWinBarFilename = { italic = true, fg = c.fg, bg = c.highlight },
+                GlanceWinBarTitle = { bold = true, fg = c.fg, bg = c.highlight },
+                GlanceListNormal = { italic = true },
+                GlanceBorderTop = { link = "FloatBorder" },
+                GlancePreviewBorderBottom = { link = "FloatBorder" },
+                GlanceListBorderBottom = { link = "FloatBorder" },
             }
 
             for group, opts in pairs(highlights) do
-                local cmd = "hi " .. group
-                for k, v in pairs(opts) do
-                    if v and v ~= "" then
-                        cmd = cmd .. " " .. k .. "=" .. v
-                    end
-                end
-                vim.cmd(cmd)
+                vim.api.nvim_set_hl(0, group, opts)
             end
-
-            vim.api.nvim_set_hl(0, "GlanceBorderTop", { link = "FloatBorder" })
-            vim.api.nvim_set_hl(0, "GlancePreviewBorderBottom", { link = "FloatBorder" })
-            vim.api.nvim_set_hl(0, "GlanceListBorderBottom", { link = "FloatBorder" })
         end
 
         setHighlightOverrides()
