@@ -74,4 +74,18 @@ function M.run_command(cmd)
     return result
 end
 
+--- Map a list of keymaps using vim.keymap.set
+--- @param mappings KeymapDef[] List of keymap definitions
+--- @param bufnr integer|nil Buffer number to set the mapping for (optional, defaults to 0 for global)
+function M.map(mappings, bufnr)
+    for _, map_def in ipairs(mappings) do
+        local mode = map_def.mode
+        local key_sequence = map_def.key_sequence
+        local handler = map_def.handler
+        local opts = map_def.opts or {}
+        opts.buffer = bufnr or 0 -- Set buffer if provided, default to 0 (global)
+        vim.keymap.set(mode, key_sequence, handler, opts)
+    end
+end
+
 return M
