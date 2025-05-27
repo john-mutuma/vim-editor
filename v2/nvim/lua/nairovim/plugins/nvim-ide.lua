@@ -62,15 +62,9 @@ return {
         icons.global_icon_set.set_icon("Expanded", "")
         icons.global_icon_set.set_icon("IndentGuide", "|")
 
-        -- Helper for keymaps
-        local function nmap(lhs, rhs)
-            vim.keymap.set("n", lhs, rhs, {})
-        end
-
         -- nvim-ide keymaps
-        nmap("<leader>tr", ":Workspace RightPanelToggle<CR>")
-        nmap("<leader>Tf", ":Workspace Timeline Focus<CR>")
-        nmap("<leader>Bf", ":Workspace BufferList Focus<CR>")
-        nmap("<leader>Of", ":Workspace Outline Focus<CR>")
+        local mappings = require("nairovim.plugins.customizations.keymaps.nvim-ide").mappings
+        local common_utils = require("nairovim.utils.common")
+        common_utils.map(mappings)
     end,
 }

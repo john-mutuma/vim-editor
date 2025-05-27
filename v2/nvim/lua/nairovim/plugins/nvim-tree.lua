@@ -38,23 +38,14 @@ return {
             },
         })
 
-        -- Keymap: Toggle NvimTree with <C-n>
-        vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>:<CR>$", { silent = true })
+        local mappings = require("nairovim.plugins.customizations.keymaps.nvim-tree").mappings
+        local common_utils = require("nairovim.utils.common")
+        common_utils.map(mappings)
 
         -- Highlight groups for NvimTree
-        local highlights = {
-            NvimTreeCursorLine = vim.opt.background:get() == "light" and { guibg = "#c1c1c1", guifg = "#252525" }
-                or { guibg = "#444548" },
-            NvimTreeGitDirtyIcon = { guifg = "red" },
-            NvimTreeModifiedIcon = { guifg = "red" },
-        }
-
-        for group, opts in pairs(highlights) do
-            local cmd = "hi " .. group
-            for k, v in pairs(opts) do
-                cmd = cmd .. " " .. k .. "=" .. v
-            end
-            vim.cmd(cmd)
+        local function get_hightlights()
+            return require("nairovim.plugins.customizations.highlights.nvim-tree").highlights
         end
+        common_utils.apply_highlights(get_hightlights, "nvim-tree_highlights_overrides_augroup")
     end,
 }

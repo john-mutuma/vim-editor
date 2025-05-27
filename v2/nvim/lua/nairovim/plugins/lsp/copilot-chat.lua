@@ -56,7 +56,7 @@ return {
                         resolve = function(input, source)
                             local cwd = source.cwd()
                             local diff = git_utils.get_git_diff(input, cwd)
-                            local content = diff or "No changes detected"
+                            local content = diff or ""
                             local filename = string.format("git_diff-@-%s", input)
 
                             return {
@@ -114,12 +114,9 @@ return {
             ----------------------------------------------------------------------
             -- 6. Keymaps (Global, with description for discoverability)
             ----------------------------------------------------------------------
-            vim.keymap.set(
-                { "n", "v" },
-                "<leader>cp",
-                "<cmd>OpenCopilotChat<CR>",
-                { noremap = true, silent = true, desc = "Open Copilot Chat" }
-            )
+            local mappings = require("nairovim.plugins.customizations.keymaps.copilot-chat").mappings
+            local common_utils = require("nairovim.utils.common")
+            common_utils.map(mappings)
         end,
     },
 }

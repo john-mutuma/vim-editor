@@ -1,0 +1,5 @@
+--- @class nairovim.KeymapDef
+--- @field mode string|string[] Mode(s) for the keymap (e.g. "n", {"n", "v"})
+--- @field key_sequence string Key sequence to trigger the mapping
+--- @field handler function|string Function or command to execute
+--- @field opts? vim.keymap.set.Opts Optional keymap options (desc, expr, silent, etc.)

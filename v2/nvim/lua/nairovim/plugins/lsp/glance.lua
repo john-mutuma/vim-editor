@@ -9,7 +9,6 @@ return {
     config = function()
         local glance = require("glance")
         local window_utils = require("nairovim.utils.windows")
-        local palette = require("nairovim.utils.theme").palette
 
         ----------------------------------------------------------------------
         -- Glance Setup
@@ -28,43 +27,25 @@ return {
         ----------------------------------------------------------------------
         -- Highlight Overrides Based on Colorscheme
         ----------------------------------------------------------------------
-
-        local function setHighlightOverrides()
-            local bg = vim.opt.background:get()
-            local c = palette[bg == "light" and "light" or "dark"]
-
-            local highlights = {
-                GlanceWinBarFilepath = { gui = "italic", guibg = c.highlight },
-                GlanceWinBarFilename = { gui = "italic", guifg = c.fg, guibg = c.highlight },
-                GlanceWinBarTitle = { gui = "bold", guifg = c.fg, guibg = c.highlight },
-                -- GlanceListCursorLine = { gui = "none", guibg = c.subtle },
-                GlanceListNormal = { gui = "italic" },
-            }
-
-            for group, opts in pairs(highlights) do
-                local cmd = "hi " .. group
-                for k, v in pairs(opts) do
-                    if v and v ~= "" then
-                        cmd = cmd .. " " .. k .. "=" .. v
-                    end
-                end
-                vim.cmd(cmd)
-            end
-
-            vim.api.nvim_set_hl(0, "GlanceBorderTop", { link = "FloatBorder" })
-            vim.api.nvim_set_hl(0, "GlancePreviewBorderBottom", { link = "FloatBorder" })
-            vim.api.nvim_set_hl(0, "GlanceListBorderBottom", { link = "FloatBorder" })
+        local function get_hightlights()
+            return require("nairovim.plugins.customizations.highlights.glance").highlights
         end
 
-        setHighlightOverrides()
+        local common_utils = require("nairovim.utils.common")
+        common_utils.apply_highlights(get_hightlights, "glance_highlights_overrides_augroup")
 
         ----------------------------------------------------------------------
-        -- Autocmd: Update Highlights on Colorscheme Change
+        -- 4. LSP Keymaps (on LspAttach)
         ----------------------------------------------------------------------
-        local glance_hl_augroup = vim.api.nvim_create_augroup("GlanceHighlightOverrides", { clear = true })
-        vim.api.nvim_create_autocmd("ColorScheme", {
-            group = glance_hl_augroup,
-            callback = setHighlightOverrides,
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("glance_lspattach_augroup", { clear = true }),
+            callback = function(args)
+                local bufnr = args.buf
+                -- local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+                local mappings = require("nairovim.plugins.customizations.keymaps.glance").mappings
+                common_utils.map(mappings, bufnr)
+            end,
         })
 
         ----------------------------------------------------------------------
