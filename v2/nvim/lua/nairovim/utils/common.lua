@@ -74,9 +74,23 @@ function M.run_command(cmd)
     return result
 end
 
+----------------------------------------------------------------------
+-- 1. Map a list of keymaps using vim.keymap.set
+----------------------------------------------------------------------
+
 --- Map a list of keymaps using vim.keymap.set
 --- @param mappings nairovim.KeymapDef[] List of keymap definitions
 --- @param bufnr integer|nil Buffer number to set the mapping for (optional)
+--- @usage
+--- ```
+--- local mappings = {
+---   { mode = "n", key_sequence = "<leader>ff", handler = "<cmd>Telescope find_files<CR>", opts = { noremap = true, silent = true } },
+---   { mode = "i", key_sequence = "jk", handler = "<Esc>", opts = { noremap = true } },
+--- }
+--- require("nairovim.utils.common").map(mappings)
+--- -- For buffer-local mappings:
+--- -- require("nairovim.utils.common").map(mappings, bufnr)
+--- ```
 function M.map(mappings, bufnr)
     for _, map_def in ipairs(mappings) do
         local mode = map_def.mode
