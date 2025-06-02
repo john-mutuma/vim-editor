@@ -44,7 +44,10 @@ return {
             "folke/which-key.nvim",
             event = "VeryLazy",
             opts = {
-                delay = 700,
+                delay = 850,
+                win = {
+                    border = "rounded",
+                },
             },
         },
         {

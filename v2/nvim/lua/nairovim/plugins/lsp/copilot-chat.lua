@@ -81,13 +81,22 @@ return {
             -- 3. Autocmds (Grouped)
             ----------------------------------------------------------------------
             -- Buffer-local options for CopilotChat windows
+
+            -- Create an augroup for copilot chat buffer settings
+            local copilot_chat_group = vim.api.nvim_create_augroup("CopilotChatBufferOptions", { clear = true })
             vim.api.nvim_create_autocmd("BufEnter", {
+                group = copilot_chat_group,
                 pattern = { "copilot-chat", "copilot-overlay" },
                 callback = function()
-                    vim.opt_local.relativenumber = false
-                    vim.opt_local.number = false
-                    vim.opt_local.colorcolumn = ""
-                    vim.opt_local.conceallevel = 0
+                    local opts = {
+                        relativenumber = false,
+                        number = false,
+                        colorcolumn = "",
+                        conceallevel = 0,
+                    }
+                    for k, v in pairs(opts) do
+                        vim.opt_local[k] = v
+                    end
                 end,
             })
 
