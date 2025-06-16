@@ -9,15 +9,15 @@ local M = {}
 ----------------------------------------------------------------------
 -- 1. with_win_backdrop: Add a semi-transparent backdrop to a window
 ----------------------------------------------------------------------
---- Adds a semi-transparent backdrop behind a target floating window.
---  This function creates a scratch buffer and opens it as a floating window
---  behind the specified target window (by filetype or buffer pattern).
---  The backdrop is styled with a dark, semi-transparent background and is
---  automatically closed when the reference buffer is closed or left.
---
---  @param target_win (string) The filetype or buffer pattern for the target window.
---  @usage
---      require('nairovim.utils.windows').with_win_backdrop('NvimTree')
+---- Adds a semi-transparent backdrop behind a target floating window.
+---  This function creates a scratch buffer and opens it as a floating window
+---  behind the specified target window (by filetype or buffer pattern).
+---  The backdrop is styled with a dark, semi-transparent background and is
+---  automatically closed when the reference buffer is closed or left.
+---
+---  @param target_win (string) The filetype or buffer pattern for the target window.
+---  @usage
+---      require('nairovim.utils.windows').with_win_backdrop('NvimTree')
 function M.with_win_backdrop(target_win)
     local blend = 60
     local default_zIndex = 40

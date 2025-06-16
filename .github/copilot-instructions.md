@@ -12,6 +12,9 @@
 ----------------------------------------------------------------------
 ```
 
+- when generating docstrings or luadoc, prefix the comment with `---`
+
+
 ## Pull Requests and Commit  Message Format
 
 ### Instructions for commit messages for plugin update with lazy.nvim
