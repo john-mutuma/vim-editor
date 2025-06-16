@@ -5,7 +5,7 @@ local opt = vim.opt
 local g = vim.g
 
 g.mapleader = ","
-g.maplocalleader = "<space>"
+g.maplocalleader = " "
 
 ----------------------------------------------------------------------
 -- 2. Shell

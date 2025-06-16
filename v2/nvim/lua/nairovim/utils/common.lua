@@ -106,11 +106,11 @@ end
 
 --- Applies a set of highlight groups using Neovim's API, and ensures
 ---   they persist across colorscheme changes.
---- @param get_highlights fun(): nairovim.highlightspec
----   Function that returns a `nairovim.highlightspec` table, where each key is a highlight group name
+--- @param get_highlights fun(): nairovim.highlightspec Function that returns a `nairovim.highlightspec`
+---   table, where each key is a highlight group name
 ---   and each value is a table of highlight options (e.g., fg, bg, bold, italic, etc.).
---- @param highlights_groupname string
----   The name of the augroup to use for reapplying highlights on ColorScheme events.
+--- @param highlights_groupname string The name of the augroup to use for reapplying highlights
+---   on ColorScheme events.
 --- @usage
 ---   M.apply_highlights(function()
 ---     return {
