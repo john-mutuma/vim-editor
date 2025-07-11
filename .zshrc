@@ -156,3 +156,5 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 export CONFIG_DIR="$HOME/.config/lazygit"
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
+export PATH="$HOME/.npm-global/bin:$PATH"
+nvm use 22
