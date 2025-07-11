@@ -22,19 +22,15 @@ return {
         ts_update()
     end,
     dependencies = {
-        -- "nvim-treesitter/nvim-treesitter-textobjects",
-        -- "JoosepAlviste/nvim-ts-context-commentstring",
         "windwp/nvim-ts-autotag",
     },
     config = function()
         ----------------------------------------------------------------------
         -- 3. Treesitter Core Configuration
         ----------------------------------------------------------------------
-
         require("nvim-treesitter.configs").setup({
             highlight = { enable = true },
             indent = { enable = true },
-            autotag = { enable = true }, -- Correct key is 'autotag'
             ensure_installed = {
                 "json",
                 "javascript",
@@ -55,6 +51,22 @@ return {
             },
             auto_install = true,
         })
-        -- No need to call require("nvim-ts-autotag").setup() separately
+
+        ----------------------------------------------------------------------
+        -- 4. Setup nvim-ts-autotag separately
+        ----------------------------------------------------------------------
+        require("nvim-ts-autotag").setup({
+            opts = {
+                enable_close = true, -- Auto close tags
+                enable_rename = true, -- Auto rename pairs of tags
+                enable_close_on_slash = false, -- Auto close on trailing </
+            },
+            -- Override individual filetype configs
+            per_filetype = {
+                ["html"] = {
+                    enable_close = false,
+                },
+            },
+        })
     end,
 }
