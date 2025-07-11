@@ -72,6 +72,7 @@ return {
                 sticky = {
                     "Today: " .. os.date("%Y-%m-%d"),
                     "/WORKSPACE_COPILOT_INSTRUCTIONS",
+                    "$claude-sonnet-4",
                 },
                 question_header = " John Mutuma ",
                 answer_header = "  Copilot ",
@@ -93,6 +94,7 @@ return {
                         number = false,
                         colorcolumn = "",
                         conceallevel = 0,
+                        winfixwidth = true,
                     }
                     for k, v in pairs(opts) do
                         vim.opt_local[k] = v
