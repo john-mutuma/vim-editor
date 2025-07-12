@@ -72,6 +72,8 @@ return {
                 javascriptreact = { "prettier", "prettierd", stop_after_first = true },
                 typescript = { "prettier", "prettierd", stop_after_first = true },
                 typescriptreact = { "prettier", "prettierd", stop_after_first = true },
+                json = { "prettier", "prettierd", stop_after_first = true },
+                markdown = { "markdownlint", "prettier", "prettierd", stop_after_first = true },
             },
         })
     end,
