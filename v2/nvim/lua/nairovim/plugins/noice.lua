@@ -5,7 +5,7 @@ return {
     dependencies = {
         "MunifTanjim/nui.nvim",
         "rcarriga/nvim-notify",
-        "stevearc/dressing.nvim", -- better vim.select UI
+        -- "stevearc/dressing.nvim", -- better vim.select UI
     },
     config = function()
         ----------------------------------------------------------------------
