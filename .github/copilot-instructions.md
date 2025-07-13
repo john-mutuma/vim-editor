@@ -14,8 +14,12 @@
 
 - when generating docstrings or luadoc, prefix the comment with `---`
 
-
 ## Pull Requests and Commit  Message Format
+
+### Genereal commit guidelines
+
+- Always commit only staged files. Don't proceed to start commiting unstaged files.
+This is important!
 
 ### Instructions for commit messages for plugin update with lazy.nvim
 
@@ -25,6 +29,8 @@
 - Refer to the lazy-lock.json file for the packages updated.
 
 ### Instructions for Pull Requests title and description
+
+The base branch for creating Pull Requests is `develop`.
 
 When creating a pull request, use the following format for the title:
 `YYYY-MM-DD: <Title of the PR>`
