@@ -54,6 +54,12 @@ Hey there! Welcome. Enjoy a focused dev experience with NairoVIM.
                         { icon = " ", key = "m", desc = "Mason", action = ":Mason" },
                         { icon = " ", key = "G", desc = "Git", action = ":LazyGit" },
                         { icon = " ", key = "C", desc = "GitHub Copilot", action = ":CopilotChat" },
+                        {
+                            icon = " ",
+                            key = "A",
+                            desc = "Github Copilot - (Avante preview)",
+                            action = ":AvanteFocus",
+                        },
                         { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
                         { icon = " ", key = "q", desc = "Quit", action = ":qa" },
                     },
