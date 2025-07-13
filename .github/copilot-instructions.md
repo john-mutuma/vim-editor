@@ -30,6 +30,8 @@ This is important!
 
 ### Instructions for Pull Requests title and description
 
+The base branch for creating Pull Requests is `develop`.
+
 When creating a pull request, use the following format for the title:
 `YYYY-MM-DD: <Title of the PR>`
 In the description, include the following:
