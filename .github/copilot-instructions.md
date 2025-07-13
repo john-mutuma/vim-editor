@@ -14,8 +14,12 @@
 
 - when generating docstrings or luadoc, prefix the comment with `---`
 
-
 ## Pull Requests and Commit  Message Format
+
+### Genereal commit guidelines
+
+- Always commit only staged files. Don't proceed to start commiting unstaged files.
+This is important!
 
 ### Instructions for commit messages for plugin update with lazy.nvim
 
