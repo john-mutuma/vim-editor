@@ -122,14 +122,23 @@ end
 --- This function is colorscheme aware: it automatically reapplies the
 ---   specified highlights whenever the colorscheme changes.
 function M.apply_highlights(get_highlights, highlights_groupname)
-    for group, opts in pairs(get_highlights()) do
-        vim.api.nvim_set_hl(0, group, opts)
+    -- Helper function to actually apply the highlights
+    local function apply_highlights_now()
+        for group, opts in pairs(get_highlights()) do
+            vim.api.nvim_set_hl(0, group, opts)
+        end
     end
 
+    -- Apply highlights immediately
+    apply_highlights_now()
+
+    -- Set up autocommand to reapply highlights on colorscheme change
+    -- Use vim.schedule to ensure it runs after colorscheme is fully loaded
     vim.api.nvim_create_autocmd("ColorScheme", {
         group = vim.api.nvim_create_augroup(highlights_groupname, { clear = true }),
         callback = function()
-            M.apply_highlights(get_highlights, highlights_groupname)
+            -- Schedule the highlight application to run after the event loop
+            vim.schedule(apply_highlights_now)
         end,
     })
 end
