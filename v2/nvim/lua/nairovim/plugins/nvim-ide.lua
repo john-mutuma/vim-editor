@@ -48,7 +48,7 @@ return {
                 git = {},
             },
             workspaces = {
-                auto_open = "right",
+                auto_open = "none",
             },
             panel_sizes = {
                 left = nil,
