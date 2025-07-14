@@ -6,6 +6,8 @@
 -- Optimized Avante Window Detection
 ----------------------------------------------------------------------
 -- Convert to hash table for O(1) lookup performance
+local M = {}
+M.SELECTED_FILES_INITIALIZED = false
 local avante_filetypes = {
     ["Avante"] = true,
     ["AvanteInput"] = true,
@@ -102,7 +104,7 @@ return {
             group = avante_chat_group,
             pattern = "",
             callback = function(event)
-                if not is_in_avante_window(event.buf) then
+                if not is_in_avante_window(event.buf) or M.SELECTED_FILES_INITIALIZED then
                     return
                 end
 
@@ -121,6 +123,7 @@ return {
                 end
 
                 avante.get().file_selector:add_selected_file(github_workspace_dir)
+                M.SELECTED_FILES_INITIALIZED = true
             end,
         })
 
