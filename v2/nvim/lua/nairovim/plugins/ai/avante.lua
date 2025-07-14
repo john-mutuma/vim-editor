@@ -169,6 +169,9 @@ return {
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
                 file_types = { "markdown", "Avante", "copilot-chat" },
+                code = {
+                    language_border = " ",
+                },
             },
             ft = { "markdown", "Avante" },
         },
