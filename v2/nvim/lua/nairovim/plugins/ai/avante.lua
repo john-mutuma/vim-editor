@@ -29,6 +29,32 @@ local function is_in_avante_window(buf)
     return avante_filetypes[ft]
 end
 
+----------------------------------------------------------------------
+-- Reusable Avante Ask Function
+----------------------------------------------------------------------
+--- Send a question to Avante using the API
+--- @param question string The question to ask Avante
+--- @param opts? AskOptions Optional configuration for the ask request
+local function ask_avante(question, opts)
+    opts = opts or {}
+
+    -- Get the Avante API
+    local ok, avante_api = pcall(require, "avante.api")
+    if not ok then
+        vim.notify("Failed to load Avante API", vim.log.levels.ERROR)
+        return false
+    end
+
+    -- Send the question
+    local success, result = pcall(avante_api.ask, vim.tbl_extend("force", { question = question }, opts))
+    if not success then
+        vim.notify("Failed to ask Avante: " .. tostring(result), vim.log.levels.ERROR)
+        return false
+    end
+
+    return true
+end
+
 return {
     "yetone/avante.nvim",
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -95,6 +121,19 @@ return {
                 },
                 ask = {
                     border = "rounded", -- or "none", "single", "double", "solid", "shadow"
+                },
+            },
+            slash_commands = {
+                {
+                    name = "pr_description",
+                    description = "Generate a PR title and description for current branch",
+                    callback = function()
+                        -- Simple question - let Avante determine context automatically
+                        local question =
+                            "Generate a Pull Request title and description for the current branch changes following the project guidelines."
+                        -- Use the reusable ask_avante function
+                        ask_avante(question)
+                    end,
                 },
             },
         })
