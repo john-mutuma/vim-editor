@@ -9,37 +9,37 @@ local M = {}
 M.mappings = {
     {
         mode = "n",
-        key_sequence = "<C-F>f",
+        key_sequence = "<C-S>f",
         handler = builtin.git_files,
         opts = { desc = "Telescope: Git Files" },
     },
     {
         mode = "n",
-        key_sequence = "<C-F>s",
+        key_sequence = "<C-S>s",
         handler = builtin.live_grep,
         opts = { desc = "Telescope: Live Grep" },
     },
     {
         mode = "n",
-        key_sequence = "<C-F>b",
+        key_sequence = "<C-S>b",
         handler = builtin.buffers,
         opts = { desc = "Telescope: Buffers" },
     },
     {
         mode = "n",
-        key_sequence = "<C-F>r",
+        key_sequence = "<C-S>r",
         handler = builtin.oldfiles,
         opts = { desc = "Telescope: Recent Files" },
     },
     {
         mode = "n",
-        key_sequence = "<C-F>h",
+        key_sequence = "<C-S>h",
         handler = builtin.help_tags,
         opts = { desc = "Telescope: Help Tags" },
     },
     {
         mode = "n",
-        key_sequence = "<C-F>y",
+        key_sequence = "<C-S>y",
         handler = builtin.git_branches,
         opts = { desc = "Telescope: Git Branches" },
     },

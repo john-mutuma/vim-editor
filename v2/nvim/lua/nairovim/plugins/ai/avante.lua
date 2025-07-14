@@ -2,6 +2,59 @@
 -- Avante.nvim - AI-powered coding assistant
 ----------------------------------------------------------------------
 
+----------------------------------------------------------------------
+-- Optimized Avante Window Detection
+----------------------------------------------------------------------
+-- Convert to hash table for O(1) lookup performance
+local M = {}
+M.SELECTED_FILES_INITIALIZED = false
+local avante_filetypes = {
+    ["Avante"] = true,
+    ["AvanteInput"] = true,
+    ["AvanteAsk"] = true,
+    ["AvanteSelectedFiles"] = true,
+    ["AvanteTodos"] = true,
+}
+
+--- Check if the given buffer is in an Avante window
+--- @param buf number Buffer handle
+--- @return boolean true if buffer is in Avante window, false otherwise
+local function is_in_avante_window(buf)
+    -- Cache the filetype lookup for better performance
+    local ok, ft = pcall(vim.api.nvim_get_option_value, "filetype", { buf = buf })
+    if not ok or not ft then
+        return false
+    end
+    -- O(1) hash table lookup instead of O(n) table search
+    return avante_filetypes[ft]
+end
+
+----------------------------------------------------------------------
+-- Reusable Avante Ask Function
+----------------------------------------------------------------------
+--- Send a question to Avante using the API
+--- @param question string The question to ask Avante
+--- @param opts? AskOptions Optional configuration for the ask request
+local function ask_avante(question, opts)
+    opts = opts or {}
+
+    -- Get the Avante API
+    local ok, avante_api = pcall(require, "avante.api")
+    if not ok then
+        vim.notify("Failed to load Avante API", vim.log.levels.ERROR)
+        return false
+    end
+
+    -- Send the question
+    local success, result = pcall(avante_api.ask, vim.tbl_extend("force", { question = question }, opts))
+    if not success then
+        vim.notify("Failed to ask Avante: " .. tostring(result), vim.log.levels.ERROR)
+        return false
+    end
+
+    return true
+end
+
 return {
     "yetone/avante.nvim",
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
@@ -58,7 +111,7 @@ return {
                 provider = "snacks",
             },
             windows = {
-                width = 40,
+                width = 33,
                 input = {
                     height = 10,
                     border = "rounded", -- or "none", "single", "double", "solid", "shadow"
@@ -70,19 +123,46 @@ return {
                     border = "rounded", -- or "none", "single", "double", "solid", "shadow"
                 },
             },
+            slash_commands = {
+                {
+                    name = "pr_description",
+                    description = "Generate a PR title and description for current branch",
+                    callback = function()
+                        -- Simple question - let Avante determine context automatically
+                        local question =
+                            "Generate a Pull Request title and description for the current branch changes following the project guidelines."
+                        -- Use the reusable ask_avante function
+                        ask_avante(question)
+                    end,
+                },
+            },
         })
-        -- Create an augroup for copilot chat buffer settings
-        local avante_chat_group = vim.api.nvim_create_augroup("AvanteBufferOptions", { clear = true })
+
+        local avante_chat_group = vim.api.nvim_create_augroup("AvanteBufferEnter", { clear = true })
         vim.api.nvim_create_autocmd("BufEnter", {
             group = avante_chat_group,
-            pattern = { "Avante*" },
-            callback = function()
+            pattern = "",
+            callback = function(event)
+                if not is_in_avante_window(event.buf) or M.SELECTED_FILES_INITIALIZED then
+                    return
+                end
+
                 local opts = {
                     winfixwidth = true,
                 }
                 for k, v in pairs(opts) do
                     vim.opt_local[k] = v
                 end
+
+                local workspace = require("nairovim.utils.workspace")
+                local github_workspace_dir = workspace.find_closest_dir_by_name(".github")
+                if not github_workspace_dir then
+                    print("No .github directory found in the workspace")
+                    return
+                end
+
+                avante.get().file_selector:add_selected_file(github_workspace_dir)
+                M.SELECTED_FILES_INITIALIZED = true
             end,
         })
 
@@ -127,7 +207,10 @@ return {
             -- Make sure to set this up properly if you have lazy=true
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
-                file_types = { "markdown", "Avante" },
+                file_types = { "markdown", "Avante", "copilot-chat" },
+                code = {
+                    language_border = " ",
+                },
             },
             ft = { "markdown", "Avante" },
         },
