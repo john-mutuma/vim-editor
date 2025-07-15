@@ -233,12 +233,13 @@ return {
             -- Make sure to set this up properly if you have lazy=true
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
-                file_types = { "markdown", "Avante", "copilot-chat" },
+                file_types = { "markdown", "Avante", "mcphub", "copilot-chat" },
                 code = {
-                    language_border = " ",
+                    sign = false,
+                    language_border = "",
                 },
             },
-            ft = { "markdown", "Avante" },
+            ft = { "markdown", "Avante", "mcphub", "copilot-chat" },
         },
     },
 }
