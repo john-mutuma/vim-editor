@@ -82,10 +82,10 @@ return {
                     endpoint = "https://api.github.com",
                     model = "claude-sonnet-4",
                     -- timeout = 30000, -- Timeout in milliseconds
-                    -- extra_request_body = {
-                    -- temperature = 0.5,
-                    -- max_tokens = 2048,
-                    -- },
+                    extra_request_body = {
+                        -- temperature = 0.5,
+                        max_tokens = 120000,
+                    },
                 },
                 claude = {
                     endpoint = "https://api.anthropic.com",
@@ -98,17 +98,14 @@ return {
                 },
             },
             selector = {
-                provider = "snacks", -- or "fzf", "mini.pick"
-                provider_opts = {
-                    snacks = {
-                        layout = {
-                            split = false,
-                        },
-                    },
-                },
-            },
-            file_selector = {
-                provider = "snacks",
+                provider = "telescope", -- or "fzf", "mini.pick"
+                -- provider_opts = {
+                --     snacks = {
+                --         layout = {
+                --             split = false,
+                --         },
+                --     },
+                -- },
             },
             windows = {
                 width = 33,
@@ -135,6 +132,32 @@ return {
                         ask_avante(question)
                     end,
                 },
+            },
+            -- system_prompt as function ensures LLM always has latest MCP server state
+            -- This is evaluated for every message, even in existing chats
+            system_prompt = function()
+                local hub = require("mcphub").get_hub_instance()
+                return hub and hub:get_active_servers_prompt() or ""
+            end,
+            -- Using function prevents requiring mcphub before it's loaded
+            custom_tools = function()
+                return {
+                    require("mcphub.extensions.avante").mcp_tool(),
+                }
+            end,
+            disabled_tools = {
+                "list_files", -- Built-in file operations
+                "search_files",
+                "read_file",
+                "replace_in_file",
+                "create_file",
+                "rename_file",
+                "delete_file",
+                "create_dir",
+                "rename_dir",
+                "delete_dir",
+                "view",
+                "bash", -- Built-in terminal access
             },
         })
 
@@ -207,12 +230,13 @@ return {
             -- Make sure to set this up properly if you have lazy=true
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
-                file_types = { "markdown", "Avante", "copilot-chat" },
+                file_types = { "markdown", "Avante", "mcphub", "copilot-chat" },
                 code = {
-                    language_border = " ",
+                    sign = false,
+                    language_border = "",
                 },
             },
-            ft = { "markdown", "Avante" },
+            ft = { "markdown", "Avante", "mcphub", "copilot-chat" },
         },
     },
 }

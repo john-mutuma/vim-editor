@@ -117,7 +117,7 @@ M.mappings = {
     },
     {
         mode = "n",
-        key_sequence = "<leader>td",
+        key_sequence = "<leader>htd",
         handler = gs.toggle_deleted,
         opts = { desc = "Toggle deleted" },
     },
