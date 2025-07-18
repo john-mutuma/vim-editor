@@ -154,7 +154,12 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # lazygit config dir
 export CONFIG_DIR="$HOME/.config/lazygit"
+#ripgreprc
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
 # Set up fzf key bindings and fuzzy completion
 source <(fzf --zsh)
 export PATH="$HOME/.npm-global/bin:$PATH"
 nvm use 22
+
+. "$HOME/.local/bin/env"
