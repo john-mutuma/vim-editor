@@ -1,8 +1,8 @@
-##  _          _ _       
-## | |__   ___| | | ___  
-## | '_ \ / _ \ | |/ _ \ 
+##  _          _ _
+## | |__   ___| | | ___
+## | '_ \ / _ \ | |/ _ \
 ## | | | |  __/ | | (_) |
-## |_| |_|\___|_|_|\___/ 
+## |_| |_|\___|_|_|\___/
 
 textreset=$(tput sgr0) # reset the foreground colour
 red=$(tput setaf 196)
@@ -19,6 +19,9 @@ echo "    vimrc ${green}${textreset}"
 ln -sf $(pwd)/.vimrc ~/.vimrc
 echo "    tmux.conf ${green}${textreset}"
 ln -sf $(pwd)/.tmux.conf ~/.tmux.conf
+echo "    .ripgreprc ${green}${textreset}"
+ln -sf $(pwd)/.ripgreprc ~/.ripgreprc
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 echo "${green}󰄸  Done ${textreset} - Linked dotfiles\n"
 
 # NEOVIM
@@ -80,6 +83,11 @@ echo "${green}󰄸  Done ${textreset} - Installed ripgrep\n"
 echo "${cyan}  Installing bat (cat with syntax hightlighting) ${textreset}"
 brew install --quiet bat
 echo "${green}󰄸  Done ${textreset} - Installed bat\n"
+
+# UVX
+echo "${cyan}  Installing uv,uvx - for MCP plugins installation ${textreset}"
+curl -LsSf https://astral.sh/uv/install.sh | sh
+echo "${green}󰄸  Done ${textreset} - uv,uvx installed\n"
 
 # LAZYGIT
 #
