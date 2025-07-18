@@ -82,10 +82,10 @@ return {
                     endpoint = "https://api.github.com",
                     model = "claude-sonnet-4",
                     -- timeout = 30000, -- Timeout in milliseconds
-                    -- extra_request_body = {
-                    -- temperature = 0.5,
-                    -- max_tokens = 2048,
-                    -- },
+                    extra_request_body = {
+                        -- temperature = 0.5,
+                        max_tokens = 120000,
+                    },
                 },
                 claude = {
                     endpoint = "https://api.anthropic.com",

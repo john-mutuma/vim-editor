@@ -43,6 +43,19 @@ return {
             timeout = 10000, -- 10 second timeout for MCP operations
             auto_start_servers = true, -- Automatically start configured servers
             log_level = "warn", -- Reduce log verbosity for better performance
+
+            global_env = function(context)
+                local env = {
+                    "DBUS_SESSION_BUS_ADDRESS",
+                }
+                -- Add context-aware variables
+                if context.is_workspace_mode then
+                    env.workspaceFolder = context.workspace_root
+                    -- env.WORKSPACE_PORT = tostring(context.port)
+                end
+                env.CONFIG_FILES = table.concat(context.config_files, ":")
+                return env
+            end,
         })
 
         window_utils.with_win_backdrop("mcphub")
