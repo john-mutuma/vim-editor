@@ -202,8 +202,6 @@ nvim
 #### **AI-Assisted Coding**
 
 ```bash
-# Open Copilot Chat
-<leader>cp
 
 # Use Avante AI for advanced assistance
 :AvanteAsk
@@ -213,6 +211,10 @@ nvim
 # "Optimize this code"
 # "Write unit tests for this"
 # "Generate PR description" (Avante slash command)
+
+# Open Copilot Chat - but Prefers AvanteChat which integrates GitHub Copilot
+<leader>cp
+
 ```
 
 ## 🛠️ Post-Installation Setup
@@ -318,6 +320,9 @@ NairoVIM features a powerful AI ecosystem with three integrated systems:
 **Usage:**
 
 ```bash
+# Explore and manage MCP servers
+:MCPHub
+
 # MCPHub integrates automatically with Avante
 # No manual setup required - works behind the scenes
 # Provides additional context and capabilities to AI assistants
