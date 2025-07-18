@@ -98,17 +98,14 @@ return {
                 },
             },
             selector = {
-                provider = "snacks", -- or "fzf", "mini.pick"
-                provider_opts = {
-                    snacks = {
-                        layout = {
-                            split = false,
-                        },
-                    },
-                },
-            },
-            file_selector = {
-                provider = "snacks",
+                provider = "telescope", -- or "fzf", "mini.pick"
+                -- provider_opts = {
+                --     snacks = {
+                --         layout = {
+                --             split = false,
+                --         },
+                --     },
+                -- },
             },
             windows = {
                 width = 33,
