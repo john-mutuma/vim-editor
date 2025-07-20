@@ -150,6 +150,7 @@ return {
                 "search_files",
                 "read_file",
                 "replace_in_file",
+                "write_to_file",
                 "create_file",
                 "rename_file",
                 "delete_file",
