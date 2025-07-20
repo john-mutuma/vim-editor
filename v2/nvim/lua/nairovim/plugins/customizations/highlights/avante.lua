@@ -3,7 +3,7 @@ local M = {}
 function M.get()
     --- @type nairovim.highlightspec
     return {
-        AvanteSidebarWinHorizontalSeparator = { link = "FloatBorder" },
+        AvanteSidebarWinHorizontalSeparator = { link = "MiniTablineTabpagesection" },
         AvantePromptInputBorder = { link = "FloatBorder" },
         AvanteSidebarWinSeparator = { link = "FloatBorder" },
     }
