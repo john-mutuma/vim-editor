@@ -377,20 +377,31 @@ Choose from multiple beautiful themes:
 
 ## 📱 Screenshots
 
-### Development Interface
+### Dashboard
 
-![NairoVIM Development Interface](examples/Workspace3.png)
-*Language server integration with definitions and references*
+![NairoVIM Dashboard](examples/screenshot_dashboard.png)
+*Homepage dashboard*
 
 ### Git Integration
 
-![Embedded Lazygit](examples/Workspace4.png)
+![Embedded Lazygit](examples/screenshot_git-integration.png)
 *Seamless git workflow with embedded Lazygit*
 
 ### AI Assistant
 
-![GitHub Copilot Chat](examples/Workspace5.png)
-*AI-powered coding assistance with GitHub Copilot*
+![GitHub Copilot Chat](examples/screenshot_AI-assistant.png)
+*AI-powered coding assistance with Avante AI - GitHub Copilot*
+
+![MCP Hub](examples/screenshot_mcp-hub.png)
+*MCP hub to manage your active MCP servers*
+
+### LSP support
+
+![hoverdocs](examples/screenshot_lsp_hoverdoc.png)
+*LSP hoverdocs*
+
+![peek-definition](examples/screenshot_lsp_peek-definition.png)
+*LSP hoverdocs*
 
 ## 🔧 Advanced Configuration
 
