@@ -116,14 +116,14 @@ check_brew() {
 install_with_brew() {
     local package=$1
     local display_name=${2:-$package}
-    
+
     if command_exists "$package"; then
         print_info "$display_name is already installed, skipping..."
         return 0
     fi
-    
+
     print_step "Installing $display_name" "via Homebrew"
-    
+
     if brew install --quiet "$package" 2>/dev/null; then
         print_success "Installed $display_name"
     else
@@ -137,7 +137,7 @@ create_symlink() {
     local source=$1
     local target=$2
     local name=$3
-    
+
     if [[ -L "$target" ]]; then
         print_info "$name symlink already exists, updating..."
         rm "$target"
@@ -145,7 +145,7 @@ create_symlink() {
         print_warning "$name file exists, backing up to ${target}.backup"
         mv "$target" "${target}.backup"
     fi
-    
+
     ln -sf "$source" "$target"
     echo "    ${green}${LINK} $name${textreset} → ${dim}$target${textreset}"
 }
@@ -155,12 +155,12 @@ setup_directory() {
     local target_dir=$1
     local source_dir=$2
     local name=$3
-    
+
     if [[ -d "$target_dir" ]]; then
         print_warning "$name directory already exists, backing up..."
         mv "$target_dir" "${target_dir}.backup.$(date +%Y%m%d_%H%M%S)"
     fi
-    
+
     mkdir -p "$(dirname "$target_dir")"
     ln -sf "$source_dir" "$target_dir"
     print_success "Linked $name configuration"
@@ -171,14 +171,14 @@ clone_repository() {
     local repo_url=$1
     local target_dir=$2
     local name=$3
-    
+
     if [[ -d "$target_dir" ]]; then
         print_info "$name already exists, skipping clone..."
         return 0
     fi
-    
+
     print_step "Cloning $name" "from $repo_url"
-    
+
     if git clone --quiet "$repo_url" "$target_dir" 2>/dev/null; then
         print_success "Cloned $name"
     else
@@ -193,9 +193,9 @@ clone_repository() {
 
 install_dotfiles() {
     print_section "${LINK} Linking Dotfiles"
-    
-    local dotfiles=(".zshrc" ".vimrc" ".tmux.conf" ".ripgreprc")
-    
+
+    local dotfiles=(".zshrc" ".tmux.conf" ".ripgreprc")
+
     for dotfile in "${dotfiles[@]}"; do
         if [[ -f "$(pwd)/$dotfile" ]]; then
             create_symlink "$(pwd)/$dotfile" "$HOME/$dotfile" "$dotfile"
@@ -203,63 +203,63 @@ install_dotfiles() {
             print_warning "Dotfile $dotfile not found in $(pwd)"
         fi
     done
-    
+
     # Export RIPGREP_CONFIG_PATH
     export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
     print_info "RIPGREP_CONFIG_PATH exported"
-    
+
     echo ""
     print_success "All dotfiles linked successfully!"
 }
 
 install_neovim() {
     print_section "${ROCKET} Installing Neovim"
-    
+
     install_with_brew "neovim" "Neovim"
-    
+
     print_step "Setting up Neovim configuration" "~/.config/nvim"
-    
-    local nvim_config_source="$(pwd)/v2/nvim"
+
+    local nvim_config_source="$(pwd)/nvim"
     local nvim_config_target="$HOME/.config/nvim"
-    
+
     if [[ ! -d "$nvim_config_source" ]]; then
         print_error "Neovim configuration source not found at $nvim_config_source"
         return 1
     fi
-    
+
     setup_directory "$nvim_config_target" "$nvim_config_source" "Neovim"
-    
+
     echo ""
     print_success "Neovim installation and configuration complete!"
 }
 
 install_tmux() {
     print_section "${GEAR} Installing Tmux & Plugin Manager"
-    
+
     install_with_brew "tmux" "Tmux"
-    
+
     print_step "Setting up Tmux Plugin Manager (TPM)" "~/.tmux/plugins/tpm"
-    
+
     local tpm_dir="$HOME/.tmux/plugins/tpm"
     clone_repository "https://github.com/tmux-plugins/tpm" "$tpm_dir" "TPM"
-    
+
     echo ""
     print_success "Tmux and TPM setup complete!"
 }
 
 install_oh_my_zsh() {
     print_section "${SPARKLES} Installing Oh My Zsh"
-    
+
     local oh_my_zsh_dir="$HOME/.oh-my-zsh"
-    
+
     if [[ -d "$oh_my_zsh_dir" ]]; then
         print_info "Oh My Zsh already exists, skipping installation..."
         return 0
     fi
-    
+
     print_step "Installing Oh My Zsh" "interactive installation"
     print_warning "This will open an interactive installation. Please follow the prompts."
-    
+
     # Download and run the installation script
     if sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"; then
         print_success "Oh My Zsh installed successfully!"
@@ -272,28 +272,28 @@ install_oh_my_zsh() {
 
 install_cli_tools() {
     print_section "${PACKAGE} Installing CLI Tools"
-    
+
     local tools=("fzf:FZF (Terminal fuzzy finder)" "ripgrep:ripgrep (Fast search tool)" "bat:bat (Enhanced cat with syntax highlighting)")
-    
+
     for tool_info in "${tools[@]}"; do
         IFS=':' read -r tool_name tool_desc <<< "$tool_info"
         install_with_brew "$tool_name" "$tool_desc"
     done
-    
+
     echo ""
     print_success "All CLI tools installed successfully!"
 }
 
 install_uv() {
     print_section "${STAR} Installing UV/UVX"
-    
+
     if command_exists uv; then
         print_info "UV is already installed, skipping..."
         return 0
     fi
-    
+
     print_step "Installing UV/UVX" "for MCP plugins installation"
-    
+
     if curl -LsSf https://astral.sh/uv/install.sh | sh; then
         print_success "UV/UVX installed successfully!"
         print_info "UV/UVX is now available for MCP plugin management"
@@ -305,7 +305,7 @@ install_uv() {
 
 install_lazygit() {
     print_section "${GEAR} Installing Lazygit"
-    
+
     # Install lazygit
     if ! command_exists lazygit; then
         print_step "Installing Lazygit" "via Homebrew"
@@ -318,13 +318,13 @@ install_lazygit() {
     else
         print_info "Lazygit is already installed, skipping..."
     fi
-    
+
     # Setup lazygit configuration
     print_step "Setting up Lazygit configuration" "~/.config/lazygit/config.yml"
-    
+
     local lazygit_config_source="$(pwd)/lazygit_config.yml"
     local lazygit_config_target="$HOME/.config/lazygit/config.yml"
-    
+
     if [[ -f "$lazygit_config_source" ]]; then
         mkdir -p "$(dirname "$lazygit_config_target")"
         create_symlink "$lazygit_config_source" "$lazygit_config_target" "Lazygit config"
@@ -381,20 +381,20 @@ trap cleanup ERR INT TERM
 main() {
     # Print welcome header
     print_header "🚀 NairoVIM Installation Script - Enhanced Edition 🚀"
-    
+
     echo "${bold}${cyan}Welcome to the enhanced NairoVIM installation script!${textreset}"
     echo "${dim}This script will install and configure your complete development environment.${textreset}"
     echo ""
-    
+
     # Check prerequisites
     print_step "Checking prerequisites" "Homebrew availability"
     check_brew
     print_success "Prerequisites check passed"
-    
+
     # Start installation process
     echo ""
     echo "${bold}${cyan}🔧 Starting installation process...${textreset}"
-    
+
     # Execute installation steps
     install_dotfiles
     install_neovim
@@ -403,7 +403,7 @@ main() {
     install_cli_tools
     install_uv
     install_lazygit
-    
+
     # Print final summary
     print_installation_summary
 }

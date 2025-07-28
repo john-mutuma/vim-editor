@@ -1,3 +1,3 @@
 **/**/*.swp
 **/node_modules/**
-v2/nvim/plugin/packer_compiled.lua
+nvim/plugin/packer_compiled.lua

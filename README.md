@@ -94,7 +94,7 @@ If you prefer manual installation or encounter issues:
    ln -sf "$(pwd)/.zshrc" "$HOME/.zshrc"
 
    # Link Neovim config
-   ln -sf "$(pwd)/v2/nvim" "$HOME/.config/nvim"
+   ln -sf "$(pwd)/nvim" "$HOME/.config/nvim"
    ```
 
 4. **Install tmux plugins**:
