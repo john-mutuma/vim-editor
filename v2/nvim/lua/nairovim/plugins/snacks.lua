@@ -57,7 +57,7 @@ Hey there! Welcome. Enjoy a focused dev experience with NairoVIM.
                         {
                             icon = " ",
                             key = "A",
-                            desc = "Avante - (GitHub Copilot)",
+                            desc = "Avante AI - (GitHub Copilot)",
                             action = ":AvanteFocus",
                         },
                         {
