@@ -68,6 +68,7 @@ return {
                 lua = { "stylua" },
                 python = { "isort", "black" },
                 rust = { "rustfmt", lsp_format = "fallback" },
+                html = { "prettier", "prettierd", stop_after_first = true },
                 javascript = { "prettier", "prettierd", stop_after_first = true },
                 javascriptreact = { "prettier", "prettierd", stop_after_first = true },
                 typescript = { "prettier", "prettierd", stop_after_first = true },
