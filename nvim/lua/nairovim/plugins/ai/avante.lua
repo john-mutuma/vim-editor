@@ -159,6 +159,7 @@ return {
                 "delete_dir",
                 "view",
                 "bash", -- Built-in terminal access
+                "run_python",
             },
         })
 
