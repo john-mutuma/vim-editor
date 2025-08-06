@@ -11,7 +11,10 @@ return {
                     return Snacks.picker.pick(arg)
                 end,
                 preset = {
-                    header = [[
+                    header = (function()
+                        local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+                        return string.format(
+                            [[
  _   _       _       __      _______ __  __
 | \ | |     (_)      \ \    / /_   _|  \/  |
 |  \| | __ _ _ _ __ __\ \  / /  | | | \  / |
@@ -21,7 +24,12 @@ return {
 
 
 Hey there! Welcome. Enjoy a focused dev experience with NairoVIM.
+
+You are in %s
    ]],
+                            string.upper(cwd)
+                        )
+                    end)(),
                     keys = {
                         {
                             icon = " ",
