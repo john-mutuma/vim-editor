@@ -76,6 +76,7 @@ local Blank = {
         "Avante",
         "AvanteTodos",
         "AvanteSelectedFiles",
+        "NvimTree",
     },
 }
 
@@ -95,7 +96,7 @@ local Snacks_Dashboard = {
     },
     filetypes = { "snacks_dashboard" },
 }
--- local Git_Branch = { sections = { lualine_b = { "branch" }, lualine_y = { "progress" } }, filetypes = { "NvimTree" } }
+
 return {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
