@@ -117,10 +117,6 @@ If you prefer manual installation or encounter issues:
 
 #### **File Navigation & Search**
 
-- `<C-f>f` - Find git files (FZF)
-- `<C-f>s` - Search text in project (Ripgrep)
-- `<C-f>b` - Switch between open buffers (FZF)
-- `<C-f>y` - Switch git branches (FZF)
 - `<C-S>f` - Find git files (Telescope)
 - `<C-S>s` - Live grep search (Telescope)
 - `<C-S>b` - Switch buffers (Telescope)
@@ -145,12 +141,11 @@ If you prefer manual installation or encounter issues:
 
 #### **AI Assistant**
 
-- `<leader>cp` - Chat with GitHub Copilot
-- `:CopilotChat` - Open Copilot chat interface
 - `:Copilot auth` - Authenticate with GitHub
 - `:AvanteAsk` - Ask Avante AI for code assistance
 - `:AvanteChat` - Open Avante chat interface
 - `:AvanteEdit` - Edit code with Avante suggestions
+- `<leader> af` -  Focus Avante chat sidebar
 
 #### **Git Integration**
 
@@ -183,10 +178,10 @@ tmux
 nvim
 
 # Find and open a file
-<C-f>f
+<C-S>f
 
 # Search for text across project
-<C-f>g
+<C-S>s
 ```
 
 #### **Git Workflow**
@@ -211,9 +206,6 @@ nvim
 # "Optimize this code"
 # "Write unit tests for this"
 # "Generate PR description" (Avante slash command)
-
-# Open Copilot Chat - but Prefers AvanteChat which integrates GitHub Copilot
-<leader>cp
 
 ```
 
