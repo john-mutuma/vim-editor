@@ -12,7 +12,7 @@ return {
             local copilot_chat = require("CopilotChat")
             local workspace_utils = require("nairovim.utils.workspace")
             local window_utils = require("nairovim.utils.windows")
-            local git_utils = require("nairovim.utils.git")
+            -- local git_utils = require("nairovim.utils.git")
 
             ----------------------------------------------------------------------
             -- 1. Workspace & Window Configuration
@@ -39,36 +39,36 @@ return {
                         prompt = "Generate a pull request title and description based on the provided code changes.",
                     },
                 },
-                contexts = {
-                    git = {
-                        input = function(callback)
-                            local git_branches, err = git_utils.get_git_branches()
-                            if err or not git_branches then
-                                vim.notify("Error fetching git branches: " .. (err or ""), vim.log.levels.ERROR)
-                                return
-                            end
-
-                            local options = { "staged", "unstaged" }
-                            vim.list_extend(options, git_branches)
-
-                            vim.ui.select(options, { prompt = "Select anchor to diff against: " }, callback)
-                        end,
-                        resolve = function(input, source)
-                            local cwd = source.cwd()
-                            local diff = git_utils.get_git_diff(input, cwd)
-                            local content = diff or ""
-                            local filename = string.format("git_diff-@-%s", input)
-
-                            return {
-                                {
-                                    content = content,
-                                    filetype = "diff",
-                                    filename = filename,
-                                },
-                            }
-                        end,
-                    },
-                },
+                -- contexts = {
+                --     git = {
+                --         input = function(callback)
+                --             local git_branches, err = git_utils.get_git_branches()
+                --             if err or not git_branches then
+                --                 vim.notify("Error fetching git branches: " .. (err or ""), vim.log.levels.ERROR)
+                --                 return
+                --             end
+                --
+                --             local options = { "staged", "unstaged" }
+                --             vim.list_extend(options, git_branches)
+                --
+                --             vim.ui.select(options, { prompt = "Select anchor to diff against: " }, callback)
+                --         end,
+                --         resolve = function(input, source)
+                --             local cwd = source.cwd()
+                --             local diff = git_utils.get_git_diff(input, cwd)
+                --             local content = diff or ""
+                --             local filename = string.format("git_diff-@-%s", input)
+                --
+                --             return {
+                --                 {
+                --                     content = content,
+                --                     filetype = "diff",
+                --                     filename = filename,
+                --                 },
+                --             }
+                --         end,
+                --     },
+                -- },
                 sticky = {
                     "Today: " .. os.date("%Y-%m-%d"),
                     "/WORKSPACE_COPILOT_INSTRUCTIONS",
