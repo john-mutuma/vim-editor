@@ -1,8 +1,28 @@
 ----------------------------------------------------------------------
--- 1 & 2. Generic Theme Palette
+-- 1. Generic Theme Palette
 ----------------------------------------------------------------------
+
+--- @class nairovim.ThemeColors
+--- @field fg string Foreground color
+--- @field bg string Background color
+--- @field border string Border color
+--- @field border_bg string Border background color
+--- @field accent string Accent color
+--- @field muted string Muted color
+--- @field subtle string Subtle color
+--- @field highlight string Highlight color
+--- @field error string Error color
+--- @field info string Info color
+--- @field warning string Warning color
+
+--- @class nairovim.ThemePalette
+--- @field light nairovim.ThemeColors Light theme colors
+--- @field dark nairovim.ThemeColors Dark theme colors
+
 local M = {}
 
+--- Generic theme palette with light and dark variants.
+--- @type nairovim.ThemePalette
 M.palette = {
     light = {
         fg = "#010101",

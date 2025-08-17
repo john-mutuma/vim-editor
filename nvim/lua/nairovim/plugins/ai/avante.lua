@@ -81,16 +81,16 @@ return {
                 copilot = {
                     endpoint = "https://api.github.com",
                     model = "claude-sonnet-4",
-                    -- timeout = 30000, -- Timeout in milliseconds
+                    timeout = 15000, -- Reduced timeout for faster failure detection
                     extra_request_body = {
-                        -- temperature = 0.5,
+                        temperature = 0.75,
                         max_tokens = 120000,
                     },
                 },
                 claude = {
                     endpoint = "https://api.anthropic.com",
                     model = "claude-sonnet-4-20250514",
-                    timeout = 30000, -- Timeout in milliseconds
+                    timeout = 15000, -- Reduced from 30s to 15s for faster failure detection
                     extra_request_body = {
                         temperature = 0.75,
                         max_tokens = 20480,
@@ -160,6 +160,7 @@ return {
                 "view",
                 "bash", -- Built-in terminal access
                 "run_python",
+                "ls",
             },
         })
 
