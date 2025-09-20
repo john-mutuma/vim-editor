@@ -64,17 +64,19 @@ return {
         -- 3. Setup conform.nvim (formatters)
         ----------------------------------------------------------------------
         conform.setup({
+            timeout_ms = 300,
+            log_level = vim.log.levels.DEBUG,
             formatters_by_ft = {
                 lua = { "stylua" },
                 python = { "isort", "black" },
                 rust = { "rustfmt", lsp_format = "fallback" },
-                html = { "prettier", "prettierd", stop_after_first = true },
-                javascript = { "prettier", "prettierd", stop_after_first = true },
-                javascriptreact = { "prettier", "prettierd", stop_after_first = true },
-                typescript = { "prettier", "prettierd", stop_after_first = true },
-                typescriptreact = { "prettier", "prettierd", stop_after_first = true },
-                json = { "prettier", "prettierd", stop_after_first = true },
-                markdown = { "markdownlint", "prettier", "prettierd", stop_after_first = true },
+                html = { "prettierd", "prettier", stop_after_first = true },
+                javascript = { "prettierd", "prettier", stop_after_first = true },
+                javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+                typescript = { "prettierd", "prettier", stop_after_first = true },
+                typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+                json = { "prettierd", "prettier", stop_after_first = true },
+                markdown = { "markdownlint", "prettierd", "prettier", stop_after_first = true },
             },
         })
     end,

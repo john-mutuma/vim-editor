@@ -5,7 +5,7 @@ M.mappings = {
     {
         mode = "n",
         key_sequence = "<C-n>",
-        handler = ":NvimTreeToggle<CR>:<CR>$",
+        handler = ":NvimTreeToggle<CR>",
         opts = { silent = true, desc = "Toggle NvimTree file explorer" },
     },
 }

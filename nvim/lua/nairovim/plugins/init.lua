@@ -11,7 +11,6 @@ return {
     {
         { "Shatur/neovim-ayu", event = { "VeryLazy" } },
         { "ellisonleao/gruvbox.nvim", event = { "VeryLazy" } },
-        { "Mofiqul/vscode.nvim", event = { "VeryLazy" } },
         { "folke/tokyonight.nvim", event = { "VeryLazy" } },
         { "catppuccin/nvim", name = "catppuccin", event = { "VeryLazy" } },
         {
