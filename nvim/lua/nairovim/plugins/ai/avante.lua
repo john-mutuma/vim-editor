@@ -97,6 +97,9 @@ return {
                     },
                 },
             },
+            behaviour = {
+                auto_approve_tool_permissions = false,
+            },
             selector = {
                 provider = "telescope", -- or "fzf", "mini.pick"
                 -- provider_opts = {
@@ -161,6 +164,7 @@ return {
                 "bash", -- Built-in terminal access
                 "run_python",
                 "ls",
+                "str_replace",
             },
         })
 

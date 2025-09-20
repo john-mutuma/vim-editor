@@ -4,6 +4,8 @@
 local opt = vim.opt
 local g = vim.g
 
+vim.o.winborder = "rounded"
+
 g.mapleader = ","
 g.maplocalleader = " "
 

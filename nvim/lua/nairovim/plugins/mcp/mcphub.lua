@@ -62,6 +62,11 @@ return {
                 env.CONFIG_FILES = table.concat(context.config_files, ":")
                 return env
             end,
+            ui = {
+                window = {
+                    border = "rounded",
+                },
+            },
         })
 
         window_utils.with_win_backdrop("mcphub")
