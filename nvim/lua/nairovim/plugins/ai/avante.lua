@@ -185,13 +185,14 @@ return {
                 end
 
                 local workspace = require("nairovim.utils.workspace")
-                local github_workspace_dir = workspace.find_closest_dir_by_name(".github")
-                if not github_workspace_dir then
-                    print("No .github directory found in the workspace")
+                local copilot_instructions_path =
+                    workspace.find_file_in_closest_dir(".github", "copilot-instructions.md")
+                if not copilot_instructions_path then
+                    print("No copilot-instructions.md found in the .github directory")
                     return
                 end
 
-                avante.get().file_selector:add_selected_file(github_workspace_dir)
+                avante.get().file_selector:add_selected_file(copilot_instructions_path)
                 M.SELECTED_FILES_INITIALIZED = true
             end,
         })
