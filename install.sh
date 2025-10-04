@@ -272,13 +272,20 @@ install_oh_my_zsh() {
 
 install_cli_tools() {
     print_section "${PACKAGE} Installing CLI Tools"
-
-    local tools=("fzf:FZF (Terminal fuzzy finder)" "ripgrep:ripgrep (Fast search tool)" "bat:bat (Enhanced cat with syntax highlighting)")
-
+    local tools=(
+        "fzf:FZF (Terminal fuzzy finder)"
+        "ripgrep:ripgrep (Fast search tool)"
+        "bat:bat (Enhanced cat with syntax highlighting)"
+        "scooter:scooter (Interactive search and replace in the terminal)"
+    )
     for tool_info in "${tools[@]}"; do
         IFS=':' read -r tool_name tool_desc <<< "$tool_info"
         install_with_brew "$tool_name" "$tool_desc"
     done
+
+    local scooter_config_target="$HOME/.config/scooter/config.toml"
+    mkdir -p "$(dirname "$scooter_config_target")"
+    create_symlink "$(pwd)/scooter.config.toml" "$HOME/.config/scooter/config.toml" "Scooter config"
 
     echo ""
     print_success "All CLI tools installed successfully!"
