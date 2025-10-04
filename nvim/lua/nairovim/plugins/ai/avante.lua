@@ -80,7 +80,8 @@ return {
             providers = {
                 copilot = {
                     endpoint = "https://api.github.com",
-                    model = "claude-sonnet-4",
+                    -- model = "gpt-5",
+                    model = "claude-sonnet-4.5",
                     timeout = 15000, -- Reduced timeout for faster failure detection
                     extra_request_body = {
                         temperature = 0.75,
@@ -89,7 +90,7 @@ return {
                 },
                 claude = {
                     endpoint = "https://api.anthropic.com",
-                    model = "claude-sonnet-4-20250514",
+                    model = "claude-sonnet-4.5",
                     timeout = 15000, -- Reduced from 30s to 15s for faster failure detection
                     extra_request_body = {
                         temperature = 0.75,
