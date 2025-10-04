@@ -92,4 +92,8 @@ return {
             ft = { "markdown", "Avante", "mcphub", "copilot-chat" },
         },
     },
+
+    -- Other utility plugins
+    -- Terminal
+    { "akinsho/toggleterm.nvim", version = "*", config = true },
 }
