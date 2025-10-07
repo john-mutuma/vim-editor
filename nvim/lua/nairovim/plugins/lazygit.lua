@@ -10,7 +10,7 @@ return {
         local window_utils = require("nairovim.utils.windows")
 
         g.lazygit_floating_window_winblend = 4 -- transparency of floating window
-        g.lazygit_floating_window_scaling_factor = 0.85 -- scaling factor for floating window
+        g.lazygit_floating_window_scaling_factor = 0.8 -- scaling factor for floating window
 
         -- Keymaps for LazyGit
         local common_utils = require("nairovim.utils.common")

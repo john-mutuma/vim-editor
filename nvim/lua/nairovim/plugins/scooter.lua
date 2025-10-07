@@ -1,6 +1,8 @@
 local M = {}
 local Terminal = require("toggleterm.terminal").Terminal
+local window_utils = require("nairovim.utils.windows")
 local scooter_term = nil
+local scooter_backdrop = nil
 
 --- Open existing scooter terminal if one is available, otherwise create a new one
 local open_scooter = function()
@@ -9,11 +11,25 @@ local open_scooter = function()
             cmd = "scooter",
             direction = "float",
             close_on_exit = true,
+            display_name = "Find and Replace",
+            on_open = function()
+                -- Create backdrop with z-index lower than terminal (default: 40)
+                scooter_backdrop = window_utils.create_backdrop("ScooterBackdrop", 60, 39)
+            end,
+            on_close = function()
+                -- Clean up backdrop when terminal closes
+                if scooter_backdrop then
+                    scooter_backdrop.cleanup()
+                    scooter_backdrop = nil
+                end
+            end,
             highlights = {
                 FloatBorder = { link = "FloatBorder" },
             },
             float_opts = {
                 border = "rounded",
+                winblend = 12,
+                width = 175,
             },
             on_exit = function()
                 scooter_term = nil
@@ -50,6 +66,17 @@ _G.OpenScooterSearchText = function(search_text)
         cmd = "scooter --search-text " .. escaped_text,
         direction = "float",
         close_on_exit = true,
+        on_open = function()
+            -- Create backdrop with z-index lower than terminal (default: 40)
+            scooter_backdrop = window_utils.create_backdrop("ScooterBackdrop", 60, 39)
+        end,
+        on_close = function()
+            -- Clean up backdrop when terminal closes
+            if scooter_backdrop then
+                scooter_backdrop.cleanup()
+                scooter_backdrop = nil
+            end
+        end,
         on_exit = function()
             scooter_term = nil
         end,
