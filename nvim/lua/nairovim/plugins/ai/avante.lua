@@ -76,7 +76,8 @@ return {
         avante.setup({
             -- add any opts here
             -- for example
-            provider = "copilot",
+            -- provider = "copilot",
+            provider = "opencode",
             providers = {
                 copilot = {
                     endpoint = "https://api.github.com",
@@ -100,6 +101,7 @@ return {
             },
             behaviour = {
                 auto_approve_tool_permissions = false,
+                acp_follow_agent_locations = true,
             },
             selector = {
                 provider = "telescope", -- or "fzf", "mini.pick"
@@ -164,7 +166,6 @@ return {
                 "view",
                 "bash", -- Built-in terminal access
                 "run_python",
-                "ls",
                 "str_replace",
             },
         })

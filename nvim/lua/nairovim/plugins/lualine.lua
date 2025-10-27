@@ -73,6 +73,8 @@ local Blank = {
         "bufferlist",
         "copilot-chat",
         "copilot-overlay",
+        "opencode",
+        "opencode_terminal",
         "Avante",
         "AvanteTodos",
         "AvanteSelectedFiles",
