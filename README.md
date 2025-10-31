@@ -59,7 +59,7 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
    # Using Ghostty (recommended)
    ghostty
    nvim
-   
+
    # Or with tmux (optional)
    tmux
    nvim
@@ -97,10 +97,10 @@ That's it! The installation script will:
    # Link dotfiles
    ln -sf "$(pwd)/ghostty_config" "$HOME/.config/ghostty/config"
    ln -sf "$(pwd)/.zshrc" "$HOME/.zshrc"
-   
+
    # Link Neovim config
    ln -sf "$(pwd)/nvim" "$HOME/.config/nvim"
-   
+
    # Optional: tmux (legacy support)
    ln -sf "$(pwd)/.tmux.conf" "$HOME/.tmux.conf"
    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -126,10 +126,10 @@ ghostty
 nvim
 
 # Find and open a file
-<Ctrl-Shift>f
+<Ctrl-s>f
 
 # Search for text across project
-<Ctrl-Shift>s
+<Ctrl-s>s
 
 # Open file explorer
 <Ctrl-n>
@@ -253,7 +253,7 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
    ```bash
    # Add to ~/.zshrc or ~/.bashrc
    export ANTHROPIC_API_KEY="your-api-key-here"
-   
+
    # Reload shell
    source ~/.zshrc
    ```
@@ -287,6 +287,7 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 ```
 
 **Key Features:**
+
 - ✅ Context-aware with multi-file support
 - ✅ Session persistence
 - ✅ Beautiful markdown rendering in terminal
@@ -302,6 +303,7 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 ### 1. Configure Ghostty Terminal (Recommended)
 
 NairoVIM includes a pre-configured Ghostty setup with:
+
 - **TokyoNight theme** (auto-switching dark/light modes)
 - **tmux-like keybindings** for splits and tabs
 - **Optimized font rendering**
@@ -319,6 +321,7 @@ cat ~/.config/ghostty/config
 ```
 
 **Ghostty vs tmux:**
+
 - ✅ **Ghostty**: Native splits/tabs, better performance, modern GPU rendering
 - ⚠️ **tmux**: Legacy option, session persistence, remote development
 
@@ -364,15 +367,19 @@ Add to `~/.gitconfig`:
 ## 📸 Screenshots
 
 ### Dashboard
+
 ![NairoVIM Dashboard](examples/screenshot_dashboard.png)
 
 ### Git Integration
+
 ![Embedded Lazygit](examples/screenshot_git-integration.png)
 
 ### AI Assistant
+
 ![AI Assistant](examples/screenshot_AI-assistant.png)
 
 ### LSP Support
+
 ![Hover Documentation](examples/screenshot_lsp_hoverdoc.png)
 ![Peek Definition](examples/screenshot_lsp_peek-definition.png)
 
@@ -393,6 +400,7 @@ Add to `~/.gitconfig`:
 ```
 
 Or use keybindings:
+
 - `<leader>DD` - Dark theme (tokyonight-night)
 - `<leader>LL` - Light theme (tokyonight-day)
 
@@ -428,24 +436,28 @@ return {
 ### Quick Fixes
 
 **Plugins not loading:**
+
 ```bash
 :Lazy restore
 :Lazy sync
 ```
 
 **LSP not working:**
+
 ```bash
 :LspInfo
 :Mason  # Install language servers
 ```
 
 **Icons not showing:**
+
 ```bash
 # Install Nerd Font and configure terminal to use it
 brew install --cask font-hack-nerd-font
 ```
 
 **Slow startup:**
+
 ```bash
 # Profile plugins
 :Lazy profile

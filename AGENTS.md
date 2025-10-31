@@ -4,6 +4,86 @@ Brief, concise history of AI-assisted development tasks.
 
 ---
 
+## 2025-10-31: Terminal Strategy Shift - Ghostty Over tmux
+
+**Commit:** `2511c79` | `continous-development` branch
+
+Strategic documentation update to position Ghostty as the primary recommended terminal, relegating tmux to legacy/remote-only use cases.
+
+### Problem
+- tmux was positioned as the default terminal workflow
+- Modern alternatives like Ghostty offer better performance with native split/tab management
+- Users had to learn tmux complexity for simple local development
+- Documentation didn't clarify when to use tmux vs modern terminals
+- Ghostty config was included but not emphasized
+
+### Solution
+Comprehensive documentation update across all files to prioritize Ghostty:
+
+**README.md changes:**
+- Updated prerequisites to list Ghostty as recommended terminal
+- Modified installation steps to install Ghostty by default, tmux optional
+- Rewrote Quick Start Guide with Ghostty workflows (splits, tabs, navigation)
+- Added dedicated "Configure Ghostty Terminal" section in post-installation
+- Added Ghostty keybinding reference (18 bindings)
+- Clarified Ghostty vs tmux tradeoffs with clear recommendations
+
+**doc/ARCHITECTURE.md additions:**
+- New "Terminal & Shell Integration" section (117 lines)
+- Detailed Ghostty feature overview and benefits
+- Ghostty vs tmux comparison table (6 feature categories)
+- Complete Ghostty keybinding reference
+- Installation and configuration instructions
+- tmux relegated to "Legacy Option" subsection
+- Clear use case guidance: Ghostty (local), tmux (remote/SSH)
+
+**doc/FAQ.md updates:**
+- Replaced "Can I use without tmux?" with "Should I use Ghostty or tmux?"
+- Added comprehensive Q&A: "How do I use Ghostty splits and tabs?"
+- Updated comparison tables to reference Ghostty instead of tmux
+- Clarified terminal integration features
+
+**doc/TROUBLESHOOTING.md updates:**
+- Replaced "Tmux integration" section with "Ghostty terminal issues"
+- Added 3 new Ghostty troubleshooting sections:
+  - Ghostty terminal issues (basic setup)
+  - Ghostty config not loaded (symlink problems)
+  - Ghostty splits not working (keybinding conflicts)
+- Moved tmux to "Legacy" subsection with deprecation note
+- Updated font and transparency sections to prioritize Ghostty examples
+- Updated performance recommendations to suggest Ghostty
+
+### Key Design Decisions
+1. **Ghostty = primary, tmux = legacy**: Clear positioning throughout
+2. **tmux-like keybindings**: Ghostty uses Ctrl+b prefix for easy transition
+3. **Use case clarity**: Local = Ghostty, Remote = tmux
+4. **Backward compatibility**: tmux documentation maintained but clearly marked optional
+5. **Comprehensive migration**: All docs updated for consistency
+6. **Feature comparison table**: Data-driven guidance for users
+
+### Changes Made
+- ✅ README.md: Prerequisites, installation, quick start, post-install (+92, -26 lines)
+- ✅ doc/ARCHITECTURE.md: New terminal section with comparison (+118 lines)
+- ✅ doc/FAQ.md: Ghostty Q&As, updated comparisons (+32, -3 lines)
+- ✅ doc/TROUBLESHOOTING.md: Ghostty troubleshooting, tmux deprecation (+98, -2 lines)
+- ✅ Total changes: 4 files, +314, -26 lines
+
+### Impact
+- **Better user experience**: Simpler local dev setup without tmux complexity
+- **Performance gains**: GPU-accelerated rendering, native splits
+- **Clearer guidance**: Explicit recommendations for terminal choice
+- **Modern workflow**: Aligns with contemporary terminal emulator features
+- **Maintained flexibility**: tmux still available for those who need it
+- **Smooth transition**: tmux-like keybindings reduce learning curve
+
+### Files Modified
+- `README.md` (updated prerequisites, installation, quick start, post-install)
+- `doc/ARCHITECTURE.md` (added terminal section, comparison table)
+- `doc/FAQ.md` (updated Q&As, comparisons)
+- `doc/TROUBLESHOOTING.md` (added Ghostty troubleshooting, deprecated tmux)
+
+---
+
 ## 2025-10-31: Documentation Restructuring & Organization
 
 **Commits:** `94b7db4`, `e33cabf` | `continous-development` branch
