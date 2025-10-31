@@ -39,9 +39,10 @@ return {
             -- Your configuration, if any — see `lua/opencode/config.lua`
             provider = {
                 snacks = {
-                    terminal = {
-                        win = {
-                            width = 80,
+                    win = {
+                        width = 85,
+                        wo = {
+                            winfixwidth = true,
                         },
                     },
                 },

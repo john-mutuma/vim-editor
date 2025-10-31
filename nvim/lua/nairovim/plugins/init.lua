@@ -83,7 +83,15 @@ return {
             -- Make sure to set this up properly if you have lazy=true
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
-                file_types = { "markdown", "Avante", "mcphub", "copilot-chat", "opencode_terminal", "opencode" },
+                file_types = {
+                    "markdown",
+                    "Avante",
+                    "mcphub",
+                    "copilot-chat",
+                    "opencode_terminal",
+                    "opencode_output",
+                    "opencode",
+                },
                 code = {
                     sign = false,
                     language_border = "",
