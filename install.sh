@@ -15,14 +15,14 @@ set -euo pipefail  # Exit on any error, undefined variable, or pipe failure
 # COLOR DEFINITIONS & STYLING
 # ======================================================================
 readonly textreset=$(tput sgr0)
-readonly red=$(tput setaf 196)
-readonly yellow=$(tput setaf 226)
-readonly green=$(tput setaf 118)
-readonly cyan=$(tput setaf 87)
-readonly blue=$(tput setaf 39)
-readonly magenta=$(tput setaf 207)
-readonly orange=$(tput setaf 214)
-readonly purple=$(tput setaf 141)
+readonly red=$(tput setaf 1)
+readonly yellow=$(tput setaf 3)
+readonly green=$(tput setaf 2)
+readonly cyan=$(tput setaf 6)
+readonly blue=$(tput setaf 4)
+readonly magenta=$(tput setaf 5)
+readonly orange=$(tput setaf 3)  # Use yellow/brown for orange
+readonly purple=$(tput setaf 5)  # Use magenta for purple
 readonly bold=$(tput bold)
 readonly dim=$(tput dim)
 
@@ -208,6 +208,15 @@ install_dotfiles() {
     export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
     print_info "RIPGREP_CONFIG_PATH exported"
 
+    local scooter_config_target="$HOME/.config/scooter/config.toml"
+    mkdir -p "$(dirname "$scooter_config_target")"
+    create_symlink "$(pwd)/scooter.config.toml" "$HOME/.config/scooter/config.toml" "Scooter config"
+
+    local ghostty_config_target="$HOME/.config/ghostty/config"
+    mkdir -p "$(dirname "$ghostty_config_target")"
+    create_symlink "$(pwd)/ghostty_config" "$HOME/.config/ghostty/config" "Ghostty config"
+
+
     echo ""
     print_success "All dotfiles linked successfully!"
 }
@@ -282,10 +291,6 @@ install_cli_tools() {
         IFS=':' read -r tool_name tool_desc <<< "$tool_info"
         install_with_brew "$tool_name" "$tool_desc"
     done
-
-    local scooter_config_target="$HOME/.config/scooter/config.toml"
-    mkdir -p "$(dirname "$scooter_config_target")"
-    create_symlink "$(pwd)/scooter.config.toml" "$HOME/.config/scooter/config.toml" "Scooter config"
 
     echo ""
     print_success "All CLI tools installed successfully!"
