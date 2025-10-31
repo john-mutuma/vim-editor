@@ -4,6 +4,34 @@ Brief, concise history of AI-assisted development tasks.
 
 ---
 
+## 2025-11-01: README Documentation Enhancement
+
+**Commit f8a118b** | `continous-development` branch
+
+- Added comprehensive keybinding reference section with 70+ mappings organized into 8 categories
+- Added plugin ecosystem section documenting all 70+ plugins across 11 functional categories
+- Removed duplicate "Essential Shortcuts" section (51 lines of duplication)
+- Removed nvim-ide references from keybinding tables (plugin no longer in config)
+- Organized AI tools (Avante, Copilot, OpenCode) with detailed usage examples
+- Improved navigation with mode, description, and plugin attribution for all keybindings
+
+**Categories Added:**
+- File & Search Navigation (11 keybindings)
+- LSP & Code Intelligence (16 keybindings)
+- AI Assistant - OpenCode (14 keybindings)
+- AI Assistant - Copilot (1 keybinding)
+- Git Integration (16 keybindings)
+- Search & Replace (2 keybindings)
+- UI & Window Management (8 keybindings)
+- Editing & Text Manipulation (6 core + plugin features)
+
+**Plugin Categories Documented:**
+AI (4), LSP (9), Debugging (3), Git (3), Search (5), UI (12), Editing (8), Markdown (2), Utilities (10+), Plugin Management (1)
+
+**Files:** `README.md` (+235, -53 lines)
+
+---
+
 ## 2025-10-31: Environment Enhancements & Configuration Improvements
 
 **PR #65** | `continous-development` → `develop`
