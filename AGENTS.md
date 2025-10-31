@@ -6,7 +6,7 @@ Brief, concise history of AI-assisted development tasks.
 
 ## 2025-10-31: Documentation Restructuring & Organization
 
-**Branch:** `continous-development` (pending commit)
+**Commits:** `94b7db4`, `e33cabf` | `continous-development` branch
 
 Major documentation overhaul to improve user experience and maintainability.
 
@@ -64,11 +64,12 @@ Restructured documentation into specialized files with clear separation of conce
 
 ### Changes Made
 - ✅ Created streamlined README.md (user-focused)
-- ✅ Created ARCHITECTURE.md (technical deep-dive)
-- ✅ Created TROUBLESHOOTING.md (problem-solving)
-- ✅ Created FAQ.md (common questions)
-- ✅ Updated CONTRIBUTING.md references
-- ✅ Added cross-references between all docs
+- ✅ Created doc/ARCHITECTURE.md (technical deep-dive)
+- ✅ Created doc/TROUBLESHOOTING.md (problem-solving)
+- ✅ Created doc/FAQ.md (common questions)
+- ✅ Created doc/CONTRIBUTING.md (contribution guidelines)
+- ✅ Moved all documentation files to doc/ directory
+- ✅ Updated all cross-references to doc/ paths
 - ✅ Positioned OpenCode as primary AI recommendation
 
 ### Key Design Decisions
@@ -76,16 +77,17 @@ Restructured documentation into specialized files with clear separation of conce
 2. **Separate technical details**: Developers can dive deep without overwhelming new users
 3. **Searchable troubleshooting**: Organized by category for quick reference
 4. **FAQ for common questions**: Reduces repeated issues and questions
-5. **Cross-referenced navigation**: Easy to find related information
-6. **OpenCode priority**: Clear primary recommendation over alternatives
+5. **Organized doc/ directory**: All documentation files in one location
+6. **Cross-referenced navigation**: Easy to find related information
+7. **OpenCode priority**: Clear primary recommendation over alternatives
 
 ### Files Modified/Created
-- `README.md` (complete rewrite, ~400 lines)
-- `ARCHITECTURE.md` (new, ~600 lines)
-- `TROUBLESHOOTING.md` (new, ~550 lines)
-- `FAQ.md` (new, ~300 lines)
-- `CONTRIBUTING.md` (updated references)
-- `AGENTS.md` (this update)
+- `README.md` (complete rewrite, ~400 lines, updated doc/ references)
+- `doc/ARCHITECTURE.md` (new, 664 lines)
+- `doc/TROUBLESHOOTING.md` (new, 922 lines)
+- `doc/FAQ.md` (new, 479 lines)
+- `doc/CONTRIBUTING.md` (new, 670 lines)
+- `AGENTS.md` (updated with this entry)
 
 ### Impact
 - **Better user experience**: New users can get started in minutes
