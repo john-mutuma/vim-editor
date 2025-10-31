@@ -4,6 +4,98 @@ Brief, concise history of AI-assisted development tasks.
 
 ---
 
+## 2025-10-31: Documentation Restructuring & Organization
+
+**Branch:** `continous-development` (pending commit)
+
+Major documentation overhaul to improve user experience and maintainability.
+
+### Problem
+- README had become extremely technical and lengthy (~1500 lines)
+- Mixed user-facing content with deep technical details
+- Difficult for new users to quickly understand and get started
+- Troubleshooting and FAQ content scattered throughout
+- Not professional or user-friendly
+
+### Solution
+Restructured documentation into specialized files with clear separation of concerns:
+
+**README.md** (~400 lines) - User-facing:
+- Quick installation guide
+- Essential features overview
+- Basic setup and workflows
+- Most common keybindings (20-30)
+- OpenCode AI setup (primary recommendation)
+- Links to detailed docs
+
+**ARCHITECTURE.md** (~600 lines) - Technical reference:
+- Complete directory structure
+- Design principles & configuration flow
+- Performance benchmarks & optimization
+- Full plugin ecosystem (70+ plugins, 11 categories)
+- Complete keybinding reference (70+ mappings)
+- AI tools comparison & setup details
+- Security considerations
+- Extension guides for developers
+
+**TROUBLESHOOTING.md** (~550 lines) - Issue resolution:
+- Installation problems & solutions
+- Plugin loading issues
+- LSP troubleshooting
+- AI tools debugging
+- Git integration fixes
+- UI/performance/terminal problems
+- Emergency recovery procedures
+
+**FAQ.md** (~300 lines) - Common questions:
+- Installation & setup (6 Q&As)
+- Configuration & customization (6 Q&As)
+- Plugins & features (5 Q&As)
+- AI tools (6 Q&As)
+- Performance (3 Q&As)
+- Keybindings (5 Q&As)
+- Troubleshooting references
+- General questions (10 Q&As)
+
+**CONTRIBUTING.md** (updated references):
+- Updated FAQ references
+- Added links to all new documentation
+- Maintained contribution guidelines
+
+### Changes Made
+- ✅ Created streamlined README.md (user-focused)
+- ✅ Created ARCHITECTURE.md (technical deep-dive)
+- ✅ Created TROUBLESHOOTING.md (problem-solving)
+- ✅ Created FAQ.md (common questions)
+- ✅ Updated CONTRIBUTING.md references
+- ✅ Added cross-references between all docs
+- ✅ Positioned OpenCode as primary AI recommendation
+
+### Key Design Decisions
+1. **User-first README**: Fast installation, immediate productivity
+2. **Separate technical details**: Developers can dive deep without overwhelming new users
+3. **Searchable troubleshooting**: Organized by category for quick reference
+4. **FAQ for common questions**: Reduces repeated issues and questions
+5. **Cross-referenced navigation**: Easy to find related information
+6. **OpenCode priority**: Clear primary recommendation over alternatives
+
+### Files Modified/Created
+- `README.md` (complete rewrite, ~400 lines)
+- `ARCHITECTURE.md` (new, ~600 lines)
+- `TROUBLESHOOTING.md` (new, ~550 lines)
+- `FAQ.md` (new, ~300 lines)
+- `CONTRIBUTING.md` (updated references)
+- `AGENTS.md` (this update)
+
+### Impact
+- **Better user experience**: New users can get started in minutes
+- **Professional documentation**: Clean, organized, scannable
+- **Easier maintenance**: Changes go in the right place
+- **Better discoverability**: Cross-references help users find answers
+- **Reduced support burden**: Comprehensive FAQ and troubleshooting
+
+---
+
 ## 2025-11-01: README Documentation Enhancement
 
 **Commit f8a118b** | `continous-development` branch
