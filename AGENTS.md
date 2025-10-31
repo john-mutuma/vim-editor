@@ -4,6 +4,22 @@ Brief, concise history of AI-assisted development tasks.
 
 ---
 
+## 2025-10-27: Lazygit Migration to Snacks Plugin
+
+**PR #65** | `continous-development` → `develop`
+
+- Migrated lazygit from standalone plugin to Snacks built-in integration
+- Enabled additional Snacks features: bufdelete, notifier, statuscolumn
+- Removed redundant `lazygit.lua` and `highlights/lazygit.lua` files
+- Updated plugin configurations for OpenCode, Avante, scooter, and lualine
+- Updated plugin dependencies via lazy-lock.json
+
+**Files:** `snacks.lua`, `init.lua`, `keymaps/lazygit.lua`,
+`opencode.lua`, `avante.lua`, `lualine.lua`, `scooter.lua`,
+`scooter.config.toml`, `lazy-lock.json`
+
+---
+
 ## 2025-10-07: Backdrop Utility & Scooter Terminal
 
 **PR #64** | `continous-development` → `develop`

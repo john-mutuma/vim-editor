@@ -18,7 +18,7 @@ return {
             priority = 1000,
             init = function()
                 keymap.set("n", "<leader>DD", ":colorscheme tokyonight-night<CR>")
-                keymap.set("n", "<leader>LL", ":colorscheme dayfox<CR>")
+                keymap.set("n", "<leader>LL", ":colorscheme tokyonight-day<CR>")
                 vim.cmd("colorscheme tokyonight-night")
             end,
         },
@@ -83,7 +83,15 @@ return {
             -- Make sure to set this up properly if you have lazy=true
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
-                file_types = { "markdown", "Avante", "mcphub", "copilot-chat" },
+                file_types = {
+                    "markdown",
+                    "Avante",
+                    "mcphub",
+                    "copilot-chat",
+                    "opencode_terminal",
+                    "opencode_output",
+                    "opencode",
+                },
                 code = {
                     sign = false,
                     language_border = "",

@@ -28,7 +28,7 @@ local open_scooter = function()
             },
             float_opts = {
                 border = "rounded",
-                winblend = 12,
+                winblend = 9,
                 width = 175,
             },
             on_exit = function()

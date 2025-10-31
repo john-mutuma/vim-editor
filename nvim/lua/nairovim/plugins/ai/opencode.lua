@@ -37,6 +37,16 @@ return {
         -- Can be customized with various settings (see lua/opencode/config.lua for available options)
         vim.g.opencode_opts = {
             -- Your configuration, if any — see `lua/opencode/config.lua`
+            provider = {
+                snacks = {
+                    win = {
+                        width = 85,
+                        wo = {
+                            winfixwidth = true,
+                        },
+                    },
+                },
+            },
         }
 
         -- Enable automatic file reloading when files are changed externally

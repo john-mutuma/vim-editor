@@ -2,10 +2,31 @@ return {
     "folke/snacks.nvim",
     init = function()
         vim.ui.select = require("snacks").picker.select
+        vim.notify = require("snacks").notifier.notify
+
+        -- Keymaps for LazyGit
+        local common_utils = require("nairovim.utils.common")
+        local mappings = require("nairovim.plugins.customizations.keymaps.lazygit").mappings
+        common_utils.map(mappings)
     end,
     config = function()
         local Snacks = require("snacks")
         Snacks.setup({
+            notifier = { enabled = true, style = "fancy" },
+            input = { enabled = true },
+            words = { enabled = true },
+            scroll = { enabled = true },
+            terminal = { enabled = true },
+
+            lazygit = {
+                win = {
+                    border = "rounded",
+                    width = 0.8,
+                    wo = {
+                        winblend = 6,
+                    },
+                },
+            },
             dashboard = {
                 pick = function(arg)
                     return Snacks.picker.pick(arg)
@@ -60,7 +81,12 @@ You are in %s
                         { icon = " ", key = "s", desc = "Restore Session", section = "session" },
                         -- { icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
                         { icon = " ", key = "m", desc = "Mason", action = ":Mason" },
-                        { icon = " ", key = "G", desc = "Git", action = ":LazyGit" },
+                        {
+                            icon = " ",
+                            key = "G",
+                            desc = "Git",
+                            action = ":lua Snacks.lazygit()",
+                        },
                         -- { icon = " ", key = "C", desc = "GitHub Copilot", action = ":CopilotChat" },
                         {
                             icon = " ",
