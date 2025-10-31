@@ -205,7 +205,7 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 | `<leader><CR>` | Clear search highlights |
 | `jk` | Exit insert mode |
 
-> 📖 **See complete keybinding reference**: Check [ARCHITECTURE.md](ARCHITECTURE.md#complete-keybinding-reference) for all 70+ keybindings.
+> 📖 **See complete keybinding reference**: Check [ARCHITECTURE.md](doc/ARCHITECTURE.md#complete-keybinding-reference) for all 70+ keybindings.
 
 ## 🤖 AI Assistance Setup
 
@@ -262,7 +262,7 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 
 **Cost:** ~$0.01-$0.05 per query, ~$0.50-$2.00 daily for typical usage
 
-> 📖 **For alternative AI tools** (Avante, Copilot): See [ARCHITECTURE.md - AI Tools](ARCHITECTURE.md#ai-tools)
+> 📖 **For alternative AI tools** (Avante, Copilot): See [ARCHITECTURE.md - AI Tools](doc/ARCHITECTURE.md#ai-tools)
 
 ## 🎨 Post-Installation Setup
 
@@ -395,18 +395,18 @@ brew install --cask font-hack-nerd-font
 # Disable unused plugins (see Customization above)
 ```
 
-> 📖 **Comprehensive troubleshooting guide**: See [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
+> 📖 **Comprehensive troubleshooting guide**: See [TROUBLESHOOTING.md](doc/TROUBLESHOOTING.md)
 
 ## 📚 Documentation
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Technical details, plugin ecosystem, complete keybindings
-- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Detailed issue resolution guide
-- **[FAQ.md](FAQ.md)** - Frequently asked questions
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[ARCHITECTURE.md](doc/ARCHITECTURE.md)** - Technical details, plugin ecosystem, complete keybindings
+- **[TROUBLESHOOTING.md](doc/TROUBLESHOOTING.md)** - Detailed issue resolution guide
+- **[FAQ.md](doc/FAQ.md)** - Frequently asked questions
+- **[CONTRIBUTING.md](doc/CONTRIBUTING.md)** - Contribution guidelines
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+We welcome contributions! Please see [CONTRIBUTING.md](doc/CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
