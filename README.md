@@ -113,59 +113,6 @@ If you prefer manual installation or encounter issues:
 
 ## 🎯 Quick Start Guide
 
-### Essential Shortcuts (Leader key: `,`)
-
-#### **File Navigation & Search**
-
-- `<C-S>f` - Find git files (Telescope)
-- `<C-S>s` - Live grep search (Telescope)
-- `<C-S>b` - Switch buffers (Telescope)
-- `<C-S>r` - Recent files (Telescope)
-- `<C-S>y` - Git branches (Telescope)
-- `<C-n>` - Toggle file explorer (NvimTree)
-
-#### **Code Intelligence (LSP)**
-
-- `gd` - Go to definition (Glance)
-- `gi` - Go to implementation (Glance)
-- `gR` - Find references (Glance)
-- `gT` - Go to type definition (Glance)
-- `K` - Show hover documentation (Lspsaga)
-- `<leader>d` - Show line diagnostics (Lspsaga)
-- `<leader>D` - Show buffer diagnostics (Lspsaga)
-- `<leader>wd` - Show workspace diagnostics (Lspsaga)
-- `<leader>ca` - Code actions (Lspsaga)
-- `<leader>rn` - Rename symbol (Lspsaga)
-- `]e` - Next diagnostic (Lspsaga)
-- `[e` - Previous diagnostic (Lspsaga)
-
-#### **AI Assistant**
-
-- `:Copilot auth` - Authenticate with GitHub
-- `:AvanteAsk` - Ask Avante AI for code assistance
-- `:AvanteChat` - Open Avante chat interface
-- `:AvanteEdit` - Edit code with Avante suggestions
-- `<leader> af` -  Focus Avante chat sidebar
-
-#### **Git Integration**
-
-- `<leader>G` - Open Lazygit interface
-- `]c` - Next git hunk (Gitsigns)
-- `[c` - Previous git hunk (Gitsigns)
-- `<leader>hs` - Stage hunk (Gitsigns)
-- `<leader>hr` - Reset hunk (Gitsigns)
-- `<leader>hp` - Preview hunk (Gitsigns)
-- `<leader>hb` - Blame line (Gitsigns)
-
-#### **UI & Window Management**
-
-- `<leader>tr` - Toggle right panel (nvim-ide)
-- `<leader>tl` - Toggle left panel (nvim-ide)
-- `<leader>F` - Toggle window maximizer
-- `gq` - Close current window
-- `<C-T>o` - Close all other tabs
-- `<leader><CR>` - Clear search highlights
-
 ### Common Workflows
 
 #### **Starting a Development Session**
@@ -208,6 +155,241 @@ nvim
 # "Generate PR description" (Avante slash command)
 
 ```
+
+## ⌨️ Complete Keybinding Reference
+
+A comprehensive guide to all custom keybindings in NairoVIM. The leader key is `,` by default.
+
+### File & Search Navigation
+
+| Keybinding | Mode | Description | Plugin |
+|------------|------|-------------|---------|
+| `<C-S>f` | n | Find git files | Telescope |
+| `<C-S>s` | n | Live grep search | Telescope |
+| `<C-S>b` | n | Switch buffers | Telescope |
+| `<C-S>r` | n | Recent files | Telescope |
+| `<C-S>h` | n | Help tags | Telescope |
+| `<C-S>y` | n | Git branches | Telescope |
+| `<C-n>` | n | Toggle file explorer | NvimTree |
+| `<C-F>f` | n | FZF git files | FZF |
+| `<C-F>s` | n | FZF ripgrep search | FZF |
+| `<C-F>b` | n | FZF buffers | FZF |
+| `<C-F>y` | n | FZF git branches | FZF |
+
+### LSP & Code Intelligence
+
+| Keybinding | Mode | Description | Plugin |
+|------------|------|-------------|---------|
+| `gd` | n | Go to definition | Glance |
+| `gD` | n | Go to declaration | LSP |
+| `gi` | n | Go to implementation | Glance |
+| `gR` | n | Find references | Glance |
+| `gT` | n | Go to type definition | Glance |
+| `g>` | n | Outgoing calls | Lspsaga |
+| `g<` | n | Incoming calls | Lspsaga |
+| `K` | n | Hover documentation | Lspsaga |
+| `<leader>ca` | n | Code actions | Lspsaga |
+| `<leader>rn` | n | Rename symbol | Lspsaga |
+| `<leader>d` | n | Line diagnostics | Lspsaga |
+| `<leader>D` | n | Buffer diagnostics | Lspsaga |
+| `<leader>wd` | n | Workspace diagnostics | Lspsaga |
+| `]e` | n | Next diagnostic | Lspsaga |
+| `[e` | n | Previous diagnostic | Lspsaga |
+
+### AI Assistant - OpenCode
+
+| Keybinding | Mode | Description |
+|------------|------|-------------|
+| `<leader>ot` | n | Toggle OpenCode terminal |
+| `<leader>oA` | n | Ask general question |
+| `<leader>oa` | n | Ask about cursor position |
+| `<leader>oa` | v | Ask about selection |
+| `<leader>o+` | n | Add buffer to prompt |
+| `<leader>o+` | v | Add selection to prompt |
+| `<leader>on` | n | New session |
+| `<leader>oy` | n | Copy last response |
+| `<leader>os` | n,v | Select prompt |
+| `<leader>oe` | n | Explain code at cursor |
+| `<S-C-u>` | n | Messages half page up |
+| `<S-C-d>` | n | Messages half page down |
+
+### AI Assistant - Copilot
+
+| Keybinding | Mode | Description |
+|------------|------|-------------|
+| `<leader>cp` | n,v | Open Copilot Chat |
+
+### Git Integration
+
+| Keybinding | Mode | Description | Plugin |
+|------------|------|-------------|---------|
+| `<leader>G` | n | Open Lazygit | Snacks |
+| `]c` | n | Next git hunk | Gitsigns |
+| `[c` | n | Previous git hunk | Gitsigns |
+| `<leader>hs` | n,v | Stage hunk | Gitsigns |
+| `<leader>hr` | n,v | Reset hunk | Gitsigns |
+| `<leader>hS` | n | Stage entire buffer | Gitsigns |
+| `<leader>hu` | n | Undo stage hunk | Gitsigns |
+| `<leader>hR` | n | Reset entire buffer | Gitsigns |
+| `<leader>hp` | n | Preview hunk | Gitsigns |
+| `<leader>hb` | n | Blame current line | Gitsigns |
+| `<leader>hB` | n | Full blame for line | Gitsigns |
+| `<leader>htb` | n | Toggle line blame | Gitsigns |
+| `<leader>hd` | n | Diff this buffer | Gitsigns |
+| `<leader>hD` | n | Diff against last commit | Gitsigns |
+| `<leader>htd` | n | Toggle deleted lines | Gitsigns |
+| `ih` | o,x | Select hunk (text object) | Gitsigns |
+
+### Search & Replace
+
+| Keybinding | Mode | Description | Plugin |
+|------------|------|-------------|---------|
+| `<leader>s` | n | Open find and replace | Scooter |
+| `<leader>r` | v | Search selected text | Scooter |
+
+### UI & Window Management
+
+| Keybinding | Mode | Description | Plugin |
+|------------|------|-------------|---------|
+| `<leader>F` | n | Toggle window maximizer | Maximizer |
+| `gq` | n | Close current window | Built-in |
+| `<C-T>o` | n | Close all other tabs | Built-in |
+| `<leader>qq` | n | Quit all windows (soft) | Built-in |
+| `<leader>QQ` | n | Quit all windows (force) | Built-in |
+| `<leader><CR>` | n | Clear search highlights | Built-in |
+| `<leader>DD` | n | Dark theme (tokyonight-night) | Colorscheme |
+| `<leader>LL` | n | Light theme (tokyonight-day) | Colorscheme |
+
+### Editing & Text Manipulation
+
+| Keybinding | Mode | Description |
+|------------|------|-------------|
+| `jk` | i | Exit insert mode |
+| `<C-U>` | i | Uppercase current word |
+| `j` | n | Move down (respect folds) |
+| `k` | n | Move up (respect folds) |
+| `<leader>ww` | n | Save file (no autocmd) |
+| `<leader>w<CR>` | n | Save file (no autocmd) |
+
+**Additional editing features from plugins:**
+
+- **vim-surround**: `ys`, `cs`, `ds` for surrounding text
+- **quick-scope**: Highlights unique characters for `f`, `F`, `t`, `T` motions
+- **vim-peekaboo**: Shows register contents when using `"` or `@`
+- **nvim-autopairs**: Auto-close brackets, quotes, and HTML tags
+- **emmet-vim**: `<C-y>,` for HTML/CSS expansion
+
+## 📚 Plugin Ecosystem
+
+NairoVIM includes 70+ carefully selected plugins organized into functional categories. All plugins are lazy-loaded for optimal performance.
+
+### 🤖 AI & Code Assistance (4 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **avante.nvim** | Advanced AI coding assistant | Context-aware suggestions, slash commands, multi-provider support (Claude, GPT, Copilot) |
+| **copilot.lua** | GitHub Copilot integration | Real-time code completion, AI-powered suggestions |
+| **CopilotChat.nvim** | Copilot chat interface | Interactive AI conversations, code explanations |
+| **opencode.nvim** | AI terminal assistant | Terminal-based AI interaction, session management |
+
+### 🔍 LSP & Language Support (9 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **mason.nvim** | LSP/DAP/linter installer | Easy package management, auto-installation |
+| **mason-lspconfig.nvim** | Mason + lspconfig bridge | Automatic LSP server configuration |
+| **nvim-lspconfig** | LSP configuration | 20+ language server configurations |
+| **lspsaga.nvim** | Enhanced LSP UI | Beautiful hover docs, diagnostics, code actions |
+| **glance.nvim** | Peek definitions/references | Split-view code navigation |
+| **lsp-lens.nvim** | Show reference counts | Inline reference/implementation counts |
+| **lazydev.nvim** | Neovim Lua development | Type checking, completion for Neovim API |
+| **none-ls.nvim** | Formatting & diagnostics | Integrates external formatters/linters |
+| **mason-null-ls.nvim** | Mason + null-ls bridge | Auto-install formatters/linters |
+
+### 🐛 Debugging (3 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **nvim-dap** | Debug Adapter Protocol | Multi-language debugging support |
+| **nvim-dap-ui** | DAP user interface | Visual debugging panels, variable inspection |
+| **nvim-dap-vscode-js** | JavaScript/TypeScript debugging | Node.js, browser debugging |
+
+### 🌳 Git Integration (3 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **gitsigns.nvim** | Git decorations | Inline git blame, hunk operations, diff view |
+| **snacks.nvim** (lazygit) | Embedded Lazygit | Full git workflow in Neovim, staging, commits, push/pull |
+| **diffview.nvim** | Advanced diff viewer | Merge conflict resolution, file history |
+
+### 🔎 Search & Navigation (5 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **telescope.nvim** | Fuzzy finder | Files, grep, buffers, git branches, help tags |
+| **telescope-fzf-native.nvim** | FZF sorter for Telescope | Faster fuzzy matching |
+| **fzf-lua** | FZF Lua integration | Alternative fuzzy finder |
+| **nvim-tree.lua** | File explorer | Tree-style file management, git integration |
+| **grug-far.nvim** | Advanced search/replace (Scooter) | Project-wide find and replace |
+
+### 🎨 UI Enhancement (12 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **tokyonight.nvim** | Tokyo Night theme | Dark/light variants, extensive plugin support |
+| **catppuccin/nvim** | Catppuccin theme | Mocha, Macchiato, Frappe, Latte variants |
+| **gruvbox.nvim** | Gruvbox theme | Retro groove color scheme |
+| **nightfox.nvim** | Nightfox theme family | Multiple variants (nordfox, duskfox, etc.) |
+| **neovim-ayu** | Ayu theme | Mirage, dark, light variants |
+| **lualine.nvim** | Status line | Beautiful, customizable status bar |
+| **bufferline.nvim** | Buffer tabs | Visual buffer management |
+| **indent-blankline.nvim** | Indent guides | Visual indentation lines |
+| **noice.nvim** | Enhanced UI | Better command line, notifications, messages |
+| **nvim-notify** | Notification manager | Beautiful floating notifications |
+| **which-key.nvim** | Keybinding helper | Shows available keybindings as you type |
+| **dressing.nvim** | Better UI inputs | Enhanced vim.ui interfaces |
+
+### ✏️ Editing Tools (8 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **nvim-treesitter** | Syntax parsing | Better highlighting, text objects, code folding |
+| **nvim-cmp** | Completion engine | Autocomplete from multiple sources |
+| **nvim-autopairs** | Auto-close pairs | Brackets, quotes, HTML tags |
+| **vim-surround** | Surround text | Easily add/change/delete surroundings |
+| **quick-scope** | Better f/F/t/T motions | Highlights unique characters |
+| **vim-highlightedyank** | Highlight yanked text | Visual feedback for yanking |
+| **ReplaceWithRegister** | Replace with register | `gr` motion to replace text |
+| **nvim-ts-autotag** | Auto-close HTML tags | Treesitter-based tag completion |
+
+### 📝 Markdown Support (2 plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **render-markdown.nvim** | Markdown rendering | In-editor markdown preview |
+| **markdown-preview.nvim** | Browser preview | Live browser markdown preview |
+
+### 🔧 Utilities (10+ plugins)
+
+| Plugin | Description | Key Features |
+|--------|-------------|--------------|
+| **plenary.nvim** | Lua utilities | Required by many plugins |
+| **nui.nvim** | UI components | Popup, split, input components |
+| **nvim-web-devicons** | File icons | Beautiful file type icons |
+| **toggleterm.nvim** | Terminal manager | Floating/split terminals |
+| **zen-mode.nvim** | Distraction-free mode | Focused writing/coding |
+| **vim-peekaboo** | Register preview | Shows registers when using `"` or `@` |
+| **emmet-vim** | Emmet support | HTML/CSS expansion |
+| **lspkind.nvim** | VSCode-like icons | Icons for completion items |
+| **tiny-inline-diagnostic.nvim** | Inline diagnostics | Show diagnostics inline |
+| **img-clip.nvim** | Image clipboard | Paste images into markdown |
+| **conform.nvim** | Code formatting | Async formatting with multiple formatters |
+
+### 📦 Plugin Management
+
+| Plugin | Description |
+|--------|-------------|
+| **lazy.nvim** | Plugin manager | Lazy loading, lockfile, profiling |
 
 ## 🛠️ Post-Installation Setup
 
