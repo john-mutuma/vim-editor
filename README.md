@@ -6,26 +6,25 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 
 ## ✨ Key Features
 
-- 🤖 **AI-Powered Development** - Advanced AI ecosystem with Avante, GitHub Copilot, and MCP integration
+- 🤖 **AI-Powered Development** - Integrated OpenCode, Avante AI, and GitHub Copilot support
 - 🎨 **Beautiful UI** - Multiple themes with enhanced status bars and visual elements
 - 🔍 **Advanced Search** - Telescope fuzzy finder with FZF and Ripgrep integration
 - 📁 **Smart File Management** - Tree-style file explorer with git integration
 - 🌳 **Language Intelligence** - LSP support for 20+ programming languages
 - 🐛 **Integrated Debugging** - Debug Adapter Protocol with visual debugging
 - 📊 **Git Workflow** - Embedded Lazygit with diff viewing and conflict resolution
-- ⚡ **Performance Optimized** - Lazy-loaded plugins for fast startup
+- ⚡ **Performance Optimized** - Lazy-loaded plugins for fast startup (~40-120ms)
 - 🛠️ **Extensible** - 70+ carefully selected plugins with modular architecture
 
 ## 📋 Prerequisites
 
-Before installing NairoVIM, ensure you have these requirements:
-
 ### System Requirements
 
 - **macOS or Linux** (Windows WSL supported)
-- **Homebrew** - Package manager for macOS/Linux ([install here](https://brew.sh/))
+- **Homebrew** - Package manager ([install here](https://brew.sh/))
 - **Git** - Version control system
-- **Terminal with 256-color support** - iTerm2, Terminal.app, or equivalent
+- **Ghostty Terminal** - Modern terminal emulator (recommended, [install here](https://ghostty.org/))
+  - Alternative: iTerm2, Terminal.app, or any terminal with 256-color support
 
 ### Optional but Recommended
 
@@ -33,9 +32,7 @@ Before installing NairoVIM, ensure you have these requirements:
 - **Node.js** - For additional LSP servers and tools
 - **Python 3** - For certain Neovim plugins
 
-## 🚀 Installation
-
-### Quick Installation
+## 🚀 Quick Installation
 
 1. **Clone the repository**:
 
@@ -50,9 +47,20 @@ Before installing NairoVIM, ensure you have these requirements:
    ./install.sh
    ```
 
-3. **Start your development environment**:
+3. **Install Ghostty terminal** (recommended):
 
    ```bash
+   brew install --cask ghostty
+   ```
+
+4. **Start your development environment**:
+
+   ```bash
+   # Using Ghostty (recommended)
+   ghostty
+   nvim
+
+   # Or with tmux (optional)
    tmux
    nvim
    ```
@@ -60,18 +68,15 @@ Before installing NairoVIM, ensure you have these requirements:
 That's it! The installation script will:
 
 - ✅ Install Neovim and essential development tools
-- ✅ Set up tmux with enhanced configuration
+- ✅ Configure Ghostty with tmux-like keybindings
+- ✅ Set up tmux (optional, for legacy workflows)
 - ✅ Configure zsh with Oh My Zsh
 - ✅ Install and configure 70+ Neovim plugins
 - ✅ Set up development utilities (FZF, Ripgrep, Lazygit, etc.)
 - ✅ Create backups of existing configurations
 
-### Manual Installation Steps
-
-If you prefer manual installation or encounter issues:
-
 <details>
-<summary>Click to expand manual installation steps</summary>
+<summary>Manual Installation (click to expand)</summary>
 
 1. **Install Homebrew** (if not already installed):
 
@@ -82,28 +87,26 @@ If you prefer manual installation or encounter issues:
 2. **Install core dependencies**:
 
    ```bash
-   brew install neovim tmux fzf ripgrep bat
+   brew install neovim fzf ripgrep bat lazygit
+   brew install --cask ghostty  # Recommended terminal
    ```
 
 3. **Set up configuration files**:
 
    ```bash
    # Link dotfiles
-   ln -sf "$(pwd)/.vimrc" "$HOME/.vimrc"
-   ln -sf "$(pwd)/.tmux.conf" "$HOME/.tmux.conf"
+   ln -sf "$(pwd)/ghostty_config" "$HOME/.config/ghostty/config"
    ln -sf "$(pwd)/.zshrc" "$HOME/.zshrc"
 
    # Link Neovim config
    ln -sf "$(pwd)/nvim" "$HOME/.config/nvim"
-   ```
 
-4. **Install tmux plugins**:
-
-   ```bash
+   # Optional: tmux (legacy support)
+   ln -sf "$(pwd)/.tmux.conf" "$HOME/.tmux.conf"
    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
    ```
 
-5. **Install Oh My Zsh**:
+4. **Install Oh My Zsh**:
 
    ```bash
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -113,118 +116,244 @@ If you prefer manual installation or encounter issues:
 
 ## 🎯 Quick Start Guide
 
-### Essential Shortcuts (Leader key: `,`)
-
-#### **File Navigation & Search**
-
-- `<C-S>f` - Find git files (Telescope)
-- `<C-S>s` - Live grep search (Telescope)
-- `<C-S>b` - Switch buffers (Telescope)
-- `<C-S>r` - Recent files (Telescope)
-- `<C-S>y` - Git branches (Telescope)
-- `<C-n>` - Toggle file explorer (NvimTree)
-
-#### **Code Intelligence (LSP)**
-
-- `gd` - Go to definition (Glance)
-- `gi` - Go to implementation (Glance)
-- `gR` - Find references (Glance)
-- `gT` - Go to type definition (Glance)
-- `K` - Show hover documentation (Lspsaga)
-- `<leader>d` - Show line diagnostics (Lspsaga)
-- `<leader>D` - Show buffer diagnostics (Lspsaga)
-- `<leader>wd` - Show workspace diagnostics (Lspsaga)
-- `<leader>ca` - Code actions (Lspsaga)
-- `<leader>rn` - Rename symbol (Lspsaga)
-- `]e` - Next diagnostic (Lspsaga)
-- `[e` - Previous diagnostic (Lspsaga)
-
-#### **AI Assistant**
-
-- `:Copilot auth` - Authenticate with GitHub
-- `:AvanteAsk` - Ask Avante AI for code assistance
-- `:AvanteChat` - Open Avante chat interface
-- `:AvanteEdit` - Edit code with Avante suggestions
-- `<leader> af` -  Focus Avante chat sidebar
-
-#### **Git Integration**
-
-- `<leader>G` - Open Lazygit interface
-- `]c` - Next git hunk (Gitsigns)
-- `[c` - Previous git hunk (Gitsigns)
-- `<leader>hs` - Stage hunk (Gitsigns)
-- `<leader>hr` - Reset hunk (Gitsigns)
-- `<leader>hp` - Preview hunk (Gitsigns)
-- `<leader>hb` - Blame line (Gitsigns)
-
-#### **UI & Window Management**
-
-- `<leader>tr` - Toggle right panel (nvim-ide)
-- `<leader>tl` - Toggle left panel (nvim-ide)
-- `<leader>F` - Toggle window maximizer
-- `gq` - Close current window
-- `<C-T>o` - Close all other tabs
-- `<leader><CR>` - Clear search highlights
-
-### Common Workflows
-
-#### **Starting a Development Session**
+### Starting a Development Session
 
 ```bash
-# Start tmux session
-tmux
+# Open Ghostty terminal (recommended)
+ghostty
 
 # Open Neovim
 nvim
 
 # Find and open a file
-<C-S>f
+<Ctrl-s>f
 
 # Search for text across project
-<C-S>s
+<Ctrl-s>s
+
+# Open file explorer
+<Ctrl-n>
 ```
 
-#### **Git Workflow**
+#### Ghostty Terminal Features
+
+NairoVIM is optimized for Ghostty with built-in split and tab management:
 
 ```bash
-# Open git interface
-<leader>G
+# Splits (tmux-like bindings)
+<Ctrl-b> -      # Create horizontal split
+<Ctrl-b> \      # Create vertical split
+<Ctrl-b> h/j/k/l # Navigate between splits
 
-# Stage changes, commit, and push directly in Lazygit
+# Tabs
+<Ctrl-b> c      # Create new tab
+<Ctrl-b> n/p    # Next/previous tab
+<Ctrl-b> x      # Close tab
+
+# Zoom
+<Ctrl-b> z      # Toggle split zoom
+```
+
+> **Note:** tmux is still supported but considered a legacy option. Ghostty provides native split/tab management with better performance.
+
+### Essential Workflows
+
+#### Git Workflow
+
+```bash
+# Open integrated Lazygit
+,G
+
 # Use vim-style navigation: j/k to move, space to stage
+# Make commits and push directly from Neovim
 ```
 
-#### **AI-Assisted Coding**
+#### AI-Assisted Coding
 
 ```bash
+# Toggle OpenCode terminal (recommended)
+,ot
 
-# Use Avante AI for advanced assistance
-:AvanteAsk
+# Ask about current code
+,oa
 
-# Ask questions like:
-# "Explain this function"
-# "Optimize this code"
-# "Write unit tests for this"
-# "Generate PR description" (Avante slash command)
-
+# Add file context and ask questions
+,o+
+,oA
 ```
 
-## 🛠️ Post-Installation Setup
+## ⌨️ Essential Keybindings
 
-### Font Configuration
+The leader key is `,` by default. Here are the most commonly used keybindings:
 
-1. **Install a Nerd Font** (recommended: Hack Nerd Font):
+### File Navigation & Search
+
+| Keybinding | Description |
+|------------|-------------|
+| `<C-S>f` | Find git files (Telescope) |
+| `<C-S>s` | Live grep search across project |
+| `<C-S>b` | Switch buffers |
+| `<C-S>r` | Recent files |
+| `<C-n>` | Toggle file explorer |
+| `<C-F>f` | FZF git files (alternative) |
+
+### LSP & Code Intelligence
+
+| Keybinding | Description |
+|------------|-------------|
+| `gd` | Go to definition |
+| `gi` | Go to implementation |
+| `gR` | Find references |
+| `K` | Hover documentation |
+| `<leader>ca` | Code actions |
+| `<leader>rn` | Rename symbol |
+| `]e` / `[e` | Next/previous diagnostic |
+
+### AI Assistance (OpenCode)
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>ot` | Toggle OpenCode terminal |
+| `<leader>oa` | Ask about cursor/selection |
+| `<leader>o+` | Add buffer/selection to context |
+| `<leader>oe` | Explain code at cursor |
+| `<leader>on` | New AI session |
+
+### Git Integration
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>G` | Open Lazygit |
+| `]c` / `[c` | Next/previous git hunk |
+| `<leader>hs` | Stage hunk |
+| `<leader>hp` | Preview hunk |
+| `<leader>hb` | Blame line |
+
+### Window Management
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>F` | Maximize current window |
+| `<leader>s` | Find and replace (Scooter) |
+| `<leader><CR>` | Clear search highlights |
+| `jk` | Exit insert mode |
+
+> 📖 **See complete keybinding reference**: Check [ARCHITECTURE.md](doc/ARCHITECTURE.md#complete-keybinding-reference) for all 70+ keybindings.
+
+## 🤖 AI Assistance Setup
+
+### OpenCode - Primary AI Assistant (Recommended)
+
+**OpenCode** provides seamless AI assistance directly in your terminal with full context awareness.
+
+#### Quick Setup
+
+1. **Set your Anthropic API key**:
 
    ```bash
-   brew tap homebrew/cask-fonts
-   brew install --cask font-hack-nerd-font
+   # Add to ~/.zshrc or ~/.bashrc
+   export ANTHROPIC_API_KEY="your-api-key-here"
+
+   # Reload shell
+   source ~/.zshrc
    ```
 
-2. **Configure your terminal** to use the Nerd Font for proper icon display
+2. **Get your API key** from [Anthropic Console](https://console.anthropic.com/)
 
-### Git Configuration
+3. **Start using OpenCode**:
 
-Add these settings to your `~/.gitconfig` for optimal git integration:
+   ```bash
+   # In Neovim
+   ,ot  # Toggle OpenCode terminal
+   ```
+
+#### Basic Usage
+
+```bash
+# Ask about current code
+,oa
+
+# Add file to context
+,o+
+
+# Ask general question with context
+,oA
+
+# Explain code at cursor
+,oe
+
+# Start new session
+,on
+```
+
+**Key Features:**
+
+- ✅ Context-aware with multi-file support
+- ✅ Session persistence
+- ✅ Beautiful markdown rendering in terminal
+- ✅ Fast & efficient
+- ✅ Direct API calls (privacy-focused)
+
+**Cost:** ~$0.01-$0.05 per query, ~$0.50-$2.00 daily for typical usage
+
+> 📖 **For alternative AI tools** (Avante, Copilot): See [ARCHITECTURE.md - AI Tools](doc/ARCHITECTURE.md#ai-tools)
+
+## 🎨 Post-Installation Setup
+
+### 1. Configure Ghostty Terminal (Recommended)
+
+NairoVIM includes a pre-configured Ghostty setup with:
+
+- **TokyoNight theme** (auto-switching dark/light modes)
+- **tmux-like keybindings** for splits and tabs
+- **Optimized font rendering**
+
+The installation script automatically links the config, but you can verify:
+
+```bash
+# Check Ghostty config location
+cat ~/.config/ghostty/config
+
+# Key features:
+# - Ctrl+b prefix (tmux-style) for splits/tabs
+# - TokyoNight theme with dark/light auto-switching
+# - Font size 12 for optimal readability
+```
+
+**Ghostty vs tmux:**
+
+- ✅ **Ghostty**: Native splits/tabs, better performance, modern GPU rendering
+- ⚠️ **tmux**: Legacy option, session persistence, remote development
+
+> **Recommendation:** Use Ghostty for local development, tmux only for remote SSH sessions.
+
+### 2. Install a Nerd Font
+
+```bash
+# Recommended: Hack Nerd Font
+brew tap homebrew/cask-fonts
+brew install --cask font-hack-nerd-font
+```
+
+Ghostty is pre-configured to use Nerd Font-compatible rendering.
+
+### 3. Set Up Language Servers
+
+```bash
+# In Neovim, open Mason
+:Mason
+
+# Install language servers for your languages:
+# - TypeScript: typescript-language-server
+# - Python: pyright
+# - Rust: rust-analyzer
+# - Go: gopls
+# Navigate with j/k, press 'i' to install
+```
+
+### 4. Configure Git
+
+Add to `~/.gitconfig`:
 
 ```yaml
 [core]
@@ -233,199 +362,82 @@ Add these settings to your `~/.gitconfig` for optimal git integration:
   tool = nvim
 [mergetool "nvim"]
   cmd = nvim -c "DiffviewOpen"
-[mergetool]
-  prompt = false
 ```
 
-## 🤖 AI Assistance Setup
-
-NairoVIM features a powerful AI ecosystem with three integrated systems:
-
-### Avante AI - Advanced Code Assistant
-
-**Avante** is an AI-powered coding assistant that provides context-aware suggestions and code generation.
-
-**Key Features:**
-
-- **Context-Aware**: Automatically includes project context and MCP server information
-- **Multiple Providers**: Supports Claude Sonnet, GitHub Copilot, and other AI models
-- **Slash Commands**: Custom commands like `/pr_description` for generating PR descriptions
-- **Code Editing**: Direct code modification with AI suggestions
-- **File Integration**: Automatically includes relevant project files (like .github directory)
-
-**Usage:**
-
-```bash
-# Ask Avante for assistance
-:AvanteAsk
-
-# Open interactive chat
-:AvanteChat
-
-# Edit selected code with AI
-:AvanteEdit
-
-# Use slash commands in chat
-/pr_description  # Generate PR title and description
-```
-
-### GitHub Copilot - Code Completion
-
-**Setup:**
-
-1. **Authenticate with GitHub**:
-
-   ```bash
-   # In Neovim
-   :Copilot auth
-   ```
-
-2. **Check status**:
-
-   ```bash
-   :Copilot status
-   ```
-
-**Usage:**
-
-- Real-time code suggestions as you type
-- Chat interface with `<leader>cp`
-- Context-aware completions
-
-### MCPHub - Model Context Protocol Integration
-
-**MCPHub** enables integration with external tools and services through the Model Context Protocol.
-
-**Key Features:**
-
-- **Tool Integration**: Connect to external APIs, databases, and services
-- **Context Sharing**: Share workspace context with AI assistants
-- **Extensible**: Add custom MCP servers for specialized workflows
-- **Avante Integration**: Seamlessly works with Avante for enhanced capabilities
-
-**Available MCP Servers:**
-
-- **Neovim**: Direct editor integration and file operations
-- **Fetch**: Web content retrieval and processing
-- **Additional servers**: Can be added based on your workflow needs
-
-**Usage:**
-
-```bash
-# Explore and manage MCP servers
-:MCPHub
-
-# MCPHub integrates automatically with Avante
-# No manual setup required - works behind the scenes
-# Provides additional context and capabilities to AI assistants
-```
-
-### Language Server Setup
-
-1. **Open Mason** (LSP manager):
-
-   ```bash
-   # In Neovim
-   :Mason
-   ```
-
-2. **Install language servers** for your preferred languages:
-   - TypeScript: `typescript-language-server`
-   - Python: `pyright`
-   - Rust: `rust-analyzer`
-   - Go: `gopls`
-   - And many more...
-
-## 🎨 Customization
-
-### Theme Selection
-
-Choose from multiple beautiful themes:
-
-```bash
-# In Neovim
-:colorscheme <Tab><Tab>
-
-# Available themes:
-# - catppuccin (default)
-# - gruvbox
-# - tokyonight
-# - dracula
-# - monokai
-```
-
-### Plugin Management
-
-```bash
-# Install/update plugins
-:Lazy
-
-# Mason (LSP/tools)
-:Mason
-
-# Check plugin status
-:Lazy health
-```
-
-## 📱 Screenshots
+## 📸 Screenshots
 
 ### Dashboard
 
 ![NairoVIM Dashboard](examples/screenshot_dashboard.png)
-*Homepage dashboard*
 
 ### Git Integration
 
 ![Embedded Lazygit](examples/screenshot_git-integration.png)
-*Seamless git workflow with embedded Lazygit*
 
 ### AI Assistant
 
-![GitHub Copilot Chat](examples/screenshot_AI-assistant.png)
-*AI-powered coding assistance with Avante AI - GitHub Copilot*
+![AI Assistant](examples/screenshot_AI-assistant.png)
 
-![MCP Hub](examples/screenshot_mcp-hub.png)
-*MCP hub to manage your active MCP servers*
+### LSP Support
 
-### LSP support
+![Hover Documentation](examples/screenshot_lsp_hoverdoc.png)
+![Peek Definition](examples/screenshot_lsp_peek-definition.png)
 
-![hoverdocs](examples/screenshot_lsp_hoverdoc.png)
-*LSP hoverdocs*
+## 🎨 Customization
 
-![peek-definition](examples/screenshot_lsp_peek-definition.png)
-*LSP hoverdocs*
-
-## 🔧 Advanced Configuration
-
-### Working with Language Servers
-
-- **Install LSP servers**: `:Mason` → Browse and install
-- **Configure formatters**: `:NullLsInstall` for current filetype
-- **Debug adapters**: `:DapInstall` for debugging support
-
-### Tmux Enhancements
-
-- **Plugin management**: `prefix + I` to install plugins
-- **Session management**: `prefix + S` to synchronize panes
-- **Smart navigation**: `prefix + h/j/k/l` for vim-style pane navigation
-
-### Terminal Optimization
-
-Set up italic text support in iTerm2:
+### Change Theme
 
 ```bash
-# Follow instructions at:
-# https://weibeld.net/terminals-and-shells/italics.html
+# In Neovim
+:colorscheme <Tab>
+
+# Available themes:
+# - tokyonight-night (default dark)
+# - tokyonight-day (light)
+# - catppuccin
+# - gruvbox
+# - nightfox
+```
+
+Or use keybindings:
+
+- `<leader>DD` - Dark theme (tokyonight-night)
+- `<leader>LL` - Light theme (tokyonight-day)
+
+### Manage Plugins
+
+```bash
+# Open plugin manager
+:Lazy
+
+# Common operations:
+# - Update plugins: U
+# - Install new: I
+# - Clean unused: X
+# - View logs: L
+
+# Open LSP/tool manager
+:Mason
+```
+
+### Disable Unwanted Plugins
+
+Edit the plugin file (e.g., `lua/nairovim/plugins/plugin-name.lua`):
+
+```lua
+return {
+  "plugin/name",
+  enabled = false,  -- Add this line
+}
 ```
 
 ## 🆘 Troubleshooting
 
-### Common Issues
+### Quick Fixes
 
 **Plugins not loading:**
 
 ```bash
-# In Neovim
 :Lazy restore
 :Lazy sync
 ```
@@ -433,31 +445,38 @@ Set up italic text support in iTerm2:
 **LSP not working:**
 
 ```bash
-# Check LSP status
 :LspInfo
-
-# Install language server
-:Mason
+:Mason  # Install language servers
 ```
 
-**Git integration issues:**
+**Icons not showing:**
 
 ```bash
-# Verify git configuration
-git config --list
-
-# Check Lazygit installation
-lazygit --version
+# Install Nerd Font and configure terminal to use it
+brew install --cask font-hack-nerd-font
 ```
 
-**Font icons not displaying:**
+**Slow startup:**
 
-- Ensure Nerd Font is installed and selected in terminal
-- Verify terminal supports Unicode
+```bash
+# Profile plugins
+:Lazy profile
+
+# Disable unused plugins (see Customization above)
+```
+
+> 📖 **Comprehensive troubleshooting guide**: See [TROUBLESHOOTING.md](doc/TROUBLESHOOTING.md)
+
+## 📚 Documentation
+
+- **[ARCHITECTURE.md](doc/ARCHITECTURE.md)** - Technical details, plugin ecosystem, complete keybindings
+- **[TROUBLESHOOTING.md](doc/TROUBLESHOOTING.md)** - Detailed issue resolution guide
+- **[FAQ.md](doc/FAQ.md)** - Frequently asked questions
+- **[CONTRIBUTING.md](doc/CONTRIBUTING.md)** - Contribution guidelines
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [contributing guidelines](CONTRIBUTING.md) for details.
+We welcome contributions! Please see [CONTRIBUTING.md](doc/CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
@@ -485,4 +504,4 @@ NairoVIM is built on the shoulders of giants. Special thanks to:
 :::::..:::::::::::::::::::::::::::::::::::::::...::::::::::::::::::
 ```
 
-**Ready to transform your coding experience? [Get started now](#-installation)!**
+**Ready to transform your coding experience? [Get started now](#-quick-installation)!**
