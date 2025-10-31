@@ -9,6 +9,7 @@ Complete technical documentation for NairoVIM's architecture, plugin ecosystem, 
 - [Configuration Flow](#configuration-flow)
 - [Performance](#performance)
 - [Plugin Ecosystem](#plugin-ecosystem)
+- [Terminal & Shell Integration](#terminal--shell-integration)
 - [Complete Keybinding Reference](#complete-keybinding-reference)
 - [AI Tools](#ai-tools)
 - [Security Considerations](#security-considerations)
@@ -265,6 +266,123 @@ NairoVIM includes 70+ carefully selected plugins organized into functional categ
 | Plugin | Description |
 |--------|-------------|
 | **lazy.nvim** | Plugin manager | Lazy loading, lockfile, profiling |
+
+---
+
+## Terminal & Shell Integration
+
+NairoVIM integrates seamlessly with modern terminal emulators and shell workflows.
+
+### Recommended Terminal: Ghostty
+
+**Ghostty** is the recommended terminal for local development with NairoVIM. It offers:
+
+- ⚡ **GPU-accelerated rendering** - Blazing fast performance
+- 🎨 **Native transparency & blur** - Beautiful UI integration
+- ⌨️ **Built-in split/tab management** - No multiplexer needed
+- 🔧 **tmux-like keybindings** - Familiar Ctrl+b prefix workflow
+- 🎯 **Modern features** - Native ligatures, color schemes, shell integration
+
+**Key Features:**
+
+| Feature | Ghostty | tmux (Legacy) |
+|---------|---------|---------------|
+| **Performance** | GPU-accelerated, instant splits | Terminal + multiplexer overhead |
+| **UI Integration** | Native transparency/blur | Requires terminal support |
+| **Split Management** | Built-in (Ctrl+b prefix) | Requires tmux session |
+| **Tab Support** | Native tabs with animations | Windows/panes only |
+| **Configuration** | Single config file | Separate .tmux.conf |
+| **Use Case** | **Local development (recommended)** | Remote/SSH workflows only |
+
+**Ghostty Keybindings:**
+
+```bash
+# Splits
+Ctrl+b + |     # Vertical split
+Ctrl+b + -     # Horizontal split
+
+# Navigation
+Ctrl+b + h/j/k/l   # Navigate between splits
+Ctrl+b + [         # Navigate split focus
+
+# Tabs
+Ctrl+b + c     # New tab
+Ctrl+b + n/p   # Next/previous tab
+Ctrl+b + 0-9   # Jump to tab number
+
+# Zoom
+Ctrl+b + z     # Toggle zoom on current split
+
+# Management
+Ctrl+b + x     # Close current split/tab
+Ctrl+b + &     # Kill current window
+```
+
+**Installation & Configuration:**
+
+```bash
+# Install via Homebrew
+brew install --cask ghostty
+
+# Config is auto-linked by install.sh
+~/.config/ghostty/config -> ~/vim-editor/ghostty_config
+
+# Pre-configured with:
+# - TokyoNight theme
+# - tmux-like keybindings (Ctrl+b prefix)
+# - Hack Nerd Font
+# - Shell integration
+# - 95% opacity with blur
+```
+
+### Legacy Option: tmux
+
+> **Note:** tmux is supported but relegated to legacy/remote workflows only. For local development, use Ghostty.
+
+**When to use tmux:**
+
+- ✅ SSH/remote development
+- ✅ Server administration
+- ✅ Session persistence requirements
+- ❌ Local development (use Ghostty instead)
+
+**tmux Features:**
+
+- Session persistence across disconnects
+- Complex pane layouts
+- Copy mode with vi keybindings
+- Scriptable multiplexing
+
+**Installation:**
+
+```bash
+# Optional - only if you need tmux for remote work
+brew install tmux
+
+# TPM (tmux plugin manager) - optional
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+### Shell Configuration
+
+NairoVIM includes a pre-configured `.zshrc` with:
+
+- **oh-my-zsh** framework
+- **Powerlevel10k** theme
+- **fzf** integration (Ctrl+R, Ctrl+T)
+- **vi-mode** keybindings
+- **zsh-autosuggestions**
+- **git aliases** and completions
+- **bun runtime** with PATH setup
+- **nvim** as default editor
+
+**Environment Variables:**
+
+```bash
+export EDITOR="nvim"
+export VISUAL="nvim"
+export ANTHROPIC_API_KEY="your-key"  # For Avante AI
+```
 
 ---
 

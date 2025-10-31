@@ -32,9 +32,31 @@ Common questions and answers about NairoVIM installation, configuration, and usa
 
 **A:** Neovim 0.9.0 or higher is required. The installation script automatically installs the latest stable version via Homebrew. Check your version with `nvim --version`.
 
-### Q: Can I use NairoVIM without tmux?
+### Q: Should I use Ghostty or tmux?
 
-**A:** Yes! While tmux enhances the terminal experience with window management and session persistence, NairoVIM works perfectly fine as a standalone Neovim configuration. The tmux integration is optional.
+**A:** **Ghostty is now the recommended terminal** for NairoVIM. It provides native split and tab management with better performance and modern GPU rendering. tmux is considered a legacy option, primarily useful for:
+- Remote SSH sessions requiring session persistence
+- Workflows that depend heavily on tmux plugins
+- Transitioning from existing tmux workflows
+
+For local development, Ghostty offers superior performance and a more integrated experience.
+
+### Q: How do I use Ghostty splits and tabs?
+
+**A:** NairoVIM configures Ghostty with familiar tmux-like keybindings:
+
+**Splits:**
+- `Ctrl+b` then `-` - Horizontal split
+- `Ctrl+b` then `\` - Vertical split
+- `Ctrl+b` then `h/j/k/l` - Navigate splits
+- `Ctrl+b` then `z` - Toggle zoom
+
+**Tabs:**
+- `Ctrl+b` then `c` - New tab
+- `Ctrl+b` then `n/p` - Next/previous tab
+- `Ctrl+b` then `x` - Close tab
+
+These are pre-configured in the included `ghostty_config` file.
 
 ### Q: How long does the installation take?
 
@@ -380,7 +402,7 @@ You can even use the [VSCode Neovim extension](https://marketplace.visualstudio.
 
 **A:** NairoVIM focuses on:
 - **AI-first development** - Built-in OpenCode, Avante, Copilot
-- **Terminal workflow** - Deep tmux + lazygit + scooter integration
+- **Terminal workflow** - Native Ghostty splits/tabs + lazygit + scooter integration
 - **Modular architecture** - Easy to understand and customize
 - **Performance** - Aggressive lazy loading, ~40-120ms startup
 - **Complete documentation** - Extensive guides for all features
@@ -402,7 +424,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 - Over SSH (full functionality)
 - Inside Docker containers
 - On remote servers
-- Via tmux for persistent sessions
+- Via Ghostty splits/tabs (or tmux for remote sessions)
 
 All features work remotely since it's terminal-based.
 
@@ -456,7 +478,7 @@ Check the repository for links to community channels.
 |---------|----------|---------|----------|
 | **Focus** | AI-first dev workflow | Minimal core | Feature-complete distribution |
 | **AI Tools** | OpenCode + Avante + Copilot | Limited | Limited |
-| **Terminal Integration** | Deep (tmux, lazygit, scooter) | Basic | Basic |
+| **Terminal Integration** | Deep (Ghostty, lazygit, scooter) | Basic | Basic |
 | **Customization** | Modular Lua configs | LazyExtras system | AstroUI + overrides |
 | **Learning Curve** | Moderate | Moderate | Steeper |
 | **Startup Time** | ~40-120ms | ~30-80ms | ~50-150ms |

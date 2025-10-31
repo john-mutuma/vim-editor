@@ -23,7 +23,8 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 - **macOS or Linux** (Windows WSL supported)
 - **Homebrew** - Package manager ([install here](https://brew.sh/))
 - **Git** - Version control system
-- **Terminal with 256-color support** - iTerm2, Terminal.app, Ghostty, or equivalent
+- **Ghostty Terminal** - Modern terminal emulator (recommended, [install here](https://ghostty.org/))
+  - Alternative: iTerm2, Terminal.app, or any terminal with 256-color support
 
 ### Optional but Recommended
 
@@ -46,9 +47,20 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
    ./install.sh
    ```
 
-3. **Start your development environment**:
+3. **Install Ghostty terminal** (recommended):
 
    ```bash
+   brew install --cask ghostty
+   ```
+
+4. **Start your development environment**:
+
+   ```bash
+   # Using Ghostty (recommended)
+   ghostty
+   nvim
+   
+   # Or with tmux (optional)
    tmux
    nvim
    ```
@@ -56,7 +68,8 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 That's it! The installation script will:
 
 - ✅ Install Neovim and essential development tools
-- ✅ Set up tmux with enhanced configuration
+- ✅ Configure Ghostty with tmux-like keybindings
+- ✅ Set up tmux (optional, for legacy workflows)
 - ✅ Configure zsh with Oh My Zsh
 - ✅ Install and configure 70+ Neovim plugins
 - ✅ Set up development utilities (FZF, Ripgrep, Lazygit, etc.)
@@ -74,27 +87,26 @@ That's it! The installation script will:
 2. **Install core dependencies**:
 
    ```bash
-   brew install neovim tmux fzf ripgrep bat lazygit
+   brew install neovim fzf ripgrep bat lazygit
+   brew install --cask ghostty  # Recommended terminal
    ```
 
 3. **Set up configuration files**:
 
    ```bash
    # Link dotfiles
-   ln -sf "$(pwd)/.tmux.conf" "$HOME/.tmux.conf"
+   ln -sf "$(pwd)/ghostty_config" "$HOME/.config/ghostty/config"
    ln -sf "$(pwd)/.zshrc" "$HOME/.zshrc"
    
    # Link Neovim config
    ln -sf "$(pwd)/nvim" "$HOME/.config/nvim"
-   ```
-
-4. **Install tmux plugins**:
-
-   ```bash
+   
+   # Optional: tmux (legacy support)
+   ln -sf "$(pwd)/.tmux.conf" "$HOME/.tmux.conf"
    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
    ```
 
-5. **Install Oh My Zsh**:
+4. **Install Oh My Zsh**:
 
    ```bash
    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -107,8 +119,8 @@ That's it! The installation script will:
 ### Starting a Development Session
 
 ```bash
-# Start tmux session
-tmux
+# Open Ghostty terminal (recommended)
+ghostty
 
 # Open Neovim
 nvim
@@ -122,6 +134,27 @@ nvim
 # Open file explorer
 <Ctrl-n>
 ```
+
+#### Ghostty Terminal Features
+
+NairoVIM is optimized for Ghostty with built-in split and tab management:
+
+```bash
+# Splits (tmux-like bindings)
+<Ctrl-b> -      # Create horizontal split
+<Ctrl-b> \      # Create vertical split
+<Ctrl-b> h/j/k/l # Navigate between splits
+
+# Tabs
+<Ctrl-b> c      # Create new tab
+<Ctrl-b> n/p    # Next/previous tab
+<Ctrl-b> x      # Close tab
+
+# Zoom
+<Ctrl-b> z      # Toggle split zoom
+```
+
+> **Note:** tmux is still supported but considered a legacy option. Ghostty provides native split/tab management with better performance.
 
 ### Essential Workflows
 
@@ -266,7 +299,32 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 
 ## 🎨 Post-Installation Setup
 
-### 1. Install a Nerd Font
+### 1. Configure Ghostty Terminal (Recommended)
+
+NairoVIM includes a pre-configured Ghostty setup with:
+- **TokyoNight theme** (auto-switching dark/light modes)
+- **tmux-like keybindings** for splits and tabs
+- **Optimized font rendering**
+
+The installation script automatically links the config, but you can verify:
+
+```bash
+# Check Ghostty config location
+cat ~/.config/ghostty/config
+
+# Key features:
+# - Ctrl+b prefix (tmux-style) for splits/tabs
+# - TokyoNight theme with dark/light auto-switching
+# - Font size 12 for optimal readability
+```
+
+**Ghostty vs tmux:**
+- ✅ **Ghostty**: Native splits/tabs, better performance, modern GPU rendering
+- ⚠️ **tmux**: Legacy option, session persistence, remote development
+
+> **Recommendation:** Use Ghostty for local development, tmux only for remote SSH sessions.
+
+### 2. Install a Nerd Font
 
 ```bash
 # Recommended: Hack Nerd Font
@@ -274,9 +332,9 @@ brew tap homebrew/cask-fonts
 brew install --cask font-hack-nerd-font
 ```
 
-Then configure your terminal to use the Nerd Font.
+Ghostty is pre-configured to use Nerd Font-compatible rendering.
 
-### 2. Set Up Language Servers
+### 3. Set Up Language Servers
 
 ```bash
 # In Neovim, open Mason
@@ -290,7 +348,7 @@ Then configure your terminal to use the Nerd Font.
 # Navigate with j/k, press 'i' to install
 ```
 
-### 3. Configure Git
+### 4. Configure Git
 
 Add to `~/.gitconfig`:
 

@@ -45,7 +45,8 @@ source ~/.zshrc
 ./install.sh 2>&1 | tee install.log
 
 # Run individual steps manually if needed
-brew install neovim tmux fzf ripgrep bat lazygit
+brew install neovim fzf ripgrep bat lazygit
+brew install --cask ghostty  # Recommended terminal
 
 # Verify installations
 nvim --version
@@ -474,9 +475,12 @@ brew tap homebrew/cask-fonts
 brew install --cask font-hack-nerd-font
 
 # Configure terminal to use Nerd Font
+# Ghostty (recommended): Edit ~/.config/ghostty/config
+font-family = "Hack Nerd Font Mono"
+
+# Other terminals:
 # iTerm2: Preferences → Profiles → Text → Font
 # Terminal.app: Preferences → Profiles → Text → Font
-# Ghostty: Edit config file
 
 # Verify font
 # Open terminal and check if icons display correctly
@@ -517,6 +521,11 @@ source ~/.zshrc
 
 ```bash
 # Check terminal supports transparency
+# Ghostty (recommended): Edit ~/.config/ghostty/config
+background-opacity = 0.95  # Adjust 0.0-1.0
+background-blur-radius = 20
+
+# Other terminals:
 # iTerm2: Preferences → Profiles → Window → Transparency
 
 # Check winblend settings in Neovim
@@ -552,7 +561,8 @@ winblend = 12,  # Adjust value 0-100
 update_in_insert = false,
 
 # Check terminal performance
-# Try different terminal emulator
+# Recommended: Use Ghostty for best performance
+# Alternative: Try different terminal emulator (iTerm2, Alacritty)
 ```
 
 ### Status line not showing
@@ -746,7 +756,87 @@ vim.keymap.set("n", "<key>", callback, { noremap = true })
 
 ## Terminal and Shell Issues
 
-### Tmux integration not working
+### Ghostty terminal issues
+
+**Problem:** Ghostty terminal not working as expected with Neovim.
+
+**Solution:**
+
+```bash
+# Check Ghostty is installed
+ghostty --version
+
+# Install if missing
+brew install --cask ghostty
+
+# Verify configuration file exists
+cat ~/.config/ghostty/config
+# Or
+cat ~/Library/Application\ Support/com.mitchellh.ghostty/config
+
+# Check TERM variable
+echo $TERM  # Should be xterm-256color
+
+# Reload Ghostty config
+# Cmd + , (Preferences) or restart Ghostty
+
+# Test keybindings (should use Ctrl+b prefix)
+# Ctrl+b + | (vertical split)
+# Ctrl+b + - (horizontal split)
+# Ctrl+b + [ (navigate panes)
+```
+
+### Ghostty config not loaded
+
+**Problem:** Custom Ghostty configuration not applying.
+
+**Solution:**
+
+```bash
+# Check config file location
+ls -la ~/.config/ghostty/config
+
+# If missing, create symlink (should be done by install.sh)
+ln -sf ~/path/to/vim-editor/ghostty_config ~/.config/ghostty/config
+
+# Verify config syntax
+ghostty --config-check
+
+# Restart Ghostty application
+# macOS: Cmd + Q, then reopen
+
+# Check if shell integration is working
+echo $GHOSTTY_RESOURCES_DIR
+```
+
+### Ghostty splits not working
+
+**Problem:** Keybindings for splits/tabs don't work.
+
+**Solution:**
+
+```bash
+# Verify keybindings in config
+grep "keybind" ~/.config/ghostty/config
+
+# Try alternative keybindings
+# Ctrl+b + | (vertical split)
+# Ctrl+b + - (horizontal split)
+# Ctrl+b + c (new tab)
+# Ctrl+b + n/p (next/previous tab)
+
+# If keybindings conflict, check macOS shortcuts
+# System Preferences → Keyboard → Shortcuts
+
+# Try Cmd-based alternatives
+# Cmd + d (vertical split)
+# Cmd + Shift + d (horizontal split)
+# Cmd + t (new tab)
+```
+
+### Tmux integration not working (Legacy)
+
+> **Note:** tmux is supported for legacy/remote workflows only. For local development, Ghostty terminal is recommended.
 
 **Problem:** Tmux features not working with Neovim.
 
