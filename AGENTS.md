@@ -4,6 +4,60 @@ Brief, concise history of AI-assisted development tasks.
 
 ---
 
+## 2025-11-01: Plugin Cleanup - Search/Replace Tool Consolidation
+
+**Commits:** `e4fc277`, `7d48b2e`, `f5aedba` | `continous-development` branch
+
+Completed plugin redundancy cleanup by removing grug-far and refactoring scooter terminal to use Snacks.terminal API.
+
+### Problem
+- Multiple redundant plugins identified in previous session (toggleterm, nvim-notify, zen-mode, grug-far)
+- toggleterm was replaced by Snacks.terminal but scooter still used old API
+- grug-far and scooter both provided search/replace functionality
+- Configuration complexity from duplicate tools
+
+### Solution
+**Commit e4fc277 - Refactor scooter terminal:**
+- Replaced `toggleterm.terminal.Terminal` API with `Snacks.terminal()`
+- Maintained backdrop functionality and on_exit callbacks
+- Updated `EditLineFromScooter` and `OpenScooterSearchText` global functions
+- Improved terminal window detection to check for snacks_terminal buffer pattern
+
+**Commit 7d48b2e - Remove grug-far:**
+- Removed grug-far plugin from init.lua (Search/Replace section)
+- Updated Snacks dashboard key `F` to use `:FindReplace` (scooter) instead of `:GrugFar`
+- Kept scooter for better terminal integration with custom backdrop
+
+**Commit f5aedba - Update lazy-lock.json:**
+- Removed grug-far.nvim from plugin lockfile
+- Synced plugin state after removal
+
+### Design Decisions
+1. **Scooter over grug-far**: Scooter has dedicated keybindings (`<leader>s`, visual `<leader>r`) and better terminal integration
+2. **Keep quick-scope and vim-peekaboo**: User requested to keep these for now despite no explicit config
+3. **Snacks.terminal API**: Consistent with rest of config after toggleterm removal
+
+### Changes Made
+- ✅ nvim/lua/nairovim/plugins/scooter.lua: Refactored to Snacks.terminal API (~100 lines)
+- ✅ nvim/lua/nairovim/plugins/init.lua: Removed grug-far plugin (-7 lines)
+- ✅ nvim/lua/nairovim/plugins/snacks.lua: Updated dashboard Find/Replace action
+- ✅ nvim/lazy-lock.json: Removed grug-far.nvim entry
+- ✅ Total changes: 4 files, +2, -67 lines
+
+### Impact
+- **Reduced complexity**: Single search/replace tool instead of two
+- **Better consistency**: All terminal features now use Snacks.terminal
+- **Maintained functionality**: All scooter features work identically
+- **Cleaner codebase**: Eliminated ~67 lines of redundant configuration
+
+### Files Modified
+- `nvim/lua/nairovim/plugins/scooter.lua` (refactored)
+- `nvim/lua/nairovim/plugins/init.lua` (grug-far removed)
+- `nvim/lua/nairovim/plugins/snacks.lua` (dashboard updated)
+- `nvim/lazy-lock.json` (grug-far removed)
+
+---
+
 ## 2025-11-01: Documentation Navigation Enhancement - Table of Contents
 
 **Commit:** `80aa0fa` | `continous-development` branch
