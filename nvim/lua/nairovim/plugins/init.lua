@@ -94,6 +94,5 @@ return {
     },
 
     -- Other utility plugins
-    -- Terminal
-    { "akinsho/toggleterm.nvim", version = "*", config = true },
+    -- Terminal functionality provided by Snacks.nvim
 }
