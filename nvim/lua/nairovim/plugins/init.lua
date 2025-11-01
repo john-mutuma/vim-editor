@@ -52,14 +52,7 @@ return {
     },
 
     -- Search/Replace
-    {
-        {
-            "MagicDuck/grug-far.nvim",
-            config = function()
-                require("grug-far").setup({})
-            end,
-        },
-    },
+    -- Search and replace functionality provided by scooter terminal (keybinding: <leader>s)
 
     -- Markdown
     {

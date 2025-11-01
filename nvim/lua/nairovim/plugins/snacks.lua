@@ -59,7 +59,7 @@ You are in %s
                             action = ":lua Snacks.dashboard.pick('files')",
                         },
                         { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-                        { icon = " ", key = "F", desc = "Find/Replace", action = ":GrugFar" },
+                        { icon = " ", key = "F", desc = "Find/Replace", action = ":FindReplace" },
                         {
                             icon = " ",
                             key = "g",
