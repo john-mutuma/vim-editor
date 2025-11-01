@@ -12,7 +12,7 @@ M.mappings = {
         handler = function()
             require("opencode").toggle()
         end,
-        opts = { desc = "Toggle" },
+        opts = { desc = "OpenCode: Toggle" },
     },
     -- OpenCode AI - Ask (general)
     {
@@ -21,7 +21,7 @@ M.mappings = {
         handler = function()
             require("opencode").ask()
         end,
-        opts = { desc = "Ask" },
+        opts = { desc = "OpenCode: Ask" },
     },
     -- OpenCode AI - Ask about cursor
     {
@@ -30,7 +30,7 @@ M.mappings = {
         handler = function()
             require("opencode").ask("@cursor: ")
         end,
-        opts = { desc = "Ask about this" },
+        opts = { desc = "OpenCode: Ask about this" },
     },
     -- OpenCode AI - Ask about selection
     {
@@ -39,7 +39,7 @@ M.mappings = {
         handler = function()
             require("opencode").ask("@selection: ")
         end,
-        opts = { desc = "Ask about selection" },
+        opts = { desc = "OpenCode: Ask about selection" },
     },
     -- OpenCode AI - Add buffer to prompt
     {
@@ -48,7 +48,7 @@ M.mappings = {
         handler = function()
             require("opencode").append_prompt("@buffer")
         end,
-        opts = { desc = "Add buffer to prompt" },
+        opts = { desc = "OpenCode: Add buffer to prompt" },
     },
     -- OpenCode AI - Add selection to prompt
     {
@@ -57,7 +57,7 @@ M.mappings = {
         handler = function()
             require("opencode").append_prompt("@selection")
         end,
-        opts = { desc = "Add selection to prompt" },
+        opts = { desc = "OpenCode: Add selection to prompt" },
     },
     -- OpenCode AI - New session
     {
@@ -66,7 +66,7 @@ M.mappings = {
         handler = function()
             require("opencode").command("session_new")
         end,
-        opts = { desc = "New session" },
+        opts = { desc = "OpenCode: New session" },
     },
     -- OpenCode AI - Copy last response
     {
@@ -75,7 +75,7 @@ M.mappings = {
         handler = function()
             require("opencode").command("messages_copy")
         end,
-        opts = { desc = "Copy last response" },
+        opts = { desc = "OpenCode: Copy last response" },
     },
     -- OpenCode AI - Messages half page up
     {
@@ -84,7 +84,7 @@ M.mappings = {
         handler = function()
             require("opencode").command("messages_half_page_up")
         end,
-        opts = { desc = "Messages half page up" },
+        opts = { desc = "OpenCode: Messages half page up" },
     },
     -- OpenCode AI - Messages half page down
     {
@@ -93,7 +93,7 @@ M.mappings = {
         handler = function()
             require("opencode").command("messages_half_page_down")
         end,
-        opts = { desc = "Messages half page down" },
+        opts = { desc = "OpenCode: Messages half page down" },
     },
     -- OpenCode AI - Select prompt
     {
@@ -102,7 +102,7 @@ M.mappings = {
         handler = function()
             require("opencode").select()
         end,
-        opts = { desc = "Select prompt" },
+        opts = { desc = "OpenCode: Select prompt" },
     },
     -- OpenCode AI - Explain code (custom prompt)
     {
@@ -111,7 +111,7 @@ M.mappings = {
         handler = function()
             require("opencode").prompt("Explain @cursor and its context")
         end,
-        opts = { desc = "Explain this code" },
+        opts = { desc = "OpenCode: Explain this code" },
     },
 }
 

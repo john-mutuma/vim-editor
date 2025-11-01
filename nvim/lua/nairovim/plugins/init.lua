@@ -30,7 +30,6 @@ return {
         { "mattn/emmet-vim", event = { "BufReadPre", "BufNewFile" } },
         { "unblevable/quick-scope" },
         { "junegunn/vim-peekaboo" },
-        -- { "ctrlpvim/ctrlp.vim" },
         { "windwp/nvim-ts-autotag", event = { "BufReadPre", "BufNewFile" } },
         { "tpope/vim-surround", event = { "BufReadPre", "BufNewFile" } },
         { "vim-scripts/ReplaceWithRegister", event = { "BufReadPre", "BufNewFile" } },
@@ -49,25 +48,10 @@ return {
                 },
             },
         },
-        {
-            "folke/zen-mode.nvim",
-            opts = {
-                window = {
-                    width = 200,
-                },
-            },
-        },
     },
 
     -- Search/Replace
-    {
-        {
-            "MagicDuck/grug-far.nvim",
-            config = function()
-                require("grug-far").setup({})
-            end,
-        },
-    },
+    -- Search and replace functionality provided by scooter terminal (keybinding: <leader>s)
 
     -- Markdown
     {
@@ -102,6 +86,5 @@ return {
     },
 
     -- Other utility plugins
-    -- Terminal
-    { "akinsho/toggleterm.nvim", version = "*", config = true },
+    -- Terminal functionality provided by Snacks.nvim
 }

@@ -1,48 +1,48 @@
 local M = {}
-local Terminal = require("toggleterm.terminal").Terminal
-local window_utils = require("nairovim.utils.windows")
-local scooter_term = nil
 local scooter_backdrop = nil
 
---- Open existing scooter terminal if one is available, otherwise create a new one
+--- Open scooter terminal
 local open_scooter = function()
-    if not scooter_term then
-        scooter_term = Terminal:new({
-            cmd = "scooter",
-            direction = "float",
-            close_on_exit = true,
-            display_name = "Find and Replace",
-            on_open = function()
-                -- Create backdrop with z-index lower than terminal (default: 40)
-                scooter_backdrop = window_utils.create_backdrop("ScooterBackdrop", 60, 39)
-            end,
-            on_close = function()
-                -- Clean up backdrop when terminal closes
-                if scooter_backdrop then
-                    scooter_backdrop.cleanup()
-                    scooter_backdrop = nil
-                end
-            end,
-            highlights = {
-                FloatBorder = { link = "FloatBorder" },
-            },
-            float_opts = {
-                border = "rounded",
-                winblend = 9,
-                width = 175,
-            },
-            on_exit = function()
-                scooter_term = nil
-            end,
-        })
+    -- Clean up existing backdrop if any
+    if scooter_backdrop then
+        scooter_backdrop.cleanup()
+        scooter_backdrop = nil
     end
-    scooter_term:open()
+
+    require("snacks").terminal("scooter", {
+        win = {
+            border = "rounded",
+            width = 175,
+            wo = {
+                winblend = 9,
+            },
+        },
+        on_exit = function()
+            -- Clean up backdrop when terminal exits
+            if scooter_backdrop then
+                scooter_backdrop.cleanup()
+                scooter_backdrop = nil
+            end
+        end,
+    })
 end
 
 --- Called by scooter to open the selected file at the correct line from the scooter search list
 _G.EditLineFromScooter = function(file_path, line)
-    if scooter_term and scooter_term:is_open() then
-        scooter_term:close()
+    -- Close any open terminal windows
+    local wins = vim.api.nvim_list_wins()
+    for _, win in ipairs(wins) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local buf_name = vim.api.nvim_buf_get_name(buf)
+        if buf_name:match("snacks_terminal") or vim.bo[buf].buftype == "terminal" then
+            vim.api.nvim_win_close(win, true)
+        end
+    end
+
+    -- Clean up backdrop
+    if scooter_backdrop then
+        scooter_backdrop.cleanup()
+        scooter_backdrop = nil
     end
 
     local current_path = vim.fn.expand("%:p")
@@ -57,31 +57,29 @@ end
 
 --- Opens scooter with the search text populated by the `search_text` arg
 _G.OpenScooterSearchText = function(search_text)
-    if scooter_term and scooter_term:is_open() then
-        scooter_term:close()
+    -- Clean up existing backdrop if any
+    if scooter_backdrop then
+        scooter_backdrop.cleanup()
+        scooter_backdrop = nil
     end
 
     local escaped_text = vim.fn.shellescape(search_text:gsub("\r?\n", " "))
-    scooter_term = Terminal:new({
-        cmd = "scooter --search-text " .. escaped_text,
-        direction = "float",
-        close_on_exit = true,
-        on_open = function()
-            -- Create backdrop with z-index lower than terminal (default: 40)
-            scooter_backdrop = window_utils.create_backdrop("ScooterBackdrop", 60, 39)
-        end,
-        on_close = function()
-            -- Clean up backdrop when terminal closes
+    require("snacks").terminal("scooter --search-text " .. escaped_text, {
+        win = {
+            border = "rounded",
+            width = 175,
+            wo = {
+                winblend = 9,
+            },
+        },
+        on_exit = function()
+            -- Clean up backdrop when terminal exits
             if scooter_backdrop then
                 scooter_backdrop.cleanup()
                 scooter_backdrop = nil
             end
         end,
-        on_exit = function()
-            scooter_term = nil
-        end,
     })
-    scooter_term:open()
 end
 
 ----------------------------------------------------------------------
