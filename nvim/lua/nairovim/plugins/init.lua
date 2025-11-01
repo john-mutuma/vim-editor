@@ -30,7 +30,6 @@ return {
         { "mattn/emmet-vim", event = { "BufReadPre", "BufNewFile" } },
         { "unblevable/quick-scope" },
         { "junegunn/vim-peekaboo" },
-        -- { "ctrlpvim/ctrlp.vim" },
         { "windwp/nvim-ts-autotag", event = { "BufReadPre", "BufNewFile" } },
         { "tpope/vim-surround", event = { "BufReadPre", "BufNewFile" } },
         { "vim-scripts/ReplaceWithRegister", event = { "BufReadPre", "BufNewFile" } },

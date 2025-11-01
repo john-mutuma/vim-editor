@@ -1,5 +1,4 @@
 local M = {}
-local window_utils = require("nairovim.utils.windows")
 local scooter_backdrop = nil
 
 --- Open scooter terminal
@@ -9,9 +8,6 @@ local open_scooter = function()
         scooter_backdrop.cleanup()
         scooter_backdrop = nil
     end
-
-    -- Create backdrop before opening terminal
-    scooter_backdrop = window_utils.create_backdrop("ScooterBackdrop", 60, 39)
 
     require("snacks").terminal("scooter", {
         win = {
@@ -66,9 +62,6 @@ _G.OpenScooterSearchText = function(search_text)
         scooter_backdrop.cleanup()
         scooter_backdrop = nil
     end
-
-    -- Create backdrop before opening terminal
-    scooter_backdrop = window_utils.create_backdrop("ScooterBackdrop", 60, 39)
 
     local escaped_text = vim.fn.shellescape(search_text:gsub("\r?\n", " "))
     require("snacks").terminal("scooter --search-text " .. escaped_text, {
