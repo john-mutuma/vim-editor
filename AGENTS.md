@@ -4,6 +4,69 @@ Brief, concise history of AI-assisted development tasks.
 
 ---
 
+## 2025-11-01: Documentation Navigation Enhancement - Table of Contents
+
+**Commit:** `80aa0fa` | `continous-development` branch
+
+Added comprehensive Table of Contents (TOC) to all major documentation files to improve navigation and user experience.
+
+### Problem
+- README.md had 41+ sections but no TOC for quick navigation
+- doc/FAQ.md, doc/TROUBLESHOOTING.md, and doc/CONTRIBUTING.md had incomplete TOCs
+- doc/ARCHITECTURE.md was missing "Additional Resources" in TOC
+- Users had to scroll through lengthy documents to find relevant sections
+- Poor discoverability of available content
+- Not following documentation best practices
+
+### Solution
+Added/updated comprehensive TOCs across all documentation files:
+
+**README.md:**
+- Added new 34-line TOC with all major sections
+- Includes subsections for Prerequisites, Quick Start, Keybindings, Post-Installation, Customization
+- Properly formatted GitHub anchor links for all sections with emojis
+
+**doc/FAQ.md:**
+- Added missing "Still Have Questions?" section to TOC
+- Now complete with 9 major categories
+
+**doc/TROUBLESHOOTING.md:**
+- Added missing "Additional Documentation" section to TOC
+- Now complete with 11 major categories
+
+**doc/CONTRIBUTING.md:**
+- Added missing "Questions?" and "Recognition" sections to TOC
+- Now complete with 11 major sections
+
+**doc/ARCHITECTURE.md:**
+- Added missing "Additional Resources" section to TOC
+- Now complete with 11 major sections
+
+### Changes Made
+- ✅ README.md: Added comprehensive 34-line TOC (+34 lines)
+- ✅ doc/FAQ.md: Added 1 missing TOC entry (+1 line)
+- ✅ doc/TROUBLESHOOTING.md: Added 1 missing TOC entry (+1 line)
+- ✅ doc/CONTRIBUTING.md: Added 2 missing TOC entries (+2 lines)
+- ✅ doc/ARCHITECTURE.md: Added 1 missing TOC entry (+1 line)
+- ✅ Total changes: 5 files, +39 lines
+
+### Impact
+- **Improved navigation**: Users can jump to any section in 1 click
+- **Better discoverability**: Full content overview visible upfront
+- **Professional appearance**: Follows documentation best practices
+- **Enhanced accessibility**: Screen readers benefit from structured navigation
+- **Better SEO**: GitHub search indexes TOC links
+- **Time savings**: Reduces scrolling time for users seeking specific information
+
+### Files Modified
+- `README.md` (added comprehensive TOC)
+- `doc/FAQ.md` (completed TOC)
+- `doc/TROUBLESHOOTING.md` (completed TOC)
+- `doc/CONTRIBUTING.md` (completed TOC)
+- `doc/ARCHITECTURE.md` (completed TOC)
+
+---
+
 ## 2025-10-31: Terminal Strategy Shift - Ghostty Over tmux
 
 **Commit:** `2511c79` | `continous-development` branch
