@@ -14,6 +14,7 @@ Comprehensive guide to resolving common issues with NairoVIM.
 - [Keybinding Conflicts](#keybinding-conflicts)
 - [Terminal and Shell Issues](#terminal-and-shell-issues)
 - [Getting Help](#getting-help)
+- [Additional Documentation](#additional-documentation)
 
 ---
 
