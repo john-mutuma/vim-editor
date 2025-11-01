@@ -13,6 +13,8 @@ Thank you for considering contributing to NairoVIM! This document provides guide
 - [Pull Request Process](#pull-request-process)
 - [Plugin Guidelines](#plugin-guidelines)
 - [Testing](#testing)
+- [Questions?](#questions)
+- [Recognition](#recognition)
 
 ## Code of Conduct
 

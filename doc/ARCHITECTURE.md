@@ -14,6 +14,7 @@ Complete technical documentation for NairoVIM's architecture, plugin ecosystem, 
 - [AI Tools](#ai-tools)
 - [Security Considerations](#security-considerations)
 - [Extending NairoVIM](#extending-nairovim)
+- [Additional Resources](#additional-resources)
 
 ---
 

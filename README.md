@@ -4,6 +4,40 @@
 
 Transform your coding experience with NairoVIM - a sophisticated Neovim configuration that combines the legendary efficiency of Vim with modern IDE features, AI assistance, and a beautifully integrated terminal workflow. Whether you're a seasoned developer or new to terminal-based editing, NairoVIM provides everything you need for productive development.
 
+## 📑 Table of Contents
+
+- [✨ Key Features](#-key-features)
+- [📋 Prerequisites](#-prerequisites)
+  - [System Requirements](#system-requirements)
+  - [Optional but Recommended](#optional-but-recommended)
+- [🚀 Quick Installation](#-quick-installation)
+- [🎯 Quick Start Guide](#-quick-start-guide)
+  - [Starting a Development Session](#starting-a-development-session)
+  - [Essential Workflows](#essential-workflows)
+- [⌨️ Essential Keybindings](#️-essential-keybindings)
+  - [File Navigation & Search](#file-navigation--search)
+  - [LSP & Code Intelligence](#lsp--code-intelligence)
+  - [AI Assistance (OpenCode)](#ai-assistance-opencode)
+  - [Git Integration](#git-integration)
+  - [Window Management](#window-management)
+- [🤖 AI Assistance Setup](#-ai-assistance-setup)
+  - [OpenCode - Primary AI Assistant (Recommended)](#opencode---primary-ai-assistant-recommended)
+- [🎨 Post-Installation Setup](#-post-installation-setup)
+  - [1. Configure Ghostty Terminal (Recommended)](#1-configure-ghostty-terminal-recommended)
+  - [2. Install a Nerd Font](#2-install-a-nerd-font)
+  - [3. Set Up Language Servers](#3-set-up-language-servers)
+  - [4. Configure Git](#4-configure-git)
+- [📸 Screenshots](#-screenshots)
+- [🎨 Customization](#-customization)
+  - [Change Theme](#change-theme)
+  - [Manage Plugins](#manage-plugins)
+  - [Disable Unwanted Plugins](#disable-unwanted-plugins)
+- [🆘 Troubleshooting](#-troubleshooting)
+- [📚 Documentation](#-documentation)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [🙏 Acknowledgments](#-acknowledgments)
+
 ## ✨ Key Features
 
 - 🤖 **AI-Powered Development** - Integrated OpenCode, Avante AI, and GitHub Copilot support

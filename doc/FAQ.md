@@ -12,6 +12,7 @@ Common questions and answers about NairoVIM installation, configuration, and usa
 - [Keybindings](#keybindings)
 - [Troubleshooting](#troubleshooting)
 - [General Questions](#general-questions)
+- [Still Have Questions?](#still-have-questions)
 
 ---
 
