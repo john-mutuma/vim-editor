@@ -4,21 +4,12 @@ return {
     opts = {},
     dependencies = {
         "MunifTanjim/nui.nvim",
-        "rcarriga/nvim-notify",
+        -- Using Snacks.nvim notifier instead of nvim-notify
         -- "stevearc/dressing.nvim", -- better vim.select UI
     },
     config = function()
         ----------------------------------------------------------------------
-        -- 1. Setup nvim-notify
-        ----------------------------------------------------------------------
-        local notify = require("notify")
-        notify.setup({
-            max_width = 130,
-            merge_duplicates = true,
-        })
-
-        ----------------------------------------------------------------------
-        -- 2. Setup noice.nvim
+        -- Setup noice.nvim (uses Snacks notifier via vim.notify override)
         ----------------------------------------------------------------------
         require("noice").setup({
             routes = {
