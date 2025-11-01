@@ -1,359 +1,78 @@
 # Project History
 
-Brief, concise history of AI-assisted development tasks.
+High-level overview of development tasks for AI agents.
 
 ---
 
-## 2025-11-01: Plugin Cleanup - Search/Replace Tool Consolidation
+## 2025-11-01: Plugin Cleanup
+**Goal:** Eliminate redundant search/replace tools and consolidate terminal APIs
 
-**Commits:** `e4fc277`, `7d48b2e`, `f5aedba` | `continous-development` branch
+Removed grug-far plugin in favor of scooter for search/replace functionality. Refactored scooter to use Snacks.terminal API (replacing old toggleterm dependency). Updated Snacks dashboard to use `:FindReplace` command. Maintained backdrop functionality and all scooter keybindings.
 
-Completed plugin redundancy cleanup by removing grug-far and refactoring scooter terminal to use Snacks.terminal API.
-
-### Problem
-- Multiple redundant plugins identified in previous session (toggleterm, nvim-notify, zen-mode, grug-far)
-- toggleterm was replaced by Snacks.terminal but scooter still used old API
-- grug-far and scooter both provided search/replace functionality
-- Configuration complexity from duplicate tools
-
-### Solution
-**Commit e4fc277 - Refactor scooter terminal:**
-- Replaced `toggleterm.terminal.Terminal` API with `Snacks.terminal()`
-- Maintained backdrop functionality and on_exit callbacks
-- Updated `EditLineFromScooter` and `OpenScooterSearchText` global functions
-- Improved terminal window detection to check for snacks_terminal buffer pattern
-
-**Commit 7d48b2e - Remove grug-far:**
-- Removed grug-far plugin from init.lua (Search/Replace section)
-- Updated Snacks dashboard key `F` to use `:FindReplace` (scooter) instead of `:GrugFar`
-- Kept scooter for better terminal integration with custom backdrop
-
-**Commit f5aedba - Update lazy-lock.json:**
-- Removed grug-far.nvim from plugin lockfile
-- Synced plugin state after removal
-
-### Design Decisions
-1. **Scooter over grug-far**: Scooter has dedicated keybindings (`<leader>s`, visual `<leader>r`) and better terminal integration
-2. **Keep quick-scope and vim-peekaboo**: User requested to keep these for now despite no explicit config
-3. **Snacks.terminal API**: Consistent with rest of config after toggleterm removal
-
-### Changes Made
-- ✅ nvim/lua/nairovim/plugins/scooter.lua: Refactored to Snacks.terminal API (~100 lines)
-- ✅ nvim/lua/nairovim/plugins/init.lua: Removed grug-far plugin (-7 lines)
-- ✅ nvim/lua/nairovim/plugins/snacks.lua: Updated dashboard Find/Replace action
-- ✅ nvim/lazy-lock.json: Removed grug-far.nvim entry
-- ✅ Total changes: 4 files, +2, -67 lines
-
-### Impact
-- **Reduced complexity**: Single search/replace tool instead of two
-- **Better consistency**: All terminal features now use Snacks.terminal
-- **Maintained functionality**: All scooter features work identically
-- **Cleaner codebase**: Eliminated ~67 lines of redundant configuration
-
-### Files Modified
-- `nvim/lua/nairovim/plugins/scooter.lua` (refactored)
-- `nvim/lua/nairovim/plugins/init.lua` (grug-far removed)
-- `nvim/lua/nairovim/plugins/snacks.lua` (dashboard updated)
-- `nvim/lazy-lock.json` (grug-far removed)
+**Impact:** Single search/replace tool, consistent terminal API across config  
+**Files:** 4 files modified, -67 lines
 
 ---
 
-## 2025-11-01: Documentation Navigation Enhancement - Table of Contents
+## 2025-11-01: Documentation TOCs
+**Goal:** Improve navigation in lengthy documentation files
 
-**Commit:** `80aa0fa` | `continous-development` branch
+Added comprehensive Table of Contents to all major documentation files. README.md received 34-line TOC covering all sections. Completed missing TOC entries in FAQ, TROUBLESHOOTING, CONTRIBUTING, and ARCHITECTURE docs.
 
-Added comprehensive Table of Contents (TOC) to all major documentation files to improve navigation and user experience.
-
-### Problem
-- README.md had 41+ sections but no TOC for quick navigation
-- doc/FAQ.md, doc/TROUBLESHOOTING.md, and doc/CONTRIBUTING.md had incomplete TOCs
-- doc/ARCHITECTURE.md was missing "Additional Resources" in TOC
-- Users had to scroll through lengthy documents to find relevant sections
-- Poor discoverability of available content
-- Not following documentation best practices
-
-### Solution
-Added/updated comprehensive TOCs across all documentation files:
-
-**README.md:**
-- Added new 34-line TOC with all major sections
-- Includes subsections for Prerequisites, Quick Start, Keybindings, Post-Installation, Customization
-- Properly formatted GitHub anchor links for all sections with emojis
-
-**doc/FAQ.md:**
-- Added missing "Still Have Questions?" section to TOC
-- Now complete with 9 major categories
-
-**doc/TROUBLESHOOTING.md:**
-- Added missing "Additional Documentation" section to TOC
-- Now complete with 11 major categories
-
-**doc/CONTRIBUTING.md:**
-- Added missing "Questions?" and "Recognition" sections to TOC
-- Now complete with 11 major sections
-
-**doc/ARCHITECTURE.md:**
-- Added missing "Additional Resources" section to TOC
-- Now complete with 11 major sections
-
-### Changes Made
-- ✅ README.md: Added comprehensive 34-line TOC (+34 lines)
-- ✅ doc/FAQ.md: Added 1 missing TOC entry (+1 line)
-- ✅ doc/TROUBLESHOOTING.md: Added 1 missing TOC entry (+1 line)
-- ✅ doc/CONTRIBUTING.md: Added 2 missing TOC entries (+2 lines)
-- ✅ doc/ARCHITECTURE.md: Added 1 missing TOC entry (+1 line)
-- ✅ Total changes: 5 files, +39 lines
-
-### Impact
-- **Improved navigation**: Users can jump to any section in 1 click
-- **Better discoverability**: Full content overview visible upfront
-- **Professional appearance**: Follows documentation best practices
-- **Enhanced accessibility**: Screen readers benefit from structured navigation
-- **Better SEO**: GitHub search indexes TOC links
-- **Time savings**: Reduces scrolling time for users seeking specific information
-
-### Files Modified
-- `README.md` (added comprehensive TOC)
-- `doc/FAQ.md` (completed TOC)
-- `doc/TROUBLESHOOTING.md` (completed TOC)
-- `doc/CONTRIBUTING.md` (completed TOC)
-- `doc/ARCHITECTURE.md` (completed TOC)
+**Impact:** One-click navigation to any section, better discoverability  
+**Files:** 5 files modified, +39 lines
 
 ---
 
-## 2025-10-31: Terminal Strategy Shift - Ghostty Over tmux
+## 2025-10-31: Ghostty Terminal Priority
+**Goal:** Modernize terminal strategy with GPU-accelerated terminal emulator
 
-**Commit:** `2511c79` | `continous-development` branch
+Strategic documentation update to position Ghostty as primary recommended terminal, relegating tmux to legacy/remote-only use cases. Updated prerequisites, installation guide, quick start workflows. Added Ghostty troubleshooting sections and comparison tables. Ghostty uses tmux-like keybindings (Ctrl+b prefix) for easy transition.
 
-Strategic documentation update to position Ghostty as the primary recommended terminal, relegating tmux to legacy/remote-only use cases.
-
-### Problem
-- tmux was positioned as the default terminal workflow
-- Modern alternatives like Ghostty offer better performance with native split/tab management
-- Users had to learn tmux complexity for simple local development
-- Documentation didn't clarify when to use tmux vs modern terminals
-- Ghostty config was included but not emphasized
-
-### Solution
-Comprehensive documentation update across all files to prioritize Ghostty:
-
-**README.md changes:**
-- Updated prerequisites to list Ghostty as recommended terminal
-- Modified installation steps to install Ghostty by default, tmux optional
-- Rewrote Quick Start Guide with Ghostty workflows (splits, tabs, navigation)
-- Added dedicated "Configure Ghostty Terminal" section in post-installation
-- Added Ghostty keybinding reference (18 bindings)
-- Clarified Ghostty vs tmux tradeoffs with clear recommendations
-
-**doc/ARCHITECTURE.md additions:**
-- New "Terminal & Shell Integration" section (117 lines)
-- Detailed Ghostty feature overview and benefits
-- Ghostty vs tmux comparison table (6 feature categories)
-- Complete Ghostty keybinding reference
-- Installation and configuration instructions
-- tmux relegated to "Legacy Option" subsection
-- Clear use case guidance: Ghostty (local), tmux (remote/SSH)
-
-**doc/FAQ.md updates:**
-- Replaced "Can I use without tmux?" with "Should I use Ghostty or tmux?"
-- Added comprehensive Q&A: "How do I use Ghostty splits and tabs?"
-- Updated comparison tables to reference Ghostty instead of tmux
-- Clarified terminal integration features
-
-**doc/TROUBLESHOOTING.md updates:**
-- Replaced "Tmux integration" section with "Ghostty terminal issues"
-- Added 3 new Ghostty troubleshooting sections:
-  - Ghostty terminal issues (basic setup)
-  - Ghostty config not loaded (symlink problems)
-  - Ghostty splits not working (keybinding conflicts)
-- Moved tmux to "Legacy" subsection with deprecation note
-- Updated font and transparency sections to prioritize Ghostty examples
-- Updated performance recommendations to suggest Ghostty
-
-### Key Design Decisions
-1. **Ghostty = primary, tmux = legacy**: Clear positioning throughout
-2. **tmux-like keybindings**: Ghostty uses Ctrl+b prefix for easy transition
-3. **Use case clarity**: Local = Ghostty, Remote = tmux
-4. **Backward compatibility**: tmux documentation maintained but clearly marked optional
-5. **Comprehensive migration**: All docs updated for consistency
-6. **Feature comparison table**: Data-driven guidance for users
-
-### Changes Made
-- ✅ README.md: Prerequisites, installation, quick start, post-install (+92, -26 lines)
-- ✅ doc/ARCHITECTURE.md: New terminal section with comparison (+118 lines)
-- ✅ doc/FAQ.md: Ghostty Q&As, updated comparisons (+32, -3 lines)
-- ✅ doc/TROUBLESHOOTING.md: Ghostty troubleshooting, tmux deprecation (+98, -2 lines)
-- ✅ Total changes: 4 files, +314, -26 lines
-
-### Impact
-- **Better user experience**: Simpler local dev setup without tmux complexity
-- **Performance gains**: GPU-accelerated rendering, native splits
-- **Clearer guidance**: Explicit recommendations for terminal choice
-- **Modern workflow**: Aligns with contemporary terminal emulator features
-- **Maintained flexibility**: tmux still available for those who need it
-- **Smooth transition**: tmux-like keybindings reduce learning curve
-
-### Files Modified
-- `README.md` (updated prerequisites, installation, quick start, post-install)
-- `doc/ARCHITECTURE.md` (added terminal section, comparison table)
-- `doc/FAQ.md` (updated Q&As, comparisons)
-- `doc/TROUBLESHOOTING.md` (added Ghostty troubleshooting, deprecated tmux)
+**Impact:** Simpler local dev setup, better performance, clear guidance  
+**Files:** 4 files (README, ARCHITECTURE, FAQ, TROUBLESHOOTING), +314 lines
 
 ---
 
-## 2025-10-31: Documentation Restructuring & Organization
+## 2025-10-31: Documentation Restructuring
+**Goal:** Make documentation more accessible for new users
 
-**Commits:** `94b7db4`, `e33cabf` | `continous-development` branch
+Split monolithic 1500-line README into specialized files with clear separation of concerns:
+- README.md (~400 lines): User-facing quick start
+- ARCHITECTURE.md (~600 lines): Technical deep-dive, 70+ plugins, 70+ keybindings
+- TROUBLESHOOTING.md (~550 lines): Issue resolution by category
+- FAQ.md (~300 lines): Common questions (40+ Q&As)
+- CONTRIBUTING.md: Contribution guidelines
 
-Major documentation overhaul to improve user experience and maintainability.
-
-### Problem
-- README had become extremely technical and lengthy (~1500 lines)
-- Mixed user-facing content with deep technical details
-- Difficult for new users to quickly understand and get started
-- Troubleshooting and FAQ content scattered throughout
-- Not professional or user-friendly
-
-### Solution
-Restructured documentation into specialized files with clear separation of concerns:
-
-**README.md** (~400 lines) - User-facing:
-- Quick installation guide
-- Essential features overview
-- Basic setup and workflows
-- Most common keybindings (20-30)
-- OpenCode AI setup (primary recommendation)
-- Links to detailed docs
-
-**ARCHITECTURE.md** (~600 lines) - Technical reference:
-- Complete directory structure
-- Design principles & configuration flow
-- Performance benchmarks & optimization
-- Full plugin ecosystem (70+ plugins, 11 categories)
-- Complete keybinding reference (70+ mappings)
-- AI tools comparison & setup details
-- Security considerations
-- Extension guides for developers
-
-**TROUBLESHOOTING.md** (~550 lines) - Issue resolution:
-- Installation problems & solutions
-- Plugin loading issues
-- LSP troubleshooting
-- AI tools debugging
-- Git integration fixes
-- UI/performance/terminal problems
-- Emergency recovery procedures
-
-**FAQ.md** (~300 lines) - Common questions:
-- Installation & setup (6 Q&As)
-- Configuration & customization (6 Q&As)
-- Plugins & features (5 Q&As)
-- AI tools (6 Q&As)
-- Performance (3 Q&As)
-- Keybindings (5 Q&As)
-- Troubleshooting references
-- General questions (10 Q&As)
-
-**CONTRIBUTING.md** (updated references):
-- Updated FAQ references
-- Added links to all new documentation
-- Maintained contribution guidelines
-
-### Changes Made
-- ✅ Created streamlined README.md (user-focused)
-- ✅ Created doc/ARCHITECTURE.md (technical deep-dive)
-- ✅ Created doc/TROUBLESHOOTING.md (problem-solving)
-- ✅ Created doc/FAQ.md (common questions)
-- ✅ Created doc/CONTRIBUTING.md (contribution guidelines)
-- ✅ Moved all documentation files to doc/ directory
-- ✅ Updated all cross-references to doc/ paths
-- ✅ Positioned OpenCode as primary AI recommendation
-
-### Key Design Decisions
-1. **User-first README**: Fast installation, immediate productivity
-2. **Separate technical details**: Developers can dive deep without overwhelming new users
-3. **Searchable troubleshooting**: Organized by category for quick reference
-4. **FAQ for common questions**: Reduces repeated issues and questions
-5. **Organized doc/ directory**: All documentation files in one location
-6. **Cross-referenced navigation**: Easy to find related information
-7. **OpenCode priority**: Clear primary recommendation over alternatives
-
-### Files Modified/Created
-- `README.md` (complete rewrite, ~400 lines, updated doc/ references)
-- `doc/ARCHITECTURE.md` (new, 664 lines)
-- `doc/TROUBLESHOOTING.md` (new, 922 lines)
-- `doc/FAQ.md` (new, 479 lines)
-- `doc/CONTRIBUTING.md` (new, 670 lines)
-- `AGENTS.md` (updated with this entry)
-
-### Impact
-- **Better user experience**: New users can get started in minutes
-- **Professional documentation**: Clean, organized, scannable
-- **Easier maintenance**: Changes go in the right place
-- **Better discoverability**: Cross-references help users find answers
-- **Reduced support burden**: Comprehensive FAQ and troubleshooting
+**Impact:** New users get started faster, easier maintenance, professional appearance  
+**Files:** Created 5 new doc files, reorganized all documentation
 
 ---
 
-## 2025-11-01: README Documentation Enhancement
+## 2025-11-01: README Enhancement
+**Goal:** Comprehensive reference for keybindings and plugin ecosystem
 
-**Commit f8a118b** | `continous-development` branch
+Added detailed keybinding reference with 70+ mappings across 8 categories (File/Search, LSP, AI tools, Git, UI, etc.). Documented all 70+ plugins organized into 11 functional categories. Removed duplicate "Essential Shortcuts" section and outdated nvim-ide references.
 
-- Added comprehensive keybinding reference section with 70+ mappings organized into 8 categories
-- Added plugin ecosystem section documenting all 70+ plugins across 11 functional categories
-- Removed duplicate "Essential Shortcuts" section (51 lines of duplication)
-- Removed nvim-ide references from keybinding tables (plugin no longer in config)
-- Organized AI tools (Avante, Copilot, OpenCode) with detailed usage examples
-- Improved navigation with mode, description, and plugin attribution for all keybindings
-
-**Categories Added:**
-- File & Search Navigation (11 keybindings)
-- LSP & Code Intelligence (16 keybindings)
-- AI Assistant - OpenCode (14 keybindings)
-- AI Assistant - Copilot (1 keybinding)
-- Git Integration (16 keybindings)
-- Search & Replace (2 keybindings)
-- UI & Window Management (8 keybindings)
-- Editing & Text Manipulation (6 core + plugin features)
-
-**Plugin Categories Documented:**
-AI (4), LSP (9), Debugging (3), Git (3), Search (5), UI (12), Editing (8), Markdown (2), Utilities (10+), Plugin Management (1)
-
-**Files:** `README.md` (+235, -53 lines)
+**Impact:** Complete plugin/keybinding reference in one place  
+**Files:** README.md, +235, -53 lines
 
 ---
 
-## 2025-10-31: Environment Enhancements & Configuration Improvements
+## 2025-10-31: Environment & Config
+**Goal:** Modernize development environment and consolidate tools
 
-**PR #65** | `continous-development` → `develop`
+Migrated lazygit from standalone plugin to Snacks built-in integration. Added Ghostty terminal config with TokyoNight theme and tmux-like keybindings. Added OpenCode AI assistant configuration with Claude Sonnet 4.5. Made install.sh colors theme-adaptive. Integrated bun runtime with completions. Updated 15 plugins including avante, opencode, snacks, lualine.
 
-- Migrated lazygit from standalone plugin to Snacks built-in integration
-- Enabled additional Snacks features: bufdelete, notifier, statuscolumn
-- Made install.sh colors theme-adaptive (ANSI colors for light/dark terminals)
-- Added Ghostty terminal configuration with TokyoNight theme and tmux-like keybindings
-- Added OpenCode AI assistant configuration with Claude Sonnet 4.5
-- Configured nvim as default editor for SSH sessions
-- Integrated bun runtime with completions and PATH setup
-- Enhanced OpenCode terminal with fixed width (85) and markdown rendering
-- Updated 15 plugins including avante, opencode, snacks, and lualine
-- Relocated scooter and ghostty config symlinks to install_dotfiles function
-
-**Files:** `install.sh`, `.zshrc`, `ghostty_config`, `opencode.json`,
-`snacks.lua`, `init.lua`, `keymaps/lazygit.lua`, `opencode.lua`,
-`avante.lua`, `lualine.lua`, `scooter.lua`, `scooter.config.toml`,
-`lazy-lock.json`, removed `lazygit.lua` and `highlights/lazygit.lua`
+**Impact:** Cleaner plugin setup, modern terminal, AI assistant ready  
+**Files:** 12 files modified, removed 2 plugin files
 
 ---
 
-## 2025-10-07: Backdrop Utility & Scooter Terminal
+## 2025-10-07: Backdrop Utility
+**Goal:** Create reusable backdrop utility to reduce code duplication
 
-**PR #64** | `continous-development` → `develop`
+Created `create_backdrop()` function in windows.lua for reusable backdrop management. Refactored `with_win_backdrop()` eliminating ~35 lines of duplication. Integrated backdrop with scooter terminal using on_open/on_close lifecycle hooks. Updated scooter config (winblend=12, width=175).
 
-- Created reusable `create_backdrop()` in `windows.lua`
-- Refactored `with_win_backdrop()` (eliminated ~35 lines duplication)
-- Integrated backdrop with scooter terminal (on_open/on_close lifecycle)
-- Config updates: scooter winblend=12, width=175; lazygit scale 0.85→0.8
-
-**Files:** `windows.lua`, `scooter.lua`, `lazygit.lua`, `scooter.config.toml`
-
----
+**Impact:** DRY code, consistent backdrop behavior across features  
+**Files:** windows.lua, scooter.lua, lazygit.lua, scooter.config.toml
