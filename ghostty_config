@@ -49,6 +49,7 @@
 # resize-overlay-duration = 4s 200ms
 font-size = 12
 theme = dark:TokyoNight,light:TokyoNight Day
+# theme = dark:Gruvbox Dark,light:Gruvbox Light
 keybind = ctrl+b>-=new_split:down
 keybind = ctrl+b>\=new_split:right
 keybind = ctrl+b>v=resize_split:down,40

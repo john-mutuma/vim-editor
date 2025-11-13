@@ -20,6 +20,7 @@ return {
                 keymap.set("n", "<leader>DD", ":colorscheme tokyonight-night<CR>")
                 keymap.set("n", "<leader>LL", ":colorscheme tokyonight-day<CR>")
                 vim.cmd("colorscheme tokyonight-night")
+                -- vim.cmd("colorscheme gruvbox")
             end,
         },
     },
