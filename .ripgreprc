@@ -1,4 +1,32 @@
 # Search hidden files / directories (e.g. dotfiles) by default
 --hidden
---glob
-!.git/*
+
+# Performance optimizations
+--max-columns=150
+--max-columns-preview
+
+# Smart case sensitivity (case-insensitive if pattern is lowercase)
+--smart-case
+
+# Common exclusions for faster searches
+--glob=!.git/*
+--glob=!node_modules/*
+--glob=!.cache/*
+--glob=!dist/*
+--glob=!build/*
+--glob=!target/*
+--glob=!.next/*
+--glob=!coverage/*
+--glob=!*.lock
+--glob=!package-lock.json
+--glob=!yarn.lock
+--glob=!pnpm-lock.yaml
+
+# Binary file handling
+--binary
+
+# Visual improvements
+--colors=path:fg:green
+--colors=line:fg:yellow
+--colors=match:fg:black
+--colors=match:bg:yellow
