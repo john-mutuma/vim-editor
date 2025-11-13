@@ -35,7 +35,9 @@ end
 -- @return string|nil: The path to the file if found, or nil.
 function M.find_file_in_closest_dir(dirname, filename, start_dir)
     local dir = M.find_closest_dir_by_name(dirname, start_dir)
-    if not dir then return nil end
+    if not dir then
+        return nil
+    end
     local file_path = dir .. "/" .. filename
     local stat = uv.fs_stat(file_path)
     if stat and stat.type == "file" then
@@ -51,7 +53,9 @@ end
 -- @return string|table|nil: The file content as a string, or parsed JSON table, or nil.
 function M.load_file_from_closest_dir(dirname, filename, start_dir)
     local file_path = M.find_file_in_closest_dir(dirname, filename, start_dir)
-    if not file_path then return nil end
+    if not file_path then
+        return nil
+    end
     local content = common_utils.get_file_content(file_path)
     if filename:match("%.json$") then
         return common_utils.parse_json_safe(content)
@@ -124,6 +128,8 @@ if settings then
     }
     --- Whether to run ESLint in quiet mode.
     M.eslintQuiet = false
+
+    M.maxTsServerMemory = settings["typescript.tsserver.maxTsServerMemory"]
 end
 
 return M

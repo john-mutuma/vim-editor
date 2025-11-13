@@ -36,7 +36,17 @@ return {
         local capabilities = vim.lsp.protocol.make_client_capabilities()
 
         ----------------------------------------------------------------------
-        -- 4. ESLint LSP Setup
+        -- 4. TypeScript LSP Setup
+        ----------------------------------------------------------------------
+        vim.lsp.config("ts_ls", {
+            capabilities = capabilities,
+            init_options = {
+                maxTsServerMemory = workspace.maxTsServerMemory or 4096,
+            },
+        })
+
+        ----------------------------------------------------------------------
+        -- 5. ESLint LSP Setup
         ----------------------------------------------------------------------
         vim.lsp.config("eslint", {
             capabilities = capabilities,
@@ -44,14 +54,14 @@ return {
         })
 
         ----------------------------------------------------------------------
-        -- 5. Mason UI Setup
+        -- 6. Mason UI Setup
         ----------------------------------------------------------------------
         mason.setup({
             ui = { border = "rounded" },
         })
 
         ----------------------------------------------------------------------
-        -- 6. Mason LSPConfig Setup
+        -- 7. Mason LSPConfig Setup
         ----------------------------------------------------------------------
         mason_lspconfig.setup({
             ensure_installed = ensure_lsp,
@@ -59,7 +69,7 @@ return {
         })
 
         ----------------------------------------------------------------------
-        -- 7. Mason Null-LS Setup
+        -- 8. Mason Null-LS Setup
         ----------------------------------------------------------------------
         mason_null_ls.setup({
             ensure_installed = ensure_null_ls,
@@ -68,7 +78,7 @@ return {
         })
 
         -- --------------------------------------------------------------------
-        -- 8. (Optional) DAP Configuration Placeholders
+        -- 9. (Optional) DAP Configuration Placeholders
         -- --------------------------------------------------------------------
         -- -- Configure DAP bucket
         -- -- Configure mason-nvim-dap Debuggers
