@@ -285,6 +285,11 @@ function M.next_step()
     state.current_step = state.current_step + 1
     M.render_step()
     M.save_current_progress()
+    
+    -- Scroll to top of tutorial
+    if state.ui.win and vim.api.nvim_win_is_valid(state.ui.win) then
+        vim.api.nvim_win_set_cursor(state.ui.win, { 1, 0 })
+    end
 end
 
 --- Move to previous step
@@ -296,6 +301,11 @@ function M.previous_step()
     state.current_step = state.current_step - 1
     M.render_step()
     M.save_current_progress()
+    
+    -- Scroll to top of tutorial
+    if state.ui.win and vim.api.nvim_win_is_valid(state.ui.win) then
+        vim.api.nvim_win_set_cursor(state.ui.win, { 1, 0 })
+    end
 end
 
 --- Skip current lesson
@@ -323,6 +333,12 @@ function M.restart_lesson()
     state.current_step = 1
     M.render_step()
     M.save_current_progress()
+    
+    -- Scroll to top of tutorial
+    if state.ui.win and vim.api.nvim_win_is_valid(state.ui.win) then
+        vim.api.nvim_win_set_cursor(state.ui.win, { 1, 0 })
+    end
+    
     vim.notify("Lesson restarted", vim.log.levels.INFO)
 end
 
