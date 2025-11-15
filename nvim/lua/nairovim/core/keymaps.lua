@@ -118,10 +118,46 @@ local general_keymaps = {
         handler = ":Buffers<CR>",
         opts = { desc = "FZF: Open buffers" },
     },
+
+    ----------------------------------------------------------------------
+    -- 6. Tutorial Keymaps
+    ----------------------------------------------------------------------
+    {
+        mode = "n",
+        key_sequence = "<leader>tt",
+        handler = function()
+            require("nairovim.utils.tutorial").start()
+        end,
+        opts = { desc = "Tutorial: Start/Resume interactive tutorial" },
+    },
+    {
+        mode = "n",
+        key_sequence = "<leader>tl",
+        handler = function()
+            require("nairovim.utils.tutorial").list_lessons()
+        end,
+        opts = { desc = "Tutorial: List all lessons" },
+    },
+    {
+        mode = "n",
+        key_sequence = "<leader>tr",
+        handler = function()
+            require("nairovim.utils.tutorial").restart_lesson()
+        end,
+        opts = { desc = "Tutorial: Restart current lesson" },
+    },
+    {
+        mode = "n",
+        key_sequence = "<leader>tn",
+        handler = function()
+            require("nairovim.utils.tutorial").start_next_lesson()
+        end,
+        opts = { desc = "Tutorial: Start next lesson" },
+    },
 }
 
 ----------------------------------------------------------------------
--- 6. Apply Keymaps Utility
+-- 7. Apply Keymaps Utility
 ----------------------------------------------------------------------
 local common_utils = require("nairovim.utils.common")
 common_utils.map(general_keymaps)

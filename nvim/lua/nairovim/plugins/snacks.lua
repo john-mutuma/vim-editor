@@ -59,6 +59,12 @@ You are in %s
                             action = ":lua Snacks.dashboard.pick('files')",
                         },
                         { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                        {
+                            icon = "📚",
+                            key = "t",
+                            desc = "Interactive Tutorial",
+                            action = ":lua require('nairovim.utils.tutorial').start()",
+                        },
                         { icon = " ", key = "F", desc = "Find/Replace", action = ":FindReplace" },
                         {
                             icon = " ",
