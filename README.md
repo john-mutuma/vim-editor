@@ -150,6 +150,36 @@ That's it! The installation script will:
 
 ## 🎯 Quick Start Guide
 
+### 📚 First Time? Start with the Interactive Tutorial!
+
+If you're new to NairoVIM, we **highly recommend** starting with the built-in interactive tutorial. It provides hands-on, step-by-step guidance for the essential features:
+
+```bash
+# From the dashboard (when you first open nvim)
+Press 't' for Interactive Tutorial
+
+# Or use the keybinding anytime
+,tt  # (comma + t + t)
+
+# Or use the command
+:Tutorial
+```
+
+The tutorial covers:
+
+**Beginner Lessons (17 min):**
+- **Lesson 1:** File navigation basics (5 min)
+- **Lesson 2:** Text editing fundamentals (5 min)
+- **Lesson 3:** Search & find operations (7 min)
+
+**Advanced Lessons (33 min):**
+- **Lesson 4:** LSP & code intelligence (10 min)
+- **Lesson 5:** AI-assisted coding (7 min)
+- **Lesson 6:** Git workflow integration (8 min)
+- **Lesson 7:** Power user tips (8 min)
+
+**Total time:** ~50 minutes for complete mastery!
+
 ### Starting a Development Session
 
 ```bash
@@ -159,6 +189,10 @@ ghostty
 # Open Neovim
 nvim
 
+# Start interactive tutorial (first time users)
+,tt
+
+# Or jump right in:
 # Find and open a file
 <Ctrl-s>f
 
@@ -271,6 +305,15 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 | `<leader>s` | Find and replace (Scooter) |
 | `<leader><CR>` | Clear search highlights |
 | `jk` | Exit insert mode |
+
+### Tutorial System
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>tt` | Start/resume interactive tutorial |
+| `<leader>tl` | List all tutorial lessons |
+| `<leader>tr` | Restart current lesson |
+| `<leader>tn` | Start next lesson |
 
 > 📖 **See complete keybinding reference**: Check [ARCHITECTURE.md](doc/ARCHITECTURE.md#complete-keybinding-reference) for all 70+ keybindings.
 
