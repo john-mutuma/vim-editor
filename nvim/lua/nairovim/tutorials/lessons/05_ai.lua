@@ -19,7 +19,8 @@ return {
             content = [[
 Welcome to Lesson 5: AI-Assisted Coding!
 
-NairoVIM integrates OpenCode, an AI assistant powered by Claude Sonnet 4, directly into your terminal workflow.
+NairoVIM integrates OpenCode, an AI assistant powered by Claude Sonnet 4, directly into 
+your terminal workflow.
 
 What OpenCode can do:
 • Explain complex code in plain English
@@ -50,11 +51,13 @@ Press [Space] to continue.]],
 Let's start with the basics: opening and closing OpenCode.
 
 Key command:
-• <leader>ot (,ot) - Toggle OpenCode terminal
+• ,ot - Toggle OpenCode terminal
 
 🧠 Mnemonic: ,ot = "Opencode Toggle" (exact match!)
    Pattern: All ,o commands are Opencode AI features
    Think: "I want to open the AI terminal"
+
+---
 
 How it works:
 1. Press ',ot' (comma, then o, then t)
@@ -88,15 +91,17 @@ Press [Space] to continue.]],
 The most powerful feature: ask OpenCode about your actual code!
 
 Key commands:
-• <leader>oa (,oa) - Ask about code at cursor
-• <leader>o+ (,o+) - Add file/selection to context
-• <leader>oA (,oA) - Ask general question with context
+• ,oa - Ask about code at cursor
+• ,o+ - Add file/selection to context
+• ,oA - Ask general question with context
 
 🧠 Mnemonics:
    • ,oa = "Opencode Ask" (lowercase = quick question)
    • ,oA = "Opencode Ask" (uppercase = bigger question with context)
    • ,o+ = "Opencode Plus" (add more context)
    Pattern: ,o = Opencode, then action letter!
+
+---
 
 How "Ask about cursor" works:
 1. Position cursor on any code
@@ -126,15 +131,17 @@ Press [Space] to continue.]],
 OpenCode is smarter when you give it more context!
 
 Key commands:
-• <leader>o+ (,o+) - Add current buffer to context
-• <leader>o- (,o-) - Remove context
-• <leader>oc (,oc) - Clear all context
+• ,o+ - Add current buffer to context
+• ,o- - Remove context
+• ,oc - Clear all context
 
 🧠 Mnemonics:
    • ,o+ = "Opencode Plus" (add more context)
    • ,o- = "Opencode Minus" (remove context)
    • ,oc = "Opencode Clear" (start fresh)
    Think: +/- symbols match their purpose!
+
+---
 
 Adding context workflow:
 1. Open a related file (e.g., the component)
@@ -165,10 +172,12 @@ Press [Space] to continue.]],
 Quick explanations without typing questions!
 
 Key command:
-• <leader>oe (,oe) - Explain code at cursor
+• ,oe - Explain code at cursor
 
 🧠 Mnemonic: ,oe = "Opencode Explain" (perfect match!)
    When confused, think: "I need to Explain this"
+
+---
 
 This is a shortcut for common questions:
 1. Position cursor on complex code
@@ -190,7 +199,8 @@ Perfect for:
 - Code review preparation
 - Onboarding to new projects
 
-Example: Position on a React useEffect hook, press ',oe', get full explanation of dependencies, cleanup, and side effects.
+Example: Position on a React useEffect hook, press ',oe', get full explanation of 
+dependencies, cleanup, and side effects.
 
 Press [Space] to continue.]],
             hint = "Need a quick explanation? Press ,oe",
@@ -245,16 +255,23 @@ Press [Space] to continue.]],
 Congratulations! You're now equipped with AI superpowers:
 
 ✓ ,ot - Opencode Toggle (terminal)
+
 ✓ ,oa - Opencode Ask (quick question)
+
 ✓ ,o+ - Opencode Plus (add context)
+
 ✓ ,oe - Opencode Explain (explain code)
+
 ✓ ,on - Opencode New (new session)
+
 ✓ ,oA - Opencode Ask (with context)
 
 🧠 Master Pattern: ALL ,o commands = Opencode AI!
    • t=Toggle, a=Ask, e=Explain, +=Plus context, -=Minus context
    • Lowercase = quick actions, Uppercase = more context/power
    • Remember just ",o" and the rest flows naturally!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Best practices:
 • Use AI to learn, not just copy
