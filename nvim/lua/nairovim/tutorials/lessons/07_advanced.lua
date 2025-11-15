@@ -51,7 +51,7 @@ Press [Space] to continue.]],
 Work with multiple files simultaneously using window splits!
 
 Key commands:
-• <leader>F (,F) - Maximize/restore current window
+• ,F - Maximize/restore current window
 • Ctrl+w s - Split window horizontally
 • Ctrl+w v - Split window vertically
 • Ctrl+w w - Cycle between windows
@@ -63,6 +63,8 @@ Key commands:
    • Ctrl+w = "Window" command prefix
    • s = "Split" horizontal, v = "Vertical" split
    • w = "Window" cycle, c = "Close", = = "Equalize"
+
+---
 
 Window navigation:
 • Ctrl+w h/j/k/l - Move to left/down/up/right window
@@ -101,14 +103,16 @@ Built-in themes:
 • nightfox (blue tones)
 
 Theme commands:
-• <leader>DD (,DD) - Switch to dark theme
-• <leader>LL (,LL) - Switch to light theme
+• ,DD - Switch to dark theme
+• ,LL - Switch to light theme
 • :colorscheme <Tab> - Browse all themes
 
 🧠 Mnemonics:
    • ,DD = "Dark Dark" (double D = dark mode)
    • ,LL = "Light Light" (double L = light mode)
    Visual: D looks dark/heavy, L looks light/airy!
+
+---
 
 Try different themes:
 1. Press ':colorscheme ' (with space)
@@ -316,21 +320,31 @@ You now have skills to:
 • Customize your environment (themes, plugins)
 • Work at professional velocity
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 🧠 MASTER MNEMONIC PATTERNS:
-   • Ctrl+s = Search (f=Files, s=Strings, r=Recent, b=Buffers)
-   • g commands = Go/navigation (gd=Definition, gR=References)
-   • ,o commands = Opencode AI (ot=Toggle, oa=Ask, oe=Explain)
-   • ,h commands = Hunk/Git operations (hp=Preview, hs=Stage, hb=Blame)
-   • [ and ] = Previous/Next navigation
-   • K = Knowledge (hover docs)
-   • ,ca = Code Actions, ,rn = ReName, ,G = Git
+
+• Ctrl+s = Search (f=Files, s=Strings, r=Recent, b=Buffers)
+• g commands = Go/navigation (gd=Definition, gR=References)
+• ,o commands = Opencode AI (ot=Toggle, oa=Ask, oe=Explain)
+• ,h commands = Hunk/Git operations (hp=Preview, hs=Stage, hb=Blame)
+• [ and ] = Previous/Next navigation
+• K = Knowledge (hover docs)
+• ,ca = Code Actions, ,rn = ReName, ,G = Git
 
 The complete toolkit with mnemonics:
+
 • Search: Ctrl+s f (Files), Ctrl+s s (Strings), Ctrl+s r (Recent)
+
 • LSP: gd (Go Definition), gR (Get References), K (Knowledge)
+
 • AI: ,ot (Opencode Toggle), ,oa (Ask), ,oe (Explain)
+
 • Git: ,G (Git UI), ,hp (Hunk Preview), ,hs (Hunk Stage)
+
 • Power: ,F (Focus/maximize), ,ww (Write Write), ,qq (Quit Quit)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 You're not just using Neovim - you're mastering it!
 
