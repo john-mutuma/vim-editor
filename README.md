@@ -12,6 +12,7 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
   - [Optional but Recommended](#optional-but-recommended)
 - [🚀 Quick Installation](#-quick-installation)
 - [🎯 Quick Start Guide](#-quick-start-guide)
+  - [📚 First Time? Start with the Interactive Tutorial!](#-first-time-start-with-the-interactive-tutorial)
   - [Starting a Development Session](#starting-a-development-session)
   - [Essential Workflows](#essential-workflows)
 - [⌨️ Essential Keybindings](#️-essential-keybindings)
