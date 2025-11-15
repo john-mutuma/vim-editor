@@ -43,10 +43,12 @@ Let's start by opening the file explorer. NairoVIM uses NvimTree as the file bro
 
 Press Ctrl+n to toggle the file explorer.
 
+🧠 Mnemonic: Ctrl+n = "Navigator" or "Nvim tree"
+
 The file explorer will appear on the left side of your screen, showing your project's directory structure. You can navigate it with j/k (down/up) and press Enter to open files.
 
 Try it now: Press <C-n> (Ctrl+n)]],
-            hint = "Remember: Ctrl key + n key at the same time",
+            hint = "Ctrl+n = Navigator (think: file Navigator)",
         },
 
         {
@@ -60,6 +62,10 @@ Great! You've opened the file explorer. Notice how you can use these keys to mov
 • k - Move up  
 • h - Move left (or collapse folder)
 • l - Move right (or expand folder)
+
+🧠 Mnemonic: h/j/k/l mirrors your keyboard layout!
+   Look at your keyboard: h is leftmost, l is rightmost
+   j looks like a down arrow (↓), k points up
 
 These movement keys work everywhere in Neovim, not just in the file explorer. They're fundamental to vim navigation.
 
@@ -82,6 +88,10 @@ Telescope is a powerful fuzzy finder. Instead of browsing through folders, you c
 
 Press Ctrl+s then f to open Telescope file finder.
 
+🧠 Mnemonic: Ctrl+s = "Search" menu, then:
+   • f = "Files"
+   • Pattern: All searches start with Ctrl+s!
+
 Then you can:
 • Type to filter files
 • Use Ctrl+j/Ctrl+k (or arrow keys) to navigate results  
@@ -89,7 +99,7 @@ Then you can:
 • Press Esc to cancel
 
 Try it now: Press <C-s>f (Ctrl+s, then f)]],
-            hint = "Hold Ctrl, press s, then press f",
+            hint = "Ctrl+s f = Search Files (easy to remember!)",
         },
 
         {
@@ -102,20 +112,25 @@ Excellent! In Neovim, when you open multiple files, they're stored as "buffers."
 You can switch between open buffers using:
 
 • <C-s>b (Ctrl+s, then b) - Opens Telescope buffer picker
+
+🧠 Mnemonic: Same pattern! Ctrl+s b = "Search Buffers"
+   Notice: Ctrl+s f (Files), Ctrl+s b (Buffers), Ctrl+s s (String search)
+   The Ctrl+s prefix means "I want to search for something!"
+
 • Use j/k or Ctrl+j/Ctrl+k to navigate
 • Press Enter to switch to a buffer
 
 Let's try this in the next lesson when you have multiple files open.
 
-For now, here's a quick summary of what we've learned:
+For now, here's a quick summary with mnemonics:
 
-✓ <C-n> - Toggle file explorer
-✓ j/k/h/l - Basic vim movements
-✓ <C-s>f - Find files with Telescope
-✓ <C-s>b - Switch between buffers
+✓ <C-n> - Navigator (file tree)
+✓ j/k/h/l - Keyboard layout (hjkl in a row)
+✓ <C-s>f - Search Files
+✓ <C-s>b - Search Buffers
 
 Press [Space] to complete this lesson!]],
-            hint = "You've learned the basics! Press Space to continue.",
+            hint = "Pattern recognition: Ctrl+s = Search! (f=Files, b=Buffers)",
         },
     },
 }

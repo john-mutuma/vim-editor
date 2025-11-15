@@ -46,6 +46,9 @@ Key commands:
 • <C-s>f (Ctrl+s, then f) - Find files (git files)
 • <C-F>f (Ctrl+F, then f) - Alternative with FZF
 
+🧠 Mnemonic: Ctrl+s f = "Search Files"
+   Remember the pattern: ALL Ctrl+s commands are searches!
+
 Once the picker opens:
 • Type to filter results (fuzzy matching)
 • Ctrl+j / Ctrl+k - Navigate down/up
@@ -61,7 +64,7 @@ Try these patterns:
 The fuzzy matching is smart - you can skip letters and it still finds matches!
 
 Press [Space] to continue.]],
-            hint = "Ctrl+s f is your file-finding superpower",
+            hint = "Ctrl+s f = Search Files (part of the Ctrl+s search family)",
         },
 
         {
@@ -74,6 +77,11 @@ Finding files is great, but what about searching for specific text inside files?
 That's where Live Grep comes in:
 
 • <C-s>s (Ctrl+s, then s) - Search text across entire project
+
+🧠 Mnemonic: Ctrl+s s = "Search String" or "Search Source"
+   Double 's' for searching text (like grep)
+   Pattern: Ctrl+s f (Files), Ctrl+s s (Strings), Ctrl+s r (Recent)
+
 • Uses ripgrep (extremely fast)
 • Searches all files in your project
 
@@ -92,7 +100,7 @@ Press Enter on any result to jump directly to that location in the file!
 This is incredibly powerful for code exploration and refactoring.
 
 Press [Space] to continue.]],
-            hint = "Ctrl+s s searches ALL your project files",
+            hint = "Ctrl+s s = Search Strings (double s for text search)",
         },
 
         {
@@ -103,6 +111,11 @@ Press [Space] to continue.]],
 Working on the same files repeatedly? Use the recent files picker:
 
 • <C-s>r (Ctrl+s, then r) - Show recently opened files
+
+🧠 Mnemonic: Ctrl+s r = "Search Recent"
+   Completes the pattern! f=Files, s=Strings, r=Recent, b=Buffers
+   All start with Ctrl+s for search!
+
 • Files are sorted by how recently you used them
 • Much faster than navigating the file tree
 
@@ -116,7 +129,7 @@ Combined with Telescope's fuzzy finding, you can type part of any recent filenam
 Pro tip: Most developers use only 5-10 files intensively during a work session. The recent files picker makes switching between them instant!
 
 Press [Space] to continue.]],
-            hint = "Recent files = your working set of files",
+            hint = "Ctrl+s r = Search Recent (part of the Ctrl+s family)",
         },
 
         {
@@ -127,6 +140,10 @@ Press [Space] to continue.]],
 NairoVIM includes a powerful find & replace tool called Scooter.
 
 • <leader>s (,s) - Open Scooter find/replace
+
+🧠 Mnemonic: ,s = "Substitute" or "Search & replace"
+   Single 's' with leader = interactive replace tool
+
 • Interactive search and replace across files
 • Preview changes before applying
 • Supports regex patterns
@@ -144,7 +161,7 @@ This is much safer than global find/replace because you can:
 • Preview before committing
 
 Press [Space] to continue.]],
-            hint = "Scooter = safe, interactive find & replace",
+            hint = ",s = Substitute (search and replace with preview)",
         },
 
         {
@@ -154,11 +171,15 @@ Press [Space] to continue.]],
             content = [[
 Congratulations! You've learned the essential search operations:
 
-✓ <C-s>f - Find files by name (fuzzy)
-✓ <C-s>s - Search text content (live grep)
-✓ <C-s>r - Recent files picker
-✓ <C-s>b - Buffer switcher
-✓ <leader>s - Find & replace (Scooter)
+✓ <C-s>f - Search Files (by name)
+✓ <C-s>s - Search Strings (text content)
+✓ <C-s>r - Search Recent (recently opened)
+✓ <C-s>b - Search Buffers (open files)
+✓ <leader>s - Substitute (find & replace)
+
+🧠 Master Pattern: Ctrl+s = Search menu!
+   f=Files, s=Strings, r=Recent, b=Buffers
+   All your searches start with Ctrl+s!
 
 Bonus tip: Clear search highlights
 • <leader><CR> (,Enter) - Clear search highlights

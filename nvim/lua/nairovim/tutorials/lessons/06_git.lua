@@ -58,6 +58,10 @@ Lazygit is your full-featured Git interface inside Neovim.
 Key command:
 • <leader>G (,G) - Open Lazygit
 
+🧠 Mnemonic: ,G = "Git" (capital G = important!)
+   Think: "I need the Git interface"
+   Uppercase G means this is THE main Git command
+
 What you'll see:
 • Status panel - Current changes
 • Files panel - Modified files
@@ -144,6 +148,13 @@ Key commands:
 • <leader>hs (,hs) - Stage hunk
 • <leader>hu (,hu) - Undo hunk
 
+🧠 Mnemonics:
+   • ]c / [c = "next/previous change" (brackets = navigation!)
+   • ,hp = "Hunk Preview" (see what changed)
+   • ,hs = "Hunk Stage" (stage this change)
+   • ,hu = "Hunk Undo" (undo this change)
+   Pattern: All ,h commands = Hunk operations!
+
 What's a "hunk"?
 A hunk is a section of consecutive changes. Gitsigns lets you work with individual hunks instead of entire files!
 
@@ -173,6 +184,10 @@ Ever wonder "who wrote this code?" Git blame has the answer!
 
 Key command:
 • <leader>hb (,hb) - Toggle blame annotations
+
+🧠 Mnemonic: ,hb = "Hunk Blame" or "History Blame"
+   Continues the ,h pattern from Gitsigns
+   Think: "Who wrote this hunk?"
 
 What it shows:
 • Who last modified each line
@@ -252,12 +267,18 @@ Press [Space] to continue.]],
             content = [[
 Congratulations! You're now a Git power user in NairoVIM:
 
-✓ <leader>G (,G) - Open Lazygit (full Git UI)
-✓ ]c / [c - Navigate between changes
-✓ <leader>hp (,hp) - Preview hunk
-✓ <leader>hs (,hs) - Stage hunk
-✓ <leader>hb (,hb) - Git blame
-✓ <leader>hu (,hu) - Undo hunk
+✓ ,G - Git UI (Lazygit)
+✓ ]c / [c - Next/Previous Change
+✓ ,hp - Hunk Preview
+✓ ,hs - Hunk Stage
+✓ ,hb - Hunk Blame
+✓ ,hu - Hunk Undo
+
+🧠 Master Patterns:
+   • ,G = THE Git command (capital = main interface)
+   • All ,h commands = Hunk operations (p=Preview, s=Stage, b=Blame, u=Undo)
+   • ]c and [c = bracket navigation for changes
+   • Remember: ,G for UI, ,h for inline hunk actions!
 
 Professional workflow:
 1. Code your changes

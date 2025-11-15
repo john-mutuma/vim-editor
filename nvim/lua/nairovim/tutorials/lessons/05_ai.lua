@@ -52,6 +52,10 @@ Let's start with the basics: opening and closing OpenCode.
 Key command:
 • <leader>ot (,ot) - Toggle OpenCode terminal
 
+🧠 Mnemonic: ,ot = "Opencode Toggle" (exact match!)
+   Pattern: All ,o commands are Opencode AI features
+   Think: "I want to open the AI terminal"
+
 How it works:
 1. Press ',ot' (comma, then o, then t)
 2. OpenCode terminal opens at the bottom
@@ -88,6 +92,12 @@ Key commands:
 • <leader>o+ (,o+) - Add file/selection to context
 • <leader>oA (,oA) - Ask general question with context
 
+🧠 Mnemonics:
+   • ,oa = "Opencode Ask" (lowercase = quick question)
+   • ,oA = "Opencode Ask" (uppercase = bigger question with context)
+   • ,o+ = "Opencode Plus" (add more context)
+   Pattern: ,o = Opencode, then action letter!
+
 How "Ask about cursor" works:
 1. Position cursor on any code
 2. Press ',oa' (comma, o, a)
@@ -120,6 +130,12 @@ Key commands:
 • <leader>o- (,o-) - Remove context
 • <leader>oc (,oc) - Clear all context
 
+🧠 Mnemonics:
+   • ,o+ = "Opencode Plus" (add more context)
+   • ,o- = "Opencode Minus" (remove context)
+   • ,oc = "Opencode Clear" (start fresh)
+   Think: +/- symbols match their purpose!
+
 Adding context workflow:
 1. Open a related file (e.g., the component)
 2. Press ',o+' to add it to context
@@ -150,6 +166,9 @@ Quick explanations without typing questions!
 
 Key command:
 • <leader>oe (,oe) - Explain code at cursor
+
+🧠 Mnemonic: ,oe = "Opencode Explain" (perfect match!)
+   When confused, think: "I need to Explain this"
 
 This is a shortcut for common questions:
 1. Position cursor on complex code
@@ -225,12 +244,17 @@ Press [Space] to continue.]],
             content = [[
 Congratulations! You're now equipped with AI superpowers:
 
-✓ <leader>ot (,ot) - Toggle OpenCode terminal
-✓ <leader>oa (,oa) - Ask about cursor/selection
-✓ <leader>o+ (,o+) - Add files to context
-✓ <leader>oe (,oe) - Explain code quickly
-✓ <leader>on (,on) - New AI session
-✓ <leader>oA (,oA) - General question with context
+✓ ,ot - Opencode Toggle (terminal)
+✓ ,oa - Opencode Ask (quick question)
+✓ ,o+ - Opencode Plus (add context)
+✓ ,oe - Opencode Explain (explain code)
+✓ ,on - Opencode New (new session)
+✓ ,oA - Opencode Ask (with context)
+
+🧠 Master Pattern: ALL ,o commands = Opencode AI!
+   • t=Toggle, a=Ask, e=Explain, +=Plus context, -=Minus context
+   • Lowercase = quick actions, Uppercase = more context/power
+   • Remember just ",o" and the rest flows naturally!
 
 Best practices:
 • Use AI to learn, not just copy

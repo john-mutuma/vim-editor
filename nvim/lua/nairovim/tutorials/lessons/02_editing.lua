@@ -30,6 +30,13 @@ To edit text, you need to enter INSERT mode. Here are the main ways:
 • I - Insert at beginning of line
 • A - Insert at end of line
 
+🧠 Mnemonics:
+   • i = "insert" (most basic)
+   • a = "append" (after cursor)
+   • o = "open" new line below (lowercase = down)
+   • O = "Open" new line above (uppercase = up)
+   • I/A = Shift means "go to extreme" (beginning/end of line)
+
 The most common one is 'i' for insert.
 
 Once in insert mode, you'll see "-- INSERT --" at the bottom of the screen, and you can type normally.
@@ -48,6 +55,10 @@ To exit insert mode and return to normal mode, you have two options:
 • Esc - Traditional way (requires reaching for Escape key)
 • jk - NairoVIM shortcut (much faster!)
 
+🧠 Mnemonic: jk = "just kidding" (I'm done typing)
+   Your fingers are already on home row for j and k!
+   Think: "I'm jumping back to normal mode"
+
 In NairoVIM, typing 'jk' quickly in insert mode will exit to normal mode. This is much more ergonomic than reaching for Escape.
 
 Try this:
@@ -58,7 +69,7 @@ Try this:
 The 'jk' combination is one of NairoVIM's quality-of-life improvements that makes editing much faster!
 
 Press [Space] when you're ready to continue.]],
-            hint = "jk is your friend - train your muscle memory!",
+            hint = "jk = 'just kidding' (I'm done editing!)",
         },
 
         {
@@ -70,6 +81,11 @@ Making mistakes is part of editing. Fortunately, Neovim has powerful undo/redo:
 
 • u - Undo last change
 • Ctrl+r - Redo (undo the undo)
+
+🧠 Mnemonics:
+   • u = "undo" (simple!)
+   • Ctrl+r = "redo" or "restore" change
+   Think: u goes backward, Ctrl+r goes forward
 
 You can press 'u' multiple times to undo several changes, and Neovim keeps a complete undo history - even across sessions!
 
@@ -95,12 +111,22 @@ To select text in Neovim, you use VISUAL mode:
 • V - Visual line mode (select entire lines)
 • Ctrl+v - Visual block mode (rectangular selection)
 
+🧠 Mnemonics:
+   • v = "visual" (lowercase = character selection)
+   • V = "Visual" (uppercase = select whole lines)
+   • Ctrl+v = extra powerful = block/rectangular selection
+
 Once in visual mode:
 • Use h/j/k/l to expand selection
 • Press y to yank (copy)
 • Press d to delete (cut)
 • Press c to change (delete and enter insert mode)
 • Press Esc or jk to exit visual mode
+
+🧠 Action mnemonics:
+   • y = "yank" (vim's word for copy)
+   • d = "delete" (cut)
+   • c = "change" (delete then insert)
 
 Visual mode is incredibly powerful for working with text blocks.
 
@@ -125,6 +151,9 @@ In NairoVIM, saving files is easy:
 • <leader>ww - Save current file (leader is comma ',')
 • <leader>w<CR> - Alternative save command
 
+🧠 Mnemonic: ,ww = "Write Write" (save the file!)
+   Double tap makes it fast and hard to mistype
+
 So you can press: , then w then w (three quick presses)
 
 The traditional Vim way is ':w<CR>' but NairoVIM's shortcuts are faster.
@@ -133,17 +162,20 @@ To quit:
 • <leader>qq - Quit all windows (with confirmation if unsaved)
 • <leader>QQ - Force quit all (no save)
 
-Summary of what you've learned:
+🧠 Mnemonic: ,qq = "Quit Quit" (double tap to exit)
+   Uppercase QQ = more forceful = no save
 
-✓ i/a/o - Enter insert mode
-✓ jk - Exit insert mode (faster than Esc)
+Summary with mnemonics:
+
+✓ i/a/o - Insert, Append, Open line
+✓ jk - "Just Kidding" (exit insert)
 ✓ u / Ctrl+r - Undo / Redo
-✓ v / V - Visual mode selection
-✓ <leader>ww - Save file (,ww)
-✓ <leader>qq - Quit (,qq)
+✓ v / V - visual (char), Visual (line)
+✓ ,ww - Write Write (save)
+✓ ,qq - Quit Quit (exit)
 
 You now know the core editing operations! Press [Space] to complete this lesson.]],
-            hint = "Remember: leader key is comma (,)",
+            hint = "Pattern: Double taps (ww, qq) are for common file operations",
         },
     },
 }

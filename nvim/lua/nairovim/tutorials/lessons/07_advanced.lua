@@ -58,6 +58,12 @@ Key commands:
 • Ctrl+w c - Close current window
 • Ctrl+w = - Equalize window sizes
 
+🧠 Mnemonics:
+   • ,F = "Focus" or "Fullscreen" (maximize window)
+   • Ctrl+w = "Window" command prefix
+   • s = "Split" horizontal, v = "Vertical" split
+   • w = "Window" cycle, c = "Close", = = "Equalize"
+
 Window navigation:
 • Ctrl+w h/j/k/l - Move to left/down/up/right window
 
@@ -98,6 +104,11 @@ Theme commands:
 • <leader>DD (,DD) - Switch to dark theme
 • <leader>LL (,LL) - Switch to light theme
 • :colorscheme <Tab> - Browse all themes
+
+🧠 Mnemonics:
+   • ,DD = "Dark Dark" (double D = dark mode)
+   • ,LL = "Light Light" (double L = light mode)
+   Visual: D looks dark/heavy, L looks light/airy!
 
 Try different themes:
 1. Press ':colorscheme ' (with space)
@@ -253,35 +264,33 @@ Secret weapons that power users know:
 1. Jump List Navigation
    • Ctrl+o - Jump back (older position)
    • Ctrl+i - Jump forward (newer position)
-   • Works across files!
+   🧠 o="older", i="in" (forward) - time travel through code!
 
 2. Quick File Switching
    • Ctrl+6 - Toggle between last two files
-   • Faster than Telescope for recent file
+   🧠 6 key is Shift+^ which means "alternate file"
 
 3. Visual Block Mode
    • Ctrl+v - Select rectangular blocks
-   • Edit multiple lines at once
-   • Perfect for column editing
+   🧠 v=Visual, Ctrl+v=super Visual (blocks!)
 
 4. Global Marks
    • mA - Set global mark A
    • 'A - Jump to mark A (even other files!)
-   • Great for frequent locations
+   🧠 Uppercase marks = global (cross-file)
 
 5. Command History
    • q: - Open command history
-   • Navigate, press Enter to run
+   🧠 q with : = query command history
 
 6. Macro Recording
    • qa - Start recording to register 'a'
-   • Do actions
    • q - Stop recording
    • @a - Replay macro
-   • @@ - Repeat last macro
+   🧠 q=record, @=execute (@ means "at" this register)
 
 Press [Space] to continue.]],
-            hint = "These tricks separate good from great developers",
+            hint = "Master these for 10x productivity boost",
         },
 
         {
@@ -307,12 +316,21 @@ You now have skills to:
 • Customize your environment (themes, plugins)
 • Work at professional velocity
 
-The complete toolkit:
-• File ops: Ctrl+s f, Ctrl+n, Ctrl+s b
-• LSP: gd, gR, K, ,ca, ,rn
-• AI: ,ot, ,oa, ,oe, ,o+
-• Git: ,G, ]c, ,hp, ,hs, ,hb
-• Power: ,F, :Lazy, :Mason
+🧠 MASTER MNEMONIC PATTERNS:
+   • Ctrl+s = Search (f=Files, s=Strings, r=Recent, b=Buffers)
+   • g commands = Go/navigation (gd=Definition, gR=References)
+   • ,o commands = Opencode AI (ot=Toggle, oa=Ask, oe=Explain)
+   • ,h commands = Hunk/Git operations (hp=Preview, hs=Stage, hb=Blame)
+   • [ and ] = Previous/Next navigation
+   • K = Knowledge (hover docs)
+   • ,ca = Code Actions, ,rn = ReName, ,G = Git
+
+The complete toolkit with mnemonics:
+• Search: Ctrl+s f (Files), Ctrl+s s (Strings), Ctrl+s r (Recent)
+• LSP: gd (Go Definition), gR (Get References), K (Knowledge)
+• AI: ,ot (Opencode Toggle), ,oa (Ask), ,oe (Explain)
+• Git: ,G (Git UI), ,hp (Hunk Preview), ,hs (Hunk Stage)
+• Power: ,F (Focus/maximize), ,ww (Write Write), ,qq (Quit Quit)
 
 You're not just using Neovim - you're mastering it!
 

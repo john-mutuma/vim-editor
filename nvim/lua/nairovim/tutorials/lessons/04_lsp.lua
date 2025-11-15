@@ -48,6 +48,12 @@ Key commands:
 • gD - Go to declaration
 • gi - Go to implementation
 
+🧠 Mnemonics: The "g" commands are all "Go" or "Goto"
+   • gd = "Go Definition" (most common)
+   • gD = "Go Declaration" (uppercase = higher level)
+   • gi = "Go Implementation" (where it's actually coded)
+   Pattern: g + letter = navigation commands!
+
 How it works:
 1. Position your cursor on any function, variable, or class
 2. Press 'gd' (just type g then d)
@@ -76,6 +82,10 @@ Want to see everywhere a function or variable is used? Use Find References!
 
 Key command:
 • gR - Find all references (opens in Telescope)
+
+🧠 Mnemonic: gR = "Go References" or "Get References"
+   Uppercase R = important/powerful (shows ALL usages)
+   Continues the "g" pattern: gd, gR, gi all start with g!
 
 This shows you:
 • Every file that uses this symbol
@@ -110,6 +120,10 @@ Need quick info about a function? Hover documentation shows you!
 Key command:
 • K - Show hover documentation (that's Shift+k)
 
+🧠 Mnemonic: K = "Knowledge" about the code
+   Single uppercase letter = super important and easy to remember
+   Think: "What do I need to Know about this?"
+
 This displays:
 • Function signatures (parameters and return types)
 • Parameter descriptions
@@ -142,6 +156,9 @@ See a squiggly line under your code? LSP has quick fixes!
 
 Key command:
 • <leader>ca (,ca) - Show code actions
+
+🧠 Mnemonic: ,ca = "Code Actions" (exact match!)
+   When you see errors, think "I need code actions to fix this"
 
 Code actions provide:
 • Quick fixes for errors
@@ -177,6 +194,9 @@ Need to rename a variable, function, or class? LSP handles it across your entire
 
 Key command:
 • <leader>rn (,rn) - Rename symbol
+
+🧠 Mnemonic: ,rn = "ReName" (perfect match!)
+   Think: "I want to rename this everywhere"
 
 What it does:
 • Finds ALL occurrences (not just text matches)
@@ -216,6 +236,11 @@ Key commands:
 • [e - Jump to previous diagnostic
 • <leader>ca - Quick fix current diagnostic
 
+🧠 Mnemonics:
+   • ]e = "next error" (] looks like forward arrow >)
+   • [e = "previous error" ([ looks like back arrow <)
+   Pattern: [ and ] are always for navigation (prev/next)
+
 Visual indicators:
 • Red squiggles - Errors
 • Yellow squiggles - Warnings
@@ -243,12 +268,18 @@ Press [Space] to continue.]],
             content = [[
 Congratulations! You now know the essential LSP workflows:
 
-✓ gd - Go to definition (instant code navigation)
-✓ gR - Find references (see all usages)
-✓ K - Hover docs (instant documentation)
-✓ <leader>ca (,ca) - Code actions (quick fixes)
-✓ <leader>rn (,rn) - Rename symbol (safe refactoring)
-✓ ]e / [e - Navigate diagnostics (error hunting)
+✓ gd - Go Definition
+✓ gR - Get References
+✓ K - Knowledge (hover docs)
+✓ ,ca - Code Actions
+✓ ,rn - ReName
+✓ ]e / [e - Next/Previous Error
+
+🧠 Master Patterns:
+   • All "g" commands = Go/navigation (gd, gR, gi)
+   • Single capital K = Knowledge about code
+   • Bracket navigation: ]e next, [e previous
+   • Leader commands are words: ca=Code Actions, rn=ReName
 
 Pro tips:
 • Use 'gd' constantly - it's faster than searching
