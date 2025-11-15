@@ -41,9 +41,12 @@ Press [Space] or [n] to continue to the next step.]],
             content = [[
 Let's start by opening the file explorer. NairoVIM uses NvimTree as the file browser.
 
-Press Ctrl+n to toggle the file explorer.
+Key command:
+• Ctrl+n - Toggle file explorer
 
 🧠 Mnemonic: Ctrl+n = "Navigator" or "Nvim tree"
+
+---
 
 The file explorer will appear on the left side of your screen, showing your project's directory structure. You can navigate it with j/k (down/up) and press Enter to open files.
 
@@ -58,6 +61,7 @@ Try it now: Press <C-n> (Ctrl+n)]],
             content = [[
 Great! You've opened the file explorer. Notice how you can use these keys to move around:
 
+Movement keys:
 • j - Move down
 • k - Move up  
 • h - Move left (or collapse folder)
@@ -67,9 +71,11 @@ Great! You've opened the file explorer. Notice how you can use these keys to mov
    Look at your keyboard: h is leftmost, l is rightmost
    j looks like a down arrow (↓), k points up
 
+---
+
 These movement keys work everywhere in Neovim, not just in the file explorer. They're fundamental to vim navigation.
 
-In the file explorer specifically:
+File explorer actions:
 • Enter - Open file or expand/collapse directory
 • Ctrl+n - Close the file explorer
 
@@ -86,13 +92,16 @@ Now let's learn a faster way to find files: Telescope!
 
 Telescope is a powerful fuzzy finder. Instead of browsing through folders, you can type part of a filename and instantly find it.
 
-Press Ctrl+s then f to open Telescope file finder.
+Key command:
+• Ctrl+s f - Find files
 
 🧠 Mnemonic: Ctrl+s = "Search" menu, then:
    • f = "Files"
    • Pattern: All searches start with Ctrl+s!
 
-Then you can:
+---
+
+How to use:
 • Type to filter files
 • Use Ctrl+j/Ctrl+k (or arrow keys) to navigate results  
 • Press Enter to open a file
@@ -109,20 +118,24 @@ Try it now: Press <C-s>f (Ctrl+s, then f)]],
             content = [[
 Excellent! In Neovim, when you open multiple files, they're stored as "buffers."
 
-You can switch between open buffers using:
-
-• <C-s>b (Ctrl+s, then b) - Opens Telescope buffer picker
+Key command:
+• Ctrl+s b - Switch buffers
 
 🧠 Mnemonic: Same pattern! Ctrl+s b = "Search Buffers"
    Notice: Ctrl+s f (Files), Ctrl+s b (Buffers), Ctrl+s s (String search)
    The Ctrl+s prefix means "I want to search for something!"
 
+---
+
+How to use:
 • Use j/k or Ctrl+j/Ctrl+k to navigate
 • Press Enter to switch to a buffer
 
 Let's try this in the next lesson when you have multiple files open.
 
-For now, here's a quick summary with mnemonics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LESSON COMPLETE! Here's what you learned:
 
 ✓ <C-n> - Navigator (file tree)
 ✓ j/k/h/l - Keyboard layout (hjkl in a row)
