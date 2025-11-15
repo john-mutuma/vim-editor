@@ -48,7 +48,10 @@ Key command:
 
 ---
 
-The file explorer will appear on the left side of your screen, showing your project's directory structure. You can navigate it with j/k (down/up) and press Enter to open files.
+The file explorer will appear on the left side of your screen, showing your project's 
+directory structure. 
+
+You can navigate it with j/k (down/up) and press Enter to open files.
 
 Try it now: Press <C-n> (Ctrl+n)]],
             hint = "Ctrl+n = Navigator (think: file Navigator)",
@@ -59,7 +62,9 @@ Try it now: Press <C-n> (Ctrl+n)]],
             title = "Basic Vim Movements",
             type = "info",
             content = [[
-Great! You've opened the file explorer. Notice how you can use these keys to move around:
+Great! You've opened the file explorer. 
+
+Notice how you can use these keys to move around:
 
 Movement keys:
 • j - Move down
@@ -73,13 +78,16 @@ Movement keys:
 
 ---
 
-These movement keys work everywhere in Neovim, not just in the file explorer. They're fundamental to vim navigation.
+These movement keys work everywhere in Neovim, not just in the file explorer. 
+
+They're fundamental to vim navigation.
 
 File explorer actions:
 • Enter - Open file or expand/collapse directory
 • Ctrl+n - Close the file explorer
 
-Try navigating up and down with j and k, then press <C-n> to close the explorer and continue.]],
+Try navigating up and down with j and k, then press <C-n> to close the explorer 
+and continue.]],
             hint = "Use j/k to move, then Ctrl+n to close the explorer",
         },
 
@@ -90,7 +98,8 @@ Try navigating up and down with j and k, then press <C-n> to close the explorer 
             content = [[
 Now let's learn a faster way to find files: Telescope!
 
-Telescope is a powerful fuzzy finder. Instead of browsing through folders, you can type part of a filename and instantly find it.
+Telescope is a powerful fuzzy finder. Instead of browsing through folders, you can 
+type part of a filename and instantly find it.
 
 Key command:
 • Ctrl+s f - Find files
@@ -138,8 +147,11 @@ Let's try this in the next lesson when you have multiple files open.
 LESSON COMPLETE! Here's what you learned:
 
 ✓ <C-n> - Navigator (file tree)
+
 ✓ j/k/h/l - Keyboard layout (hjkl in a row)
+
 ✓ <C-s>f - Search Files
+
 ✓ <C-s>b - Search Buffers
 
 Press [Space] to complete this lesson!]],

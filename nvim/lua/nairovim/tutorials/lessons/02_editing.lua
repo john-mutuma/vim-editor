@@ -19,9 +19,12 @@ return {
             content = [[
 Welcome to Lesson 2: Text Editing!
 
-Neovim has different "modes" for different tasks. So far, you've been in NORMAL mode, which is for navigation and commands.
+Neovim has different "modes" for different tasks. So far, you've been in NORMAL mode, 
+which is for navigation and commands.
 
-To edit text, you need to enter INSERT mode. Here are the main ways:
+To edit text, you need to enter INSERT mode. 
+
+Here are the main ways:
 
 • i - Insert before cursor
 • a - Insert after cursor (append)
@@ -37,9 +40,12 @@ To edit text, you need to enter INSERT mode. Here are the main ways:
    • O = "Open" new line above (uppercase = up)
    • I/A = Shift means "go to extreme" (beginning/end of line)
 
+---
+
 The most common one is 'i' for insert.
 
-Once in insert mode, you'll see "-- INSERT --" at the bottom of the screen, and you can type normally.
+Once in insert mode, you'll see "-- INSERT --" at the bottom of the screen, and 
+you can type normally.
 
 Press [Space] to continue.]],
             hint = "Different insert commands place your cursor in different positions",
@@ -59,14 +65,19 @@ To exit insert mode and return to normal mode, you have two options:
    Your fingers are already on home row for j and k!
    Think: "I'm jumping back to normal mode"
 
-In NairoVIM, typing 'jk' quickly in insert mode will exit to normal mode. This is much more ergonomic than reaching for Escape.
+---
+
+In NairoVIM, typing 'jk' quickly in insert mode will exit to normal mode. 
+
+This is much more ergonomic than reaching for Escape.
 
 Try this:
 1. Press 'i' to enter insert mode
 2. Type some text
 3. Type 'jk' quickly to exit back to normal mode
 
-The 'jk' combination is one of NairoVIM's quality-of-life improvements that makes editing much faster!
+The 'jk' combination is one of NairoVIM's quality-of-life improvements that makes 
+editing much faster!
 
 Press [Space] when you're ready to continue.]],
             hint = "jk = 'just kidding' (I'm done editing!)",
@@ -77,7 +88,9 @@ Press [Space] when you're ready to continue.]],
             title = "Undo and Redo",
             type = "info",
             content = [[
-Making mistakes is part of editing. Fortunately, Neovim has powerful undo/redo:
+Making mistakes is part of editing. 
+
+Fortunately, Neovim has powerful undo/redo:
 
 • u - Undo last change
 • Ctrl+r - Redo (undo the undo)
@@ -87,7 +100,10 @@ Making mistakes is part of editing. Fortunately, Neovim has powerful undo/redo:
    • Ctrl+r = "redo" or "restore" change
    Think: u goes backward, Ctrl+r goes forward
 
-You can press 'u' multiple times to undo several changes, and Neovim keeps a complete undo history - even across sessions!
+---
+
+You can press 'u' multiple times to undo several changes, and Neovim keeps a 
+complete undo history - even across sessions!
 
 Try it:
 1. Press 'i' to enter insert mode
@@ -116,6 +132,8 @@ To select text in Neovim, you use VISUAL mode:
    • V = "Visual" (uppercase = select whole lines)
    • Ctrl+v = extra powerful = block/rectangular selection
 
+---
+
 Once in visual mode:
 • Use h/j/k/l to expand selection
 • Press y to yank (copy)
@@ -127,6 +145,8 @@ Once in visual mode:
    • y = "yank" (vim's word for copy)
    • d = "delete" (cut)
    • c = "change" (delete then insert)
+
+---
 
 Visual mode is incredibly powerful for working with text blocks.
 
@@ -148,30 +168,40 @@ Press [Space] to continue.]],
             content = [[
 In NairoVIM, saving files is easy:
 
-• <leader>ww - Save current file (leader is comma ',')
-• <leader>w<CR> - Alternative save command
+Save commands:
+• ,ww - Save current file (leader is comma ',')
+• ,w<CR> - Alternative save command
 
 🧠 Mnemonic: ,ww = "Write Write" (save the file!)
    Double tap makes it fast and hard to mistype
+
+---
 
 So you can press: , then w then w (three quick presses)
 
 The traditional Vim way is ':w<CR>' but NairoVIM's shortcuts are faster.
 
-To quit:
-• <leader>qq - Quit all windows (with confirmation if unsaved)
-• <leader>QQ - Force quit all (no save)
+Quit commands:
+• ,qq - Quit all windows (with confirmation if unsaved)
+• ,QQ - Force quit all (no save)
 
 🧠 Mnemonic: ,qq = "Quit Quit" (double tap to exit)
    Uppercase QQ = more forceful = no save
 
-Summary with mnemonics:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LESSON COMPLETE! Summary with mnemonics:
 
 ✓ i/a/o - Insert, Append, Open line
+
 ✓ jk - "Just Kidding" (exit insert)
+
 ✓ u / Ctrl+r - Undo / Redo
+
 ✓ v / V - visual (char), Visual (line)
+
 ✓ ,ww - Write Write (save)
+
 ✓ ,qq - Quit Quit (exit)
 
 You now know the core editing operations! Press [Space] to complete this lesson.]],
