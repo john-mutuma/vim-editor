@@ -19,7 +19,9 @@ return {
             content = [[
 Welcome to Lesson 3: Search & Find!
 
-Telescope is NairoVIM's fuzzy finder - one of the most powerful tools you'll use daily. It helps you quickly find:
+Telescope is NairoVIM's fuzzy finder - one of the most powerful tools you'll use daily. 
+
+It helps you quickly find:
 
 • Files in your project
 • Text within files (live grep)
@@ -27,7 +29,9 @@ Telescope is NairoVIM's fuzzy finder - one of the most powerful tools you'll use
 • Buffers (open files)
 • Git branches, commits, and more
 
-Telescope uses fuzzy matching, so you don't need to type the exact name. For example, typing "usmod" might find "user-model.ts".
+Telescope uses fuzzy matching, so you don't need to type the exact name. 
+
+For example, typing "usmod" might find "user-model.ts".
 
 In this lesson, we'll explore Telescope's core features.
 
@@ -48,6 +52,8 @@ Key commands:
 
 🧠 Mnemonic: Ctrl+s f = "Search Files"
    Remember the pattern: ALL Ctrl+s commands are searches!
+
+---
 
 Once the picker opens:
 • Type to filter results (fuzzy matching)
@@ -76,12 +82,16 @@ Finding files is great, but what about searching for specific text inside files?
 
 That's where Live Grep comes in:
 
+Key command:
 • <C-s>s (Ctrl+s, then s) - Search text across entire project
 
 🧠 Mnemonic: Ctrl+s s = "Search String" or "Search Source"
    Double 's' for searching text (like grep)
    Pattern: Ctrl+s f (Files), Ctrl+s s (Strings), Ctrl+s r (Recent)
 
+---
+
+How it works:
 • Uses ripgrep (extremely fast)
 • Searches all files in your project
 
@@ -110,12 +120,16 @@ Press [Space] to continue.]],
             content = [[
 Working on the same files repeatedly? Use the recent files picker:
 
+Key command:
 • <C-s>r (Ctrl+s, then r) - Show recently opened files
 
 🧠 Mnemonic: Ctrl+s r = "Search Recent"
    Completes the pattern! f=Files, s=Strings, r=Recent, b=Buffers
    All start with Ctrl+s for search!
 
+---
+
+How it works:
 • Files are sorted by how recently you used them
 • Much faster than navigating the file tree
 
@@ -124,9 +138,12 @@ This is perfect for:
 • Quick context switching
 • Reviewing your work session
 
-Combined with Telescope's fuzzy finding, you can type part of any recent filename to filter the list.
+Combined with Telescope's fuzzy finding, you can type part of any recent filename 
+to filter the list.
 
-Pro tip: Most developers use only 5-10 files intensively during a work session. The recent files picker makes switching between them instant!
+Pro tip: Most developers use only 5-10 files intensively during a work session. 
+
+The recent files picker makes switching between them instant!
 
 Press [Space] to continue.]],
             hint = "Ctrl+s r = Search Recent (part of the Ctrl+s family)",
@@ -139,11 +156,15 @@ Press [Space] to continue.]],
             content = [[
 NairoVIM includes a powerful find & replace tool called Scooter.
 
-• <leader>s (,s) - Open Scooter find/replace
+Key command:
+• ,s - Open Scooter find/replace
 
 🧠 Mnemonic: ,s = "Substitute" or "Search & replace"
    Single 's' with leader = interactive replace tool
 
+---
+
+Features:
 • Interactive search and replace across files
 • Preview changes before applying
 • Supports regex patterns
@@ -172,17 +193,23 @@ Press [Space] to continue.]],
 Congratulations! You've learned the essential search operations:
 
 ✓ <C-s>f - Search Files (by name)
+
 ✓ <C-s>s - Search Strings (text content)
+
 ✓ <C-s>r - Search Recent (recently opened)
+
 ✓ <C-s>b - Search Buffers (open files)
-✓ <leader>s - Substitute (find & replace)
+
+✓ ,s - Substitute (find & replace)
 
 🧠 Master Pattern: Ctrl+s = Search menu!
    f=Files, s=Strings, r=Recent, b=Buffers
    All your searches start with Ctrl+s!
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 Bonus tip: Clear search highlights
-• <leader><CR> (,Enter) - Clear search highlights
+• ,<CR> (comma + Enter) - Clear search highlights
 
 These search tools will save you hours of manual navigation. Use them constantly!
 
@@ -191,7 +218,7 @@ Quick workflow example:
 2. Jump to the file
 3. <C-s>f to find related files
 4. <C-s>r to return to recent files
-5. <leader>s to refactor names across files
+5. ,s to refactor names across files
 
 You're now equipped with professional-level search skills!
 
