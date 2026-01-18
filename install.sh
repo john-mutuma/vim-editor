@@ -601,6 +601,56 @@ install_opencode() {
     fi
 
     # =================================================================
+    # Handle all other directories and files (commands, etc.)
+    # =================================================================
+    print_step "Symlinking additional OpenCode configuration" "commands and other files"
+    
+    for item in "$opencode_config_source"/*; do
+        if [[ -e "$item" ]]; then
+            local item_name=$(basename "$item")
+            local item_target="$opencode_config_target/$item_name"
+            
+            # Skip opencode.json and agents (already handled above)
+            if [[ "$item_name" == "opencode.json" ]] || [[ "$item_name" == "agents" ]]; then
+                continue
+            fi
+            
+            if [[ -d "$item" ]]; then
+                # Handle directories (e.g., commands/)
+                if [[ -L "$item_target" ]]; then
+                    print_info "OpenCode $item_name directory symlink already exists, updating..."
+                    rm "$item_target"
+                elif [[ -d "$item_target" ]]; then
+                    local backup_path="$backup_session/$item_name"
+                    print_warning "OpenCode $item_name directory exists, backing up..."
+                    cp -r "$item_target" "$backup_path"
+                    
+                    if [[ ! -d "$backup_path" ]]; then
+                        print_error "Failed to backup $item_name directory! Skipping."
+                        continue
+                    fi
+                    
+                    print_success "$item_name backup created: $backup_path"
+                    rm -rf "$item_target"
+                fi
+                
+                ln -sf "$item" "$item_target"
+                echo "    ${green}${LINK} OpenCode $item_name${textreset} → ${dim}$item_target${textreset}"
+            elif [[ -f "$item" ]]; then
+                # Handle individual files (if any exist beyond opencode.json)
+                if [[ -f "$item_target" ]] && ! [[ -L "$item_target" ]]; then
+                    local backup_path="$backup_session/$item_name"
+                    print_warning "OpenCode $item_name exists, backing up..."
+                    cp "$item_target" "$backup_path"
+                    print_success "$item_name backup created: $backup_path"
+                fi
+                
+                create_symlink "$item" "$item_target" "OpenCode $item_name"
+            fi
+        fi
+    done
+
+    # =================================================================
     # Show backup session summary
     # =================================================================
     echo ""
