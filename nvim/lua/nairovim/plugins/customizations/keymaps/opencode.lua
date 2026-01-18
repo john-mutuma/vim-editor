@@ -28,7 +28,7 @@ M.mappings = {
         mode = "n",
         key_sequence = "<leader>oa",
         handler = function()
-            require("opencode").ask("@cursor: ")
+            require("opencode").ask("@this: ")
         end,
         opts = { desc = "OpenCode: Ask about this" },
     },
@@ -37,7 +37,7 @@ M.mappings = {
         mode = "v",
         key_sequence = "<leader>oa",
         handler = function()
-            require("opencode").ask("@selection: ")
+            require("opencode").ask("@this: ")
         end,
         opts = { desc = "OpenCode: Ask about selection" },
     },
@@ -46,7 +46,7 @@ M.mappings = {
         mode = "n",
         key_sequence = "<leader>o+",
         handler = function()
-            require("opencode").append_prompt("@buffer")
+            require("opencode").prompt("@buffer")
         end,
         opts = { desc = "OpenCode: Add buffer to prompt" },
     },
@@ -55,7 +55,7 @@ M.mappings = {
         mode = "v",
         key_sequence = "<leader>o+",
         handler = function()
-            require("opencode").append_prompt("@selection")
+            require("opencode").prompt("@this")
         end,
         opts = { desc = "OpenCode: Add selection to prompt" },
     },
@@ -109,7 +109,7 @@ M.mappings = {
         mode = "n",
         key_sequence = "<leader>oe",
         handler = function()
-            require("opencode").prompt("Explain @cursor and its context")
+            require("opencode").prompt("Explain @this and its context")
         end,
         opts = { desc = "OpenCode: Explain this code" },
     },
