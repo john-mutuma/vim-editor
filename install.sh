@@ -137,13 +137,29 @@ create_symlink() {
     local source=$1
     local target=$2
     local name=$3
+    local timestamp=$(date +%Y%m%d_%H%M%S)
 
     if [[ -L "$target" ]]; then
-        print_info "$name symlink already exists, updating..."
+        # Check if it's a dangling symlink
+        if [[ ! -e "$target" ]]; then
+            print_warning "$name is a dangling symlink (target missing), removing..."
+        else
+            print_info "$name symlink already exists, updating..."
+        fi
         rm "$target"
     elif [[ -e "$target" ]]; then
-        print_warning "$name file exists, backing up to ${target}.backup"
-        mv "$target" "${target}.backup"
+        # Add timestamp to prevent backup collision
+        local backup_path="${target}.backup.${timestamp}"
+        print_warning "$name file exists, backing up to ${backup_path}"
+        mv "$target" "$backup_path"
+        
+        # Verify backup succeeded
+        if [[ ! -e "$backup_path" ]]; then
+            print_error "Failed to create backup of $name! Aborting."
+            return 1
+        fi
+        
+        print_success "Backup created: ${backup_path}"
     fi
 
     ln -sf "$source" "$target"
@@ -315,6 +331,45 @@ install_uv() {
     fi
 }
 
+# Detect potential secrets in configuration files
+detect_secrets() {
+    local file_path=$1
+    
+    if [[ ! -f "$file_path" ]]; then
+        return 1
+    fi
+    
+    # Look for common secret indicators (case-insensitive)
+    if grep -qi "bearer\|api[_-]key\|token\|password\|secret" "$file_path" 2>/dev/null; then
+        return 0  # Secrets detected
+    fi
+    
+    return 1  # No secrets detected
+}
+
+# Analyze agents directory for custom (non-repo) agents
+analyze_custom_agents() {
+    local user_agents_dir=$1
+    local repo_agents_dir=$2
+    
+    if [[ ! -d "$user_agents_dir" ]]; then
+        return 1  # No user agents directory
+    fi
+    
+    local custom_count=0
+    
+    # Find agents in user dir that don't exist in repo
+    while IFS= read -r -d '' user_agent; do
+        local basename=$(basename "$user_agent")
+        if [[ ! -f "$repo_agents_dir/$basename" ]]; then
+            ((custom_count++))
+            echo "$basename"  # Output custom agent name
+        fi
+    done < <(find "$user_agents_dir" -type f -name "*.md" -print0 2>/dev/null)
+    
+    return $custom_count
+}
+
 install_lazygit() {
     print_section "${GEAR} Installing Lazygit"
 
@@ -377,33 +432,185 @@ install_opencode() {
     # Create target directory if it doesn't exist
     mkdir -p "$opencode_config_target"
 
-    # Symlink opencode.json
+    # Initialize backup session for this run
+    local timestamp=$(date +%Y%m%d_%H%M%S)
+    local backup_session="$opencode_config_target/.backups/$timestamp"
+    mkdir -p "$backup_session"
+    echo "OpenCode configuration backup - $(date)" > "$backup_session/info.txt"
+
+    # =================================================================
+    # Handle opencode.json with secret detection
+    # =================================================================
     local opencode_json_source="$opencode_config_source/opencode.json"
     local opencode_json_target="$opencode_config_target/opencode.json"
 
     if [[ -f "$opencode_json_source" ]]; then
-        create_symlink "$opencode_json_source" "$opencode_json_target" "OpenCode config"
+        # Check for secrets in existing config
+        if [[ -f "$opencode_json_target" ]] && ! [[ -L "$opencode_json_target" ]]; then
+            if detect_secrets "$opencode_json_target"; then
+                print_warning "Detected potential secrets/API keys in your opencode.json!"
+                echo ""
+                echo "${bold}${yellow}Your configuration may contain sensitive data${textreset}"
+                echo ""
+                echo "${bold}${cyan}Options:${textreset}"
+                echo "  ${cyan}1)${textreset} Backup current config, symlink to repo (you'll need to re-add secrets)"
+                echo "  ${cyan}2)${textreset} Keep your current file (recommended if you have custom secrets)"
+                echo "  ${cyan}3)${textreset} Abort installation"
+                echo ""
+                echo -n "${yellow}Choose [1-3] (default: 2): ${textreset}"
+                read -r choice
+                choice=${choice:-2}  # Default to option 2 (keep current)
+                
+                case "$choice" in
+                    1)
+                        local backup_path="$backup_session/opencode.json"
+                        cp "$opencode_json_target" "$backup_path"
+                        
+                        if [[ ! -f "$backup_path" ]]; then
+                            print_error "Failed to backup opencode.json! Aborting."
+                            return 1
+                        fi
+                        
+                        print_success "Backed up to: $backup_path"
+                        rm "$opencode_json_target"
+                        ln -sf "$opencode_json_source" "$opencode_json_target"
+                        print_success "Symlinked opencode.json (restore secrets from backup)"
+                        echo "${dim}    To restore secrets: review $backup_path${textreset}"
+                        ;;
+                    2)
+                        print_info "Keeping your existing opencode.json (skipping symlink)"
+                        ;;
+                    3)
+                        print_error "Installation aborted by user"
+                        return 1
+                        ;;
+                    *)
+                        print_error "Invalid choice, keeping existing file"
+                        ;;
+                esac
+            else
+                # No secrets detected, safe to symlink
+                create_symlink "$opencode_json_source" "$opencode_json_target" "OpenCode config"
+            fi
+        else
+            # File doesn't exist or is already a symlink
+            create_symlink "$opencode_json_source" "$opencode_json_target" "OpenCode config"
+        fi
     else
         print_warning "opencode.json not found at $opencode_json_source"
     fi
 
-    # Symlink agents directory
+    # =================================================================
+    # Handle agents directory with custom agent detection
+    # =================================================================
     local agents_source="$opencode_config_source/agents"
     local agents_target="$opencode_config_target/agents"
 
     if [[ -d "$agents_source" ]]; then
-        if [[ -L "$agents_target" ]]; then
-            print_info "OpenCode agents directory symlink already exists, updating..."
-            rm "$agents_target"
-        elif [[ -d "$agents_target" ]]; then
-            print_warning "OpenCode agents directory exists, backing up to ${agents_target}.backup"
-            mv "$agents_target" "${agents_target}.backup"
+        # Check for custom agents before proceeding
+        if [[ -d "$agents_target" ]] && ! [[ -L "$agents_target" ]]; then
+            print_step "Analyzing existing agents directory" "checking for custom agents"
+            
+            # Get custom agents list
+            local custom_agents_output=$(analyze_custom_agents "$agents_target" "$agents_source")
+            local custom_count=$?
+            
+            if [[ $custom_count -gt 0 ]]; then
+                print_warning "Found $custom_count custom agent(s) not in repository:"
+                echo "$custom_agents_output" | while IFS= read -r agent; do
+                    if [[ -n "$agent" ]]; then
+                        echo "    ${yellow}• ${agent}${textreset}"
+                    fi
+                done
+                echo ""
+                echo "${bold}${cyan}Options:${textreset}"
+                echo "  ${cyan}1)${textreset} Backup and symlink (custom agents preserved in backup)"
+                echo "  ${cyan}2)${textreset} Keep existing agents directory (recommended)"
+                echo ""
+                echo -n "${yellow}Choose [1-2] (default: 2): ${textreset}"
+                read -r choice
+                choice=${choice:-2}
+                
+                case "$choice" in
+                    1)
+                        local backup_path="$backup_session/agents"
+                        cp -r "$agents_target" "$backup_path"
+                        
+                        if [[ ! -d "$backup_path" ]]; then
+                            print_error "Failed to backup agents directory! Aborting."
+                            return 1
+                        fi
+                        
+                        print_success "Backed up agents to: $backup_path"
+                        rm -rf "$agents_target"
+                        ln -sf "$agents_source" "$agents_target"
+                        echo "    ${green}${LINK} OpenCode agents${textreset} → ${dim}$agents_target${textreset}"
+                        print_info "Your custom agents are in: $backup_path"
+                        ;;
+                    2)
+                        print_info "Keeping your existing agents directory (skipping symlink)"
+                        ;;
+                    *)
+                        print_error "Invalid choice, keeping existing directory"
+                        ;;
+                esac
+            else
+                # No custom agents, safe to symlink with improved logic
+                if [[ -L "$agents_target" ]]; then
+                    # Check if it's a dangling symlink
+                    if [[ ! -e "$agents_target" ]]; then
+                        print_warning "Agents directory is a dangling symlink, removing..."
+                    else
+                        print_info "OpenCode agents directory symlink already exists, updating..."
+                    fi
+                    rm "$agents_target"
+                elif [[ -d "$agents_target" ]]; then
+                    # Backup with timestamp
+                    local backup_path="$backup_session/agents"
+                    print_warning "OpenCode agents directory exists, backing up..."
+                    cp -r "$agents_target" "$backup_path"
+                    
+                    if [[ ! -d "$backup_path" ]]; then
+                        print_error "Failed to backup agents directory! Aborting."
+                        return 1
+                    fi
+                    
+                    print_success "Agents backup created: $backup_path"
+                    rm -rf "$agents_target"
+                fi
+                
+                ln -sf "$agents_source" "$agents_target"
+                echo "    ${green}${LINK} OpenCode agents${textreset} → ${dim}$agents_target${textreset}"
+            fi
+        else
+            # Directory doesn't exist or is already a symlink
+            if [[ -L "$agents_target" ]]; then
+                if [[ ! -e "$agents_target" ]]; then
+                    print_warning "Agents directory is a dangling symlink, removing..."
+                else
+                    print_info "OpenCode agents directory symlink already exists, updating..."
+                fi
+                rm "$agents_target"
+            fi
+            
+            ln -sf "$agents_source" "$agents_target"
+            echo "    ${green}${LINK} OpenCode agents${textreset} → ${dim}$agents_target${textreset}"
         fi
-
-        ln -sf "$agents_source" "$agents_target"
-        echo "    ${green}${LINK} OpenCode agents${textreset} → ${dim}$agents_target${textreset}"
     else
         print_warning "agents directory not found at $agents_source"
+    fi
+
+    # =================================================================
+    # Show backup session summary
+    # =================================================================
+    echo ""
+    if [[ -n "$(ls -A "$backup_session" 2>/dev/null | grep -v '^info.txt$')" ]]; then
+        print_info "Backups created in: $backup_session"
+        echo "${dim}    To restore: copy backups from this directory to ~/.config/opencode${textreset}"
+    else
+        # Clean up empty backup session (only has info.txt)
+        rm -rf "$backup_session" 2>/dev/null || true
+        rmdir "$opencode_config_target/.backups" 2>/dev/null || true
     fi
 
     echo ""
