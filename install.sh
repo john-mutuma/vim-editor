@@ -347,6 +347,69 @@ install_lazygit() {
     fi
 }
 
+install_opencode() {
+    print_section "${STAR} Installing and Configuring OpenCode"
+
+    # Install OpenCode if not already installed
+    if ! command_exists opencode; then
+        print_step "Installing OpenCode" "via Homebrew"
+        if brew install --quiet anomalyco/tap/opencode 2>/dev/null; then
+            print_success "OpenCode installed successfully!"
+        else
+            print_error "Failed to install OpenCode"
+            return 1
+        fi
+    else
+        print_info "OpenCode is already installed, skipping..."
+    fi
+
+    # Setup OpenCode configuration
+    print_step "Setting up OpenCode configuration" "~/.config/opencode"
+
+    local opencode_config_source="$(pwd)/opencode_global_config"
+    local opencode_config_target="$HOME/.config/opencode"
+
+    if [[ ! -d "$opencode_config_source" ]]; then
+        print_error "OpenCode configuration source not found at $opencode_config_source"
+        return 1
+    fi
+
+    # Create target directory if it doesn't exist
+    mkdir -p "$opencode_config_target"
+
+    # Symlink opencode.json
+    local opencode_json_source="$opencode_config_source/opencode.json"
+    local opencode_json_target="$opencode_config_target/opencode.json"
+
+    if [[ -f "$opencode_json_source" ]]; then
+        create_symlink "$opencode_json_source" "$opencode_json_target" "OpenCode config"
+    else
+        print_warning "opencode.json not found at $opencode_json_source"
+    fi
+
+    # Symlink agents directory
+    local agents_source="$opencode_config_source/agents"
+    local agents_target="$opencode_config_target/agents"
+
+    if [[ -d "$agents_source" ]]; then
+        if [[ -L "$agents_target" ]]; then
+            print_info "OpenCode agents directory symlink already exists, updating..."
+            rm "$agents_target"
+        elif [[ -d "$agents_target" ]]; then
+            print_warning "OpenCode agents directory exists, backing up to ${agents_target}.backup"
+            mv "$agents_target" "${agents_target}.backup"
+        fi
+
+        ln -sf "$agents_source" "$agents_target"
+        echo "    ${green}${LINK} OpenCode agents${textreset} → ${dim}$agents_target${textreset}"
+    else
+        print_warning "agents directory not found at $agents_source"
+    fi
+
+    echo ""
+    print_success "OpenCode installation and configuration complete!"
+}
+
 print_installation_summary() {
     echo ""
     echo "${bold}${magenta}╔══════════════════════════════════════════════════════════════════════════════════════╗${textreset}"
@@ -358,9 +421,10 @@ print_installation_summary() {
     echo "${green}${CHECK_MARK}${textreset} Neovim installed and configured"
     echo "${green}${CHECK_MARK}${textreset} Tmux installed with Plugin Manager (TPM)"
     echo "${green}${CHECK_MARK}${textreset} Oh My Zsh installed"
-    echo "${green}${CHECK_MARK}${textreset} CLI tools installed (fzf, ripgrep, bat)"
+    echo "${green}${CHECK_MARK}${textreset} CLI tools installed (fzf, ripgrep, bat, scooter)"
     echo "${green}${CHECK_MARK}${textreset} UV/UVX installed for MCP plugins"
     echo "${green}${CHECK_MARK}${textreset} Lazygit installed and configured"
+    echo "${green}${CHECK_MARK}${textreset} OpenCode installed and configured"
     echo ""
     echo "${bold}${yellow}🚀 Next Steps:${textreset}"
     echo "${cyan}1.${textreset} Run ${bold}${cyan}tmux${textreset} to start your enhanced terminal session"
@@ -415,6 +479,7 @@ main() {
     install_cli_tools
     install_uv
     install_lazygit
+    install_opencode
 
     # Print final summary
     print_installation_summary
