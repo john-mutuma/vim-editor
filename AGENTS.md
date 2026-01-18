@@ -23,12 +23,13 @@ Built complete 7-lesson interactive tutorial system (`:Tutorial` command) coveri
 - Consistent formatting with `---` and `━━━` visual separators
 - Self-paced progression with space bar navigation
 - Master pattern summary reinforcing learning retention
+- Reset progress feature (`R` key) with confirmation dialog for fresh starts
 - ~2,500 lines of instructional content across 50 minutes
 
 **Impact:** Zero-to-productive onboarding path, eliminates learning curve friction  
 **Branch:** `user/johnmutuma/tutorial-mvp`  
 **Files:** 9 files (init.lua, 7 lessons, utils/tutorial.lua)  
-**Commits:** 10 commits (mnemonic enhancements + paragraph formatting)
+**Commits:** 11 commits (mnemonic enhancements + paragraph formatting + reset progress)
 
 ---
 

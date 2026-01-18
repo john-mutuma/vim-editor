@@ -132,6 +132,9 @@ function M.create_ui(lesson)
     vim.keymap.set("n", "r", function()
         M.restart_lesson()
     end, opts)
+    vim.keymap.set("n", "R", function()
+        M.reset_all_progress()
+    end, opts)
 
     -- Auto-close on buffer leave
     vim.api.nvim_create_autocmd("BufLeave", {
@@ -225,7 +228,7 @@ function M.render_step()
 
     -- Footer
     table.insert(lines, string.rep("─", 76))
-    table.insert(lines, "[Space/n] Next  [b/p] Previous  [s] Skip  [r] Restart  [q] Quit")
+    table.insert(lines, "[Space/n] Next  [b/p] Previous  [s] Skip  [r] Restart  [R] Reset All  [q] Quit")
 
     -- Render to buffer
     vim.api.nvim_buf_set_option(state.ui.buf, "modifiable", true)
@@ -407,6 +410,31 @@ function M.save_current_progress()
     progress.current_step = state.current_step
     progress.first_launch = false
     M.save_progress(progress)
+end
+
+--- Reset all tutorial progress
+function M.reset_all_progress()
+    vim.ui.select({ "Yes, reset everything", "No, cancel" }, {
+        prompt = "⚠️  Reset ALL tutorial progress? This will clear all completed lessons and start from scratch.",
+    }, function(choice)
+        if choice == "Yes, reset everything" then
+            -- Reset progress data
+            local default_progress = {
+                tutorials_completed = {},
+                current_tutorial = nil,
+                current_step = 1,
+                first_launch = true,
+            }
+            M.save_progress(default_progress)
+            
+            -- Close UI and reset state
+            M.close_ui()
+            state.current_lesson = nil
+            state.current_step = 1
+            
+            vim.notify("✨ Tutorial progress reset! Use :Tutorial to start fresh.", vim.log.levels.INFO)
+        end
+    end)
 end
 
 --- Check if this is first launch
