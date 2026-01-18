@@ -58,11 +58,12 @@ function M.save_progress(data)
     local file = io.open(DATA_PATH, "w")
     if not file then
         vim.notify("Failed to save tutorial progress", vim.log.levels.WARN)
-        return
+        return false
     end
     local json = vim.json.encode(data)
     file:write(json)
     file:close()
+    return true
 end
 
 ----------------------------------------------------------------------
@@ -231,9 +232,9 @@ function M.render_step()
     table.insert(lines, "[Space/n] Next  [b/p] Previous  [s] Skip  [r] Restart  [R] Reset All  [q] Quit")
 
     -- Render to buffer
-    vim.api.nvim_buf_set_option(state.ui.buf, "modifiable", true)
+    vim.bo[state.ui.buf].modifiable = true
     vim.api.nvim_buf_set_lines(state.ui.buf, 0, -1, false, lines)
-    vim.api.nvim_buf_set_option(state.ui.buf, "modifiable", false)
+    vim.bo[state.ui.buf].modifiable = false
 end
 
 ----------------------------------------------------------------------
@@ -425,14 +426,18 @@ function M.reset_all_progress()
                 current_step = 1,
                 first_launch = true,
             }
-            M.save_progress(default_progress)
             
-            -- Close UI and reset state
-            M.close_ui()
-            state.current_lesson = nil
-            state.current_step = 1
-            
-            vim.notify("✨ Tutorial progress reset! Use :Tutorial to start fresh.", vim.log.levels.INFO)
+            -- Attempt to save and verify success
+            if M.save_progress(default_progress) then
+                -- Close UI and reset state
+                M.close_ui()
+                state.current_lesson = nil
+                state.current_step = 1
+                
+                vim.notify("✨ Tutorial progress reset! Use :Tutorial to start fresh.", vim.log.levels.INFO)
+            else
+                vim.notify("❌ Failed to reset progress. Please check file permissions and try again.", vim.log.levels.ERROR)
+            end
         end
     end)
 end
