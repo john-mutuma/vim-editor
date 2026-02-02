@@ -64,5 +64,5 @@ keybind = ctrl+b>z=toggle_split_zoom
 keybind = ctrl+b>n=next_tab
 keybind = ctrl+b>p=previous_tab
 keybind = ctrl+b>c=new_tab
-keybind = ctrl+b>x=close_tab
+keybind = ctrl+b>x=close_surface
 
