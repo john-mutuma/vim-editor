@@ -272,28 +272,19 @@ NairoVIM includes 70+ carefully selected plugins organized into functional categ
 
 ## Terminal & Shell Integration
 
-NairoVIM integrates seamlessly with modern terminal emulators and shell workflows.
+NairoVIM integrates seamlessly with modern terminal emulators and shell workflows across all platforms.
 
-### Recommended Terminal: Ghostty
+### Terminal Emulators by Platform
 
-**Ghostty** is the recommended terminal for local development with NairoVIM. It offers:
+#### macOS / Linux: Ghostty (Recommended)
+
+**Ghostty** is the recommended terminal for local development on macOS and Linux. It offers:
 
 - ⚡ **GPU-accelerated rendering** - Blazing fast performance
 - 🎨 **Native transparency & blur** - Beautiful UI integration
 - ⌨️ **Built-in split/tab management** - No multiplexer needed
 - 🔧 **tmux-like keybindings** - Familiar Ctrl+b prefix workflow
 - 🎯 **Modern features** - Native ligatures, color schemes, shell integration
-
-**Key Features:**
-
-| Feature | Ghostty | tmux (Legacy) |
-|---------|---------|---------------|
-| **Performance** | GPU-accelerated, instant splits | Terminal + multiplexer overhead |
-| **UI Integration** | Native transparency/blur | Requires terminal support |
-| **Split Management** | Built-in (Ctrl+b prefix) | Requires tmux session |
-| **Tab Support** | Native tabs with animations | Windows/panes only |
-| **Configuration** | Single config file | Separate .tmux.conf |
-| **Use Case** | **Local development (recommended)** | Remote/SSH workflows only |
 
 **Ghostty Keybindings:**
 
@@ -304,19 +295,16 @@ Ctrl+b + -     # Horizontal split
 
 # Navigation
 Ctrl+b + h/j/k/l   # Navigate between splits
-Ctrl+b + [         # Navigate split focus
 
 # Tabs
 Ctrl+b + c     # New tab
 Ctrl+b + n/p   # Next/previous tab
-Ctrl+b + 0-9   # Jump to tab number
 
 # Zoom
 Ctrl+b + z     # Toggle zoom on current split
 
 # Management
 Ctrl+b + x     # Close current split/tab
-Ctrl+b + &     # Kill current window
 ```
 
 **Installation & Configuration:**
@@ -331,21 +319,91 @@ brew install --cask ghostty
 # Pre-configured with:
 # - TokyoNight theme
 # - tmux-like keybindings (Ctrl+b prefix)
-# - Hack Nerd Font
+# - Nerd Font support
 # - Shell integration
-# - 95% opacity with blur
 ```
+
+#### Windows: Windows Terminal (Recommended)
+
+**Windows Terminal** is the recommended terminal for Windows with NairoVIM. It provides:
+
+- ⚡ **GPU-accelerated rendering** - Fast, smooth performance
+- 🎨 **Modern UI** - Acrylic transparency and themes
+- ⌨️ **Built-in split/tab management** - Multiple panes and tabs
+- 🔧 **tmux-like keybindings** - Configured with Ctrl+b prefix
+- 🎯 **Windows integration** - PowerShell, CMD, and WSL support
+
+**Windows Terminal Keybindings:**
+
+```powershell
+# Splits
+Ctrl+b + -     # Horizontal split
+Ctrl+b + =     # Vertical split
+
+# Navigation
+Ctrl+b + h/j/k/l   # Navigate between panes
+
+# Tabs
+Ctrl+b + c     # New tab
+Ctrl+b + n/p   # Next/previous tab
+
+# Zoom
+Ctrl+b + z     # Toggle pane zoom
+
+# Management
+Ctrl+b + x     # Close current pane
+```
+
+**Installation & Configuration:**
+
+```powershell
+# Install via Scoop (automated by install.ps1)
+scoop install windows-terminal
+
+# Or via winget
+winget install Microsoft.WindowsTerminal
+
+# Config is auto-linked by install.ps1
+%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json
+
+# Pre-configured with:
+# - TokyoNight color scheme
+# - JetBrainsMono Nerd Font
+# - tmux-like keybindings (Ctrl+b prefix)
+# - Multiple profiles (PowerShell, CMD, WSL)
+```
+
+### Platform Comparison
+
+| Feature | Ghostty (macOS/Linux) | Windows Terminal | tmux (Legacy) |
+|---------|----------------------|------------------|---------------|
+| **Performance** | GPU-accelerated | GPU-accelerated | Terminal + multiplexer overhead |
+| **UI Integration** | Native transparency/blur | Acrylic transparency | Requires terminal support |
+| **Split Management** | Built-in (Ctrl+b) | Built-in (Ctrl+b) | Requires tmux session |
+| **Tab Support** | Native tabs | Native tabs | Windows/panes only |
+| **Configuration** | Single config file | JSON settings | Separate .tmux.conf |
+| **Platform** | macOS, Linux | Windows 10/11 | Cross-platform |
+| **Use Case** | **Local dev (macOS/Linux)** | **Local dev (Windows)** | Remote/SSH workflows |
+
+### Configuration File Locations
+
+| Platform | Config File | Location |
+|----------|------------|----------|
+| **macOS** (Ghostty) | `ghostty_config` | `~/.config/ghostty/config` |
+| **Linux** (Ghostty) | `ghostty_config` | `~/.config/ghostty/config` |
+| **Windows** (Windows Terminal) | `windows-terminal-settings.json` | `%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json` |
+| **All** (Neovim) | `nvim/` directory | macOS/Linux: `~/.config/nvim`<br>Windows: `%LOCALAPPDATA%\nvim` |
 
 ### Legacy Option: tmux
 
-> **Note:** tmux is supported but relegated to legacy/remote workflows only. For local development, use Ghostty.
+> **Note:** tmux is supported on macOS/Linux but relegated to legacy/remote workflows only. For local development, use platform-native terminals (Ghostty or Windows Terminal).
 
 **When to use tmux:**
 
 - ✅ SSH/remote development
 - ✅ Server administration
 - ✅ Session persistence requirements
-- ❌ Local development (use Ghostty instead)
+- ❌ Local development (use platform-native terminal instead)
 
 **tmux Features:**
 
@@ -354,7 +412,7 @@ brew install --cask ghostty
 - Copy mode with vi keybindings
 - Scriptable multiplexing
 
-**Installation:**
+**Installation (macOS/Linux only):**
 
 ```bash
 # Optional - only if you need tmux for remote work
@@ -365,6 +423,8 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
 ### Shell Configuration
+
+#### macOS / Linux (zsh)
 
 NairoVIM includes a pre-configured `.zshrc` with:
 
@@ -382,7 +442,43 @@ NairoVIM includes a pre-configured `.zshrc` with:
 ```bash
 export EDITOR="nvim"
 export VISUAL="nvim"
+export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 export ANTHROPIC_API_KEY="your-key"  # For Avante AI
+```
+
+#### Windows (PowerShell)
+
+NairoVIM configures PowerShell with:
+
+- **Oh My Posh** - Modern prompt theme engine
+- **TokyoNight theme** - Matching terminal colors
+- **PSReadLine** - Enhanced command-line editing
+- **Git integration** - Branch status and autocomplete
+- **fzf integration** - Fuzzy finding in PowerShell
+- **nvim** as default editor
+
+**PowerShell Profile Location:**
+
+```powershell
+# Profile auto-configured by install.ps1
+$PROFILE  # Usually: C:\Users\<username>\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+```
+
+**Environment Variables:**
+
+```powershell
+$env:EDITOR = "nvim"
+$env:VISUAL = "nvim"
+$env:RIPGREP_CONFIG_PATH = "$HOME\.ripgreprc"
+$env:ANTHROPIC_API_KEY = "your-key"  # For Avante AI
+```
+
+**Useful PowerShell Aliases:**
+
+```powershell
+# Added by install.ps1
+Set-Alias -Name vim -Value nvim
+Set-Alias -Name vi -Value nvim
 ```
 
 ---
