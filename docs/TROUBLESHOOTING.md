@@ -20,7 +20,9 @@ Comprehensive guide to resolving common issues with NairoVIM.
 
 ## Installation Issues
 
-### Homebrew not found
+### macOS / Linux Installation Issues
+
+#### Homebrew not found
 
 **Problem:** Installation script cannot find Homebrew.
 
@@ -35,7 +37,7 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### Installation script fails
+#### Installation script fails
 
 **Problem:** Installation script encounters errors.
 
@@ -51,9 +53,107 @@ brew install --cask ghostty  # Recommended terminal
 
 # Verify installations
 nvim --version
-tmux -V
 fzf --version
 ```
+
+#### Permission denied errors
+
+**Problem:** Cannot create symlinks or write to directories.
+
+**Solution:**
+
+```bash
+# Ensure proper ownership
+sudo chown -R $(whoami) ~/.config
+sudo chown -R $(whoami) ~/.local
+
+# Run install script again
+./install.sh
+```
+
+### Windows Installation Issues
+
+#### PowerShell version too old
+
+**Problem:** PowerShell version is older than 5.1.
+
+**Solution:**
+
+```powershell
+# Check PowerShell version
+$PSVersionTable.PSVersion
+
+# Install PowerShell 7+ (recommended)
+winget install --id Microsoft.PowerShell --source winget
+
+# Or via Scoop
+scoop install pwsh
+
+# Restart terminal and use pwsh.exe
+pwsh
+```
+
+#### Scoop not found
+
+**Problem:** Installation script cannot find Scoop package manager.
+
+**Solution:**
+
+```powershell
+# Install Scoop manually
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod get.scoop.sh | Invoke-Expression
+
+# Verify installation
+scoop --version
+
+# Add required buckets
+scoop bucket add extras
+scoop bucket add nerd-fonts
+
+# Run install script again
+.\install.ps1
+```
+
+#### Developer Mode not enabled
+
+**Problem:** Symlink creation fails without Developer Mode.
+
+**Solution:**
+
+```powershell
+# Option 1: Enable Developer Mode (Recommended)
+# 1. Open Settings (Win + I)
+# 2. Go to System → For developers
+# 3. Enable "Developer Mode"
+# 4. Restart PowerShell and run install.ps1 again
+
+# Option 2: Run PowerShell as Administrator
+# Right-click PowerShell → "Run as Administrator"
+# Then run: .\install.ps1
+```
+
+#### Git not found on Windows
+
+**Problem:** Git is not installed or not in PATH.
+
+**Solution:**
+
+```powershell
+# Install Git via Scoop
+scoop install git
+
+# Or install Git for Windows
+winget install Git.Git
+
+# Verify installation
+git --version
+
+# Add to PATH if needed
+$env:Path += ";C:\Program Files\Git\bin"
+```
+
+### Common to All Platforms
 
 ### Neovim version too old
 
@@ -757,7 +857,9 @@ vim.keymap.set("n", "<key>", callback, { noremap = true })
 
 ## Terminal and Shell Issues
 
-### Ghostty terminal issues
+### macOS / Linux Terminal Issues
+
+#### Ghostty terminal issues
 
 **Problem:** Ghostty terminal not working as expected with Neovim.
 
@@ -787,7 +889,7 @@ echo $TERM  # Should be xterm-256color
 # Ctrl+b + [ (navigate panes)
 ```
 
-### Ghostty config not loaded
+#### Ghostty config not loaded
 
 **Problem:** Custom Ghostty configuration not applying.
 
@@ -810,7 +912,7 @@ ghostty --config-check
 echo $GHOSTTY_RESOURCES_DIR
 ```
 
-### Ghostty splits not working
+#### Ghostty splits not working
 
 **Problem:** Keybindings for splits/tabs don't work.
 
@@ -835,9 +937,210 @@ grep "keybind" ~/.config/ghostty/config
 # Cmd + t (new tab)
 ```
 
-### Tmux integration not working (Legacy)
+### Windows Terminal Issues
 
-> **Note:** tmux is supported for legacy/remote workflows only. For local development, Ghostty terminal is recommended.
+#### Windows Terminal not installed
+
+**Problem:** Windows Terminal is not installed or not found.
+
+**Solution:**
+
+```powershell
+# Check if Windows Terminal is installed
+winget list --id Microsoft.WindowsTerminal
+
+# Install via winget
+winget install Microsoft.WindowsTerminal
+
+# Or install via Scoop
+scoop install windows-terminal
+
+# Or install from Microsoft Store
+# Open Microsoft Store and search "Windows Terminal"
+```
+
+#### Windows Terminal settings not applying
+
+**Problem:** Custom Windows Terminal configuration not loading.
+
+**Solution:**
+
+```powershell
+# Check settings file location
+Get-ChildItem "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json"
+
+# If symlink is broken, recreate it
+# First, backup existing settings
+Copy-Item "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json" `
+  "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json.backup"
+
+# Create symlink (requires Developer Mode or admin)
+$wtDir = (Get-ChildItem "$env:LOCALAPPDATA\Packages" -Filter "Microsoft.WindowsTerminal*")[0].FullName
+New-Item -ItemType SymbolicLink `
+  -Path "$wtDir\LocalState\settings.json" `
+  -Target "$(Get-Location)\windows-terminal-settings.json" -Force
+
+# Reload Windows Terminal (Ctrl+Shift+T to open new tab)
+```
+
+#### Windows Terminal keybindings not working
+
+**Problem:** Ctrl+b prefix keybindings don't work in Windows Terminal.
+
+**Solution:**
+
+```powershell
+# Check Windows Terminal settings
+# Press Ctrl+, to open Settings
+
+# Verify keybindings in settings.json
+# Look for "actions" array with "ctrl+b|..." patterns
+
+# Common fixes:
+# 1. Ensure "useAcrylicInTabRow" is false for better performance
+# 2. Check for conflicting keybindings in the actions section
+# 3. Restart Windows Terminal completely (close all windows)
+
+# Test keybindings manually:
+# Ctrl+b then - (horizontal split)
+# Ctrl+b then = (vertical split)
+# Ctrl+b then h/j/k/l (navigate panes)
+```
+
+#### Symlink creation fails on Windows
+
+**Problem:** Installation script fails to create symlinks.
+
+**Solution:**
+
+```powershell
+# Option 1: Enable Developer Mode (Recommended)
+# 1. Open Settings → System → For developers
+# 2. Enable "Developer Mode"
+# 3. Restart PowerShell
+# 4. Run install.ps1 again
+
+# Option 2: Run as Administrator
+# Right-click PowerShell → "Run as Administrator"
+# Then run: .\install.ps1
+
+# Option 3: Use hard links or junctions instead
+# Edit install.ps1 to use:
+cmd /c mklink /J "target" "source"  # For directories
+cmd /c mklink /H "target" "source"  # For files
+
+# Verify symlinks created successfully
+Get-Item "$env:LOCALAPPDATA\nvim" | Select-Object LinkType, Target
+```
+
+#### PowerShell execution policy error
+
+**Problem:** Cannot run install.ps1 due to execution policy.
+
+**Solution:**
+
+```powershell
+# Check current execution policy
+Get-ExecutionPolicy
+
+# Set execution policy for current user (recommended)
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Or bypass for single execution
+PowerShell -ExecutionPolicy Bypass -File .\install.ps1
+
+# If still blocked, unblock the script
+Unblock-File .\install.ps1
+```
+
+#### Scoop installation fails
+
+**Problem:** Scoop package manager fails to install.
+
+**Solution:**
+
+```powershell
+# Ensure prerequisites
+# 1. PowerShell 5.1 or later
+$PSVersionTable.PSVersion
+
+# 2. Set execution policy
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 3. Manual Scoop installation
+Invoke-RestMethod get.scoop.sh | Invoke-Expression
+
+# 4. Add buckets manually if needed
+scoop bucket add extras
+scoop bucket add nerd-fonts
+
+# 5. Verify Scoop installation
+scoop --version
+scoop list
+```
+
+#### Neovim config path issues on Windows
+
+**Problem:** Neovim cannot find configuration at `%LOCALAPPDATA%\nvim`.
+
+**Solution:**
+
+```powershell
+# Check Neovim config path
+nvim --version
+# Look for "init.lua or init.vim locations"
+
+# Verify symlink exists and is valid
+Get-Item "$env:LOCALAPPDATA\nvim"
+
+# If symlink is broken, recreate it
+Remove-Item "$env:LOCALAPPDATA\nvim" -Force -ErrorAction SilentlyContinue
+New-Item -ItemType SymbolicLink -Path "$env:LOCALAPPDATA\nvim" -Target "$(Get-Location)\nvim"
+
+# Alternative: Use $env:XDG_CONFIG_HOME
+$env:XDG_CONFIG_HOME = "$env:USERPROFILE\.config"
+[Environment]::SetEnvironmentVariable("XDG_CONFIG_HOME", "$env:USERPROFILE\.config", "User")
+
+# Then create symlink at ~/.config/nvim
+New-Item -ItemType Directory -Path "$env:USERPROFILE\.config" -Force
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\nvim" -Target "$(Get-Location)\nvim"
+```
+
+#### Oh My Posh theme not loading
+
+**Problem:** Oh My Posh prompt theme not showing in PowerShell.
+
+**Solution:**
+
+```powershell
+# Check Oh My Posh installation
+oh-my-posh --version
+
+# Reinstall if missing
+scoop install oh-my-posh
+
+# Verify PowerShell profile exists
+Test-Path $PROFILE
+
+# Check Oh My Posh init command in profile
+Get-Content $PROFILE | Select-String "oh-my-posh"
+
+# Manually add to profile if missing
+$initCommand = @"
+oh-my-posh init pwsh --config "`$env:POSH_THEMES_PATH\tokyonight_storm.omp.json" | Invoke-Expression
+"@
+Add-Content $PROFILE $initCommand
+
+# Reload profile
+. $PROFILE
+
+# List available themes
+Get-ChildItem "$env:POSH_THEMES_PATH" | Select-Object Name
+```
+
+### Tmux integration not working (Legacy - macOS/Linux only)
+
+> **Note:** tmux is supported for legacy/remote workflows only. For local development, use Ghostty (macOS/Linux) or Windows Terminal (Windows).
 
 **Problem:** Tmux features not working with Neovim.
 
@@ -863,7 +1166,9 @@ cat ~/.tmux.conf
 echo $TERM  # Should be screen-256color or tmux-256color
 ```
 
-### Shell completions missing
+### Shell Configuration Issues
+
+#### Shell completions missing (macOS/Linux)
 
 **Problem:** Tab completions don't work in shell.
 
