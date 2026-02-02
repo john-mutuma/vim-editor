@@ -70,9 +70,9 @@ function Print-Header {
     param([string]$Title)
     
     Write-Host ""
-    $topBorder = [char]0x2554 + ([char]0x2550 * 86) + [char]0x2557
+    $topBorder = [char]0x2554 + ([string][char]0x2550 * 86) + [char]0x2557
     $titleLine = [char]0x2551 + "  $Title"
-    $bottomBorder = [char]0x255A + ([char]0x2550 * 86) + [char]0x255D
+    $bottomBorder = [char]0x255A + ([string][char]0x2550 * 86) + [char]0x255D
     
     Write-ColorOutput $topBorder -Color "Cyan"
     Write-ColorOutput $titleLine -Color "Magenta"
@@ -789,10 +789,10 @@ function Install-OpenCode {
 
 function Print-InstallationSummary {
     Write-Host ""
-    $topBorder = [char]0x2554 + ([char]0x2550 * 86) + [char]0x2557
+    $topBorder = [char]0x2554 + ([string][char]0x2550 * 86) + [char]0x2557
     $emoji = [System.Char]::ConvertFromUtf32(0x1F389)
     $titleLine = [char]0x2551 + "  $emoji INSTALLATION COMPLETE! $emoji"
-    $bottomBorder = [char]0x255A + ([char]0x2550 * 86) + [char]0x255D
+    $bottomBorder = [char]0x255A + ([string][char]0x2550 * 86) + [char]0x255D
     
     Write-ColorOutput $topBorder -Color "Magenta"
     Write-ColorOutput $titleLine -Color "Green"
