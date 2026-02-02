@@ -432,6 +432,200 @@ git diff lazy-lock.json
 :Mason  # Check for green checkmark
 ```
 
+### Mason LSP Installation Errors
+
+#### npm/Node.js not found
+
+**Problem:** Mason fails to install LSP servers with error messages like:
+- `[ERROR] Failed to spawn process. cmd="npm", err="ENOENT: no such file or directory"`
+- `[ERROR] Installation failed for Package(name=typescript-language-server)`
+- `[ERROR] Could not find executable "npm" in PATH`
+
+**Affected packages:**
+- typescript-language-server (TypeScript/JavaScript)
+- eslint-lsp, html-lsp, css-lsp, json-lsp
+- prettierd, markdownlint, cspell
+- vscode-langservers-extracted
+
+**Solution:**
+
+**Windows:**
+```powershell
+scoop install nodejs
+```
+
+**macOS/Linux:**
+```bash
+brew install node
+```
+
+**Verify:**
+```bash
+node --version
+npm --version
+```
+
+**Retry in Neovim:**
+```vim
+:Mason
+# Navigate to failed package, press 'i' to install
+# Or use: :MasonInstall typescript-language-server
+```
+
+#### Go not found
+
+**Problem:** Mason fails with error messages like:
+- `[ERROR] Could not find executable "go" in PATH`
+- `[ERROR] Installation failed for Package(name=gopls)`
+
+**Affected packages:**
+- gopls (Go language server)
+- gofumpt (Go formatter)
+- goimports, golangci-lint
+
+**Solution:**
+
+**Windows:**
+```powershell
+scoop install go
+```
+
+**macOS/Linux:**
+```bash
+brew install go
+```
+
+**Verify:**
+```bash
+go version
+```
+
+**Retry in Neovim:**
+```vim
+:Mason
+# Navigate to gopls, press 'i' to install
+# Or use: :MasonInstall gopls
+```
+
+#### Python not found
+
+**Problem:** Mason fails with error messages like:
+- `[ERROR] Could not find executable "python" in PATH`
+- `[ERROR] Could not find executable "pip" in PATH`
+
+**Affected packages:**
+- pyright, pylsp (Python language servers)
+- black, isort, flake8 (Python formatters/linters)
+- debugpy (Python debugger)
+
+**Solution:**
+
+**Windows:**
+```powershell
+scoop install python
+```
+
+**macOS/Linux:**
+```bash
+brew install python
+```
+
+**Verify:**
+```bash
+python --version  # or python3 --version
+pip --version     # or pip3 --version
+```
+
+**Retry in Neovim:**
+```vim
+:Mason
+# Navigate to pyright, press 'i' to install
+# Or use: :MasonInstall pyright
+```
+
+#### PATH not updated after tool installation
+
+**Problem:** Tools are installed but Mason still reports "not found in PATH".
+
+**Solution:**
+
+1. **Restart your terminal** - This refreshes environment variables
+2. **Verify PATH includes tool directories:**
+
+**Windows:**
+```powershell
+# Check PATH
+$env:PATH -split ';'
+
+# Should include scoop paths like:
+# C:\Users\YourName\scoop\shims
+# C:\Users\YourName\scoop\apps\nodejs\current\bin
+```
+
+**macOS/Linux:**
+```bash
+# Check PATH
+echo $PATH | tr ':' '\n'
+
+# Should include homebrew paths like:
+# /opt/homebrew/bin (macOS Apple Silicon)
+# /usr/local/bin (macOS Intel)
+```
+
+3. **Manually add to PATH if needed:**
+
+**Windows (PowerShell profile):**
+```powershell
+# Edit profile
+notepad $PROFILE
+
+# Add scoop to PATH (if missing)
+$env:PATH = "$env:USERPROFILE\scoop\shims;" + $env:PATH
+```
+
+**macOS/Linux (shell profile):**
+```bash
+# For zsh (default on macOS)
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+source ~/.zshrc
+
+# For bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+4. **Restart Neovim after fixing PATH**
+
+#### General Mason troubleshooting
+
+**Check Mason health:**
+```vim
+:checkhealth mason
+```
+
+**View Mason logs:**
+```vim
+:Mason
+# Press 'g?' to see keybindings
+# Press 'g' then 'l' to view logs for a package
+```
+
+**Clear Mason cache and reinstall:**
+```vim
+# Remove Mason data directory
+# Exit Neovim first, then:
+# Unix: rm -rf ~/.local/share/nvim/mason
+# Windows: Remove-Item -Recurse -Force ~\AppData\Local\nvim-data\mason
+
+# Restart Neovim and reinstall
+:Mason
+# Press 'I' to install all missing packages
+```
+
+**Install during setup:**
+
+If you're setting up NairoVIM for the first time, the installation scripts will prompt you to install Node.js, Go, and Python automatically. Answer "Y" to avoid these issues.
+
 ### Completions not working
 
 **Problem:** No autocomplete suggestions appearing.

@@ -76,8 +76,27 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 ### Optional but Recommended
 
 - **Nerd Font** - For proper icon display ([download here](https://www.nerdfonts.com/))
-- **Node.js** - For additional LSP servers and tools
-- **Python 3** - For certain Neovim plugins
+
+### Optional Development Tools
+
+These tools enable LSP servers for various languages in Neovim. The installation scripts will prompt you to install them automatically.
+
+**Windows:**
+```powershell
+scoop install nodejs go python
+```
+
+**macOS/Linux:**
+```bash
+brew install node go python
+```
+
+**What each tool enables:**
+- **Node.js (npm):** TypeScript, JavaScript, HTML, CSS, JSON LSP servers, ESLint, Prettier
+- **Go:** Go language support, gopls language server, gofumpt formatter
+- **Python:** Python language support, LSP servers, formatters, and linters
+
+These are optional during installation. If you skip them, you can install later and run `:Mason` in Neovim to install language servers.
 
 ## 🚀 Quick Installation
 

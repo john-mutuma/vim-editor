@@ -344,6 +344,101 @@ function Install-BuildTools {
     Print-Success "Build tools installation complete!"
 }
 
+function Install-DevelopmentTools {
+    Print-Section "$($Symbols.Package) Installing Development Tools (Optional)"
+    
+    Print-Info "Development tools enable LSP servers for various languages in Neovim"
+    Print-Info "Includes: Node.js (npm), Go, Python"
+    Write-Host ""
+    
+    # Prompt user
+    $response = Read-Host "Install development tools? [Y/n]"
+    if ($response -match '^[Nn]') {
+        Print-Info "Skipping development tools installation"
+        Print-Info "You can install later with: scoop install nodejs go python"
+        return
+    }
+    
+    Write-Host ""
+    Print-Step "Installing development tools" "Node.js, Go, Python"
+    
+    # Install Node.js (includes npm)
+    Install-WithScoop -Package "nodejs" -DisplayName "Node.js (npm)"
+    
+    # Install Go
+    Install-WithScoop -Package "go" -DisplayName "Go (golang)"
+    
+    # Install Python
+    Install-WithScoop -Package "python" -DisplayName "Python"
+    
+    # Verify installations
+    Print-Step "Verifying development tools installation"
+    
+    $toolsReady = $true
+    
+    if (Test-Command "node") {
+        try {
+            $nodeOutput = node --version 2>&1
+            $nodeVersion = if ($nodeOutput -match 'v(\d+\.\d+\.\d+)') { $matches[1] } else { "unknown" }
+            Print-Success "Node.js ready (v$nodeVersion)"
+            
+            if (Test-Command "npm") {
+                $npmOutput = npm --version 2>&1
+                Print-Success "npm ready (v$npmOutput)"
+            }
+        } catch {
+            Print-Success "Node.js installed"
+        }
+    } else {
+        Print-Warning "Node.js not found in PATH"
+        $toolsReady = $false
+    }
+    
+    if (Test-Command "go") {
+        try {
+            $goOutput = go version 2>&1
+            $goVersion = if ($goOutput -match 'go(\d+\.\d+\.\d+)') { $matches[1] } else { "unknown" }
+            Print-Success "Go ready (v$goVersion)"
+        } catch {
+            Print-Success "Go installed"
+        }
+    } else {
+        Print-Warning "Go not found in PATH"
+        $toolsReady = $false
+    }
+    
+    if (Test-Command "python") {
+        try {
+            $pythonOutput = python --version 2>&1
+            $pythonVersion = if ($pythonOutput -match 'Python (\d+\.\d+\.\d+)') { $matches[1] } else { "unknown" }
+            Print-Success "Python ready (v$pythonVersion)"
+            
+            if (Test-Command "pip") {
+                Print-Success "pip ready"
+            }
+        } catch {
+            Print-Success "Python installed"
+        }
+    } else {
+        Print-Warning "Python not found in PATH"
+        $toolsReady = $false
+    }
+    
+    if ($toolsReady) {
+        Print-Success "Development tools configured successfully"
+        Print-Info "Neovim Mason can now install LSP servers for:"
+        Write-Host "  $([char]0x2022) TypeScript, JavaScript, HTML, CSS, JSON (requires Node.js)"
+        Write-Host "  $([char]0x2022) Go language support (requires Go)"
+        Write-Host "  $([char]0x2022) Python language support (requires Python)"
+    } else {
+        Print-Warning "Some tools may require terminal restart to be available"
+        Print-Info "Close and reopen your terminal, then run: .\install.ps1"
+    }
+    
+    Write-Host ""
+    Print-Success "Development tools installation complete!"
+}
+
 function Install-Dotfiles {
     Print-Section "$($Symbols.Link) Linking Dotfiles"
     
@@ -800,6 +895,7 @@ function Print-InstallationSummary {
     Write-Host ""
     Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F4CB)) Installation Summary:" -Color "Cyan"
     Write-Host "$($Symbols.CheckMark) Build tools installed (MinGW, CMake)"
+    Write-Host "$($Symbols.CheckMark) Development tools installed (Node.js, Go, Python) [optional]"
     Write-Host "$($Symbols.CheckMark) Dotfiles linked (.ripgreprc, scooter config)"
     Write-Host "$($Symbols.CheckMark) Neovim installed and configured"
     Write-Host "$($Symbols.CheckMark) Windows Terminal installed and configured"
@@ -862,6 +958,7 @@ function Main {
     # Execute installation steps
     Install-Scoop
     Install-BuildTools
+    Install-DevelopmentTools
     Install-Dotfiles
     Install-Neovim
     Install-WindowsTerminal
