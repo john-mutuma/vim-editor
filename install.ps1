@@ -878,10 +878,10 @@ function Main {
 
 trap {
     Write-Host ""
-    Print-Error "Installation interrupted or failed: $_"
-    Write-ColorOutput "Please check the error messages above and try again." -Color "Yellow"
+    Write-Host "$([char]0x2717) Error - Installation interrupted or failed: $_" -ForegroundColor Red
+    Write-Host "Please check the error messages above and try again." -ForegroundColor Yellow
     Write-Host ""
-    Write-ColorOutput "Need help? Check the documentation or open an issue on GitHub." -Color "Blue"
+    Write-Host "Need help? Check the documentation or open an issue on GitHub." -ForegroundColor Blue
     exit 1
 }
 
