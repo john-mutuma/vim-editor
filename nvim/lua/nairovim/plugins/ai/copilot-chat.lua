@@ -5,7 +5,26 @@ return {
             { "zbirenbaum/copilot.lua" },
             { "nvim-lua/plenary.nvim", branch = "master" },
         },
-        build = "make tiktoken",
+        build = function()
+            -- Windows-specific: Use conditional build with fallback
+            if vim.fn.has("win32") == 1 then
+                -- Attempt to build tiktoken, gracefully degrade if fails
+                local handle = io.popen("make tiktoken 2>&1")
+                if handle then
+                    local result = handle:read("*a")
+                    handle:close()
+                    if result:match("[Ee]rror") or result:match("not found") then
+                        vim.notify(
+                            "CopilotChat: tiktoken build failed, plugin will use fallback mode",
+                            vim.log.levels.WARN
+                        )
+                    end
+                end
+            else
+                -- Unix/macOS: Standard make
+                vim.fn.system("make tiktoken")
+            end
+        end,
 
         config = function()
             -- Lazy requires for performance

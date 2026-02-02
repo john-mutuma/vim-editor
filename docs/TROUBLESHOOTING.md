@@ -153,6 +153,123 @@ git --version
 $env:Path += ";C:\Program Files\Git\bin"
 ```
 
+#### C compiler not found (Windows)
+
+**Problem:** Neovim plugins fail to build with errors like "No C compiler found" or "gcc/make not found".
+
+**Affected Plugins:**
+- `telescope-fzf-native.nvim` - Requires make/cmake
+- `nvim-treesitter` - Requires C compiler for parser compilation
+- `CopilotChat.nvim` - Requires make for tiktoken build
+
+**Solution:**
+
+```powershell
+# Automatic (recommended) - Re-run install script
+.\install.ps1
+
+# Manual installation via Scoop
+scoop install mingw cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+
+# Restart terminal for PATH changes
+```
+
+**Rebuild plugins in Neovim:**
+
+```vim
+" Force rebuild telescope-fzf-native
+:Lazy build telescope-fzf-native.nvim
+
+" Update all treesitter parsers
+:TSUpdate all
+
+" Rebuild CopilotChat
+:Lazy build CopilotChat.nvim
+
+" Check health status
+:checkhealth telescope
+:checkhealth treesitter
+```
+
+**Alternative: Visual Studio Build Tools (Advanced)**
+
+If MinGW doesn't work, install Visual Studio Build Tools:
+
+```powershell
+# Install Visual Studio Build Tools (6GB download)
+winget install Microsoft.VisualStudio.2022.BuildTools
+
+# During installation, select:
+# - Desktop development with C++
+# - Windows 10/11 SDK
+```
+
+#### C compiler not found (macOS/Linux)
+
+**Problem:** Build tools are missing or incomplete.
+
+**Solution (macOS):**
+
+```bash
+# Install Xcode Command Line Tools
+xcode-select --install
+
+# Or install full Xcode from App Store
+# Then enable command line tools:
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+
+# If cmake missing, install via Homebrew
+brew install cmake
+```
+
+**Solution (Linux - Debian/Ubuntu):**
+
+```bash
+# Install build-essential
+sudo apt-get update
+sudo apt-get install -y build-essential cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+```
+
+**Solution (Linux - Fedora/RHEL):**
+
+```bash
+# Install Development Tools
+sudo dnf groupinstall -y "Development Tools"
+sudo dnf install -y cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+```
+
+**Solution (Linux - Arch):**
+
+```bash
+# Install base-devel
+sudo pacman -S --noconfirm base-devel cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+```
+
 ### Common to All Platforms
 
 ### Neovim version too old

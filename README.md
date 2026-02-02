@@ -58,12 +58,17 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 #### macOS / Linux
 - **Homebrew** - Package manager ([install here](https://brew.sh/))
 - **Git** - Version control system
+- **Build Tools** - C compiler toolchain (auto-installed via script)
+  - macOS: Xcode Command Line Tools + CMake
+  - Linux: build-essential (or equivalent) + CMake
 - **Ghostty Terminal** - Modern terminal emulator (recommended, [install here](https://ghostty.org/))
   - Alternative: iTerm2, Terminal.app, or any terminal with 256-color support
 
 #### Windows
 - **Windows 10/11** - With PowerShell 5.1 or later
 - **Git for Windows** - Version control system
+- **Build Tools** - C compiler toolchain (auto-installed via script)
+  - MinGW (gcc, g++, make) + CMake
 - **Windows Terminal** - Modern terminal emulator (recommended, built-in on Windows 11)
   - Alternative: PowerShell, CMD, or any terminal with 256-color support
 - **Developer Mode** - Recommended for better symlink support (optional)

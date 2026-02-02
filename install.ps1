@@ -278,6 +278,67 @@ function Install-WithScoop {
 # MAIN INSTALLATION FUNCTIONS
 # ======================================================================
 
+function Install-BuildTools {
+    Print-Section "$($Symbols.Gear) Installing Build Tools"
+    
+    Print-Info "Installing C compiler toolchain for Neovim plugin compilation..."
+    Print-Info "This enables: telescope-fzf-native, nvim-treesitter, CopilotChat"
+    
+    # Install MinGW (provides gcc, g++, make)
+    Install-WithScoop -Package "mingw" -DisplayName "MinGW (GCC compiler)"
+    
+    # Install CMake (build system)
+    Install-WithScoop -Package "cmake" -DisplayName "CMake"
+    
+    # Verify installations
+    Print-Step "Verifying build tools installation"
+    
+    $buildToolsReady = $true
+    
+    if (Test-Command "gcc") {
+        try {
+            $gccOutput = gcc --version 2>&1 | Select-Object -First 1
+            $gccVersion = if ($gccOutput -match '(\d+\.\d+\.\d+)') { $matches[1] } else { "unknown" }
+            Print-Success "GCC compiler ready (v$gccVersion)"
+        } catch {
+            Print-Success "GCC compiler ready"
+        }
+    } else {
+        Print-Warning "GCC not found in PATH"
+        $buildToolsReady = $false
+    }
+    
+    if (Test-Command "make") {
+        Print-Success "GNU Make ready"
+    } else {
+        Print-Warning "Make not found in PATH"
+        $buildToolsReady = $false
+    }
+    
+    if (Test-Command "cmake") {
+        try {
+            $cmakeOutput = cmake --version 2>&1 | Select-Object -First 1
+            $cmakeVersion = if ($cmakeOutput -match '(\d+\.\d+\.\d+)') { $matches[1] } else { "unknown" }
+            Print-Success "CMake ready (v$cmakeVersion)"
+        } catch {
+            Print-Success "CMake ready"
+        }
+    } else {
+        Print-Warning "CMake not found in PATH"
+        $buildToolsReady = $false
+    }
+    
+    if ($buildToolsReady) {
+        Print-Success "Build tools configured successfully"
+    } else {
+        Print-Warning "Some build tools may require terminal restart to be available"
+        Print-Info "Close and reopen your terminal, then run: .\install.ps1"
+    }
+    
+    Write-Host ""
+    Print-Success "Build tools installation complete!"
+}
+
 function Install-Dotfiles {
     Print-Section "$($Symbols.Link) Linking Dotfiles"
     
@@ -728,6 +789,7 @@ function Print-InstallationSummary {
     Write-ColorOutput "╚══════════════════════════════════════════════════════════════════════════════════════╝" -Color "Magenta"
     Write-Host ""
     Write-ColorOutput "📋 Installation Summary:" -Color "Cyan"
+    Write-Host "$($Symbols.CheckMark) Build tools installed (MinGW, CMake)"
     Write-Host "$($Symbols.CheckMark) Dotfiles linked (.ripgreprc, scooter config)"
     Write-Host "$($Symbols.CheckMark) Neovim installed and configured"
     Write-Host "$($Symbols.CheckMark) Windows Terminal installed and configured"
@@ -787,6 +849,7 @@ function Main {
     
     # Execute installation steps
     Install-Scoop
+    Install-BuildTools
     Install-Dotfiles
     Install-Neovim
     Install-WindowsTerminal
