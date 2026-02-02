@@ -8,9 +8,23 @@ g.mapleader = ","
 g.maplocalleader = " "
 
 ----------------------------------------------------------------------
--- 2. Shell
+-- 2. Shell (Cross-platform)
 ----------------------------------------------------------------------
-opt.shell = "/bin/bash"
+if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+    -- Windows: Use PowerShell 7 with fallback to PowerShell 5.1
+    if vim.fn.executable("pwsh") == 1 then
+        opt.shell = "pwsh"
+    else
+        opt.shell = "powershell"
+    end
+    -- Windows shell flags for proper command execution
+    opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+    opt.shellquote = ""
+    opt.shellxquote = ""
+else
+    -- Unix/macOS: Use bash
+    opt.shell = "/bin/bash"
+end
 
 ----------------------------------------------------------------------
 -- 3. Line Numbers
