@@ -45,9 +45,9 @@ $Script:Symbols = @{
     ArrowRight = [char]0x2192  # →
     Star       = [char]0x2605  # ★
     Gear       = [char]0x2699  # ⚙
-    Rocket     = [char]0x1F680 # 🚀
-    Package    = [char]0x1F4E6 # 📦
-    Link       = [char]0x1F517 # 🔗
+    Rocket     = [System.Char]::ConvertFromUtf32(0x1F680) # 🚀
+    Package    = [System.Char]::ConvertFromUtf32(0x1F4E6) # 📦
+    Link       = [System.Char]::ConvertFromUtf32(0x1F517) # 🔗
     Sparkles   = [char]0x2728  # ✨
     Hourglass  = [char]0x23F3  # ⏳
     Warning    = [char]0x26A0  # ⚠
@@ -790,14 +790,15 @@ function Install-OpenCode {
 function Print-InstallationSummary {
     Write-Host ""
     $topBorder = [char]0x2554 + ([char]0x2550 * 86) + [char]0x2557
-    $titleLine = [char]0x2551 + "  " + [char]0x1F389 + " INSTALLATION COMPLETE! " + [char]0x1F389
+    $emoji = [System.Char]::ConvertFromUtf32(0x1F389)
+    $titleLine = [char]0x2551 + "  $emoji INSTALLATION COMPLETE! $emoji"
     $bottomBorder = [char]0x255A + ([char]0x2550 * 86) + [char]0x255D
     
     Write-ColorOutput $topBorder -Color "Magenta"
     Write-ColorOutput $titleLine -Color "Green"
     Write-ColorOutput $bottomBorder -Color "Magenta"
     Write-Host ""
-    Write-ColorOutput "$([char]0x1F4CB) Installation Summary:" -Color "Cyan"
+    Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F4CB)) Installation Summary:" -Color "Cyan"
     Write-Host "$($Symbols.CheckMark) Build tools installed (MinGW, CMake)"
     Write-Host "$($Symbols.CheckMark) Dotfiles linked (.ripgreprc, scooter config)"
     Write-Host "$($Symbols.CheckMark) Neovim installed and configured"
@@ -808,19 +809,20 @@ function Print-InstallationSummary {
     Write-Host "$($Symbols.CheckMark) Lazygit installed and configured"
     Write-Host "$($Symbols.CheckMark) OpenCode installed and configured"
     Write-Host ""
-    Write-ColorOutput "$([char]0x1F680) Next Steps:" -Color "Yellow"
+    Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F680)) Next Steps:" -Color "Yellow"
     Write-Host "1. Restart your PowerShell session or run: . `$PROFILE"
     Write-Host "2. Launch Windows Terminal (search 'Windows Terminal' in Start Menu)"
     Write-Host "3. Run 'nvim' to start Neovim and let plugins install"
     Write-Host "4. In Neovim, run ':Tutorial' to start the interactive tutorial"
     Write-Host "5. Configure your language servers as needed"
     Write-Host ""
-    Write-ColorOutput "$([char]0x1F4A1) Useful Tips:" -Color "Blue"
+    Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F4A1)) Useful Tips:" -Color "Blue"
     Write-Host "$([char]0x2022) Enable Developer Mode in Windows Settings for better symlink support"
     Write-Host "$([char]0x2022) Set Windows Terminal as your default terminal in Windows Settings"
     Write-Host "$([char]0x2022) Install PowerShell 7+ for better experience: scoop install pwsh"
     Write-Host ""
-    Write-ColorOutput "$([char]0x1F38A) Happy coding with NairoVIM on Windows! $([char]0x1F38A)" -Color "Green"
+    $confetti = [System.Char]::ConvertFromUtf32(0x1F38A)
+    Write-ColorOutput "$confetti Happy coding with NairoVIM on Windows! $confetti" -Color "Green"
     Write-Host ""
 }
 
@@ -830,7 +832,8 @@ function Print-InstallationSummary {
 
 function Main {
     # Print welcome header
-    Print-Header "$([char]0x1F680) NairoVIM Installation Script for Windows $([char]0x1F680)"
+    $rocket = [System.Char]::ConvertFromUtf32(0x1F680)
+    Print-Header "$rocket NairoVIM Installation Script for Windows $rocket"
     
     Write-ColorOutput "Welcome to the NairoVIM installation script for Windows!" -Color "Cyan"
     Write-Host "$($Colors.Dim)This script will install and configure your complete development environment.$($Colors.Reset)"
@@ -854,7 +857,7 @@ function Main {
     
     # Start installation process
     Write-Host ""
-    Write-ColorOutput "$([char]0x1F527) Starting installation process..." -Color "Cyan"
+    Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F527)) Starting installation process..." -Color "Cyan"
     
     # Execute installation steps
     Install-Scoop
