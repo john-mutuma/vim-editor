@@ -55,11 +55,18 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 
 ### System Requirements
 
-- **macOS or Linux** (Windows WSL supported)
+#### macOS / Linux
 - **Homebrew** - Package manager ([install here](https://brew.sh/))
 - **Git** - Version control system
 - **Ghostty Terminal** - Modern terminal emulator (recommended, [install here](https://ghostty.org/))
   - Alternative: iTerm2, Terminal.app, or any terminal with 256-color support
+
+#### Windows
+- **Windows 10/11** - With PowerShell 5.1 or later
+- **Git for Windows** - Version control system
+- **Windows Terminal** - Modern terminal emulator (recommended, built-in on Windows 11)
+  - Alternative: PowerShell, CMD, or any terminal with 256-color support
+- **Developer Mode** - Recommended for better symlink support (optional)
 
 ### Optional but Recommended
 
@@ -68,6 +75,8 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
 - **Python 3** - For certain Neovim plugins
 
 ## 🚀 Quick Installation
+
+### macOS / Linux
 
 1. **Clone the repository**:
 
@@ -100,14 +109,46 @@ Transform your coding experience with NairoVIM - a sophisticated Neovim configur
    nvim
    ```
 
-That's it! The installation script will:
+### Windows
+
+1. **Clone the repository**:
+
+   ```powershell
+   git clone https://github.com/yourusername/nairovim.git
+   cd nairovim
+   ```
+
+2. **Run the installation script** (in PowerShell as Administrator for best results):
+
+   ```powershell
+   .\install.ps1
+   ```
+
+3. **Enable Developer Mode** (recommended for better symlink support):
+   - Open **Settings** → **System** → **For developers**
+   - Enable **Developer Mode**
+
+4. **Start your development environment**:
+
+   ```powershell
+   # Launch Windows Terminal
+   wt
+   
+   # Start Neovim
+   nvim
+   ```
+
+### What Gets Installed
+
+The installation script will:
 
 - ✅ Install Neovim and essential development tools
-- ✅ Configure Ghostty with tmux-like keybindings
-- ✅ Set up tmux (optional, for legacy workflows)
-- ✅ Configure zsh with Oh My Zsh
+- ✅ Configure terminal (Ghostty on macOS/Linux, Windows Terminal on Windows)
+- ✅ Set up shell (Oh My Zsh on macOS/Linux, Oh My Posh on Windows)
+- ✅ Configure tmux (macOS/Linux only, optional for legacy workflows)
 - ✅ Install and configure 70+ Neovim plugins
 - ✅ Set up development utilities (FZF, Ripgrep, Lazygit, etc.)
+- ✅ Install OpenCode AI assistant
 - ✅ Create backups of existing configurations
 
 <details>
@@ -183,6 +224,8 @@ The tutorial covers:
 
 ### Starting a Development Session
 
+#### macOS / Linux
+
 ```bash
 # Open Ghostty terminal (recommended)
 ghostty
@@ -204,10 +247,32 @@ nvim
 <Ctrl-n>
 ```
 
-#### Ghostty Terminal Features
+#### Windows
 
-NairoVIM is optimized for Ghostty with built-in split and tab management:
+```powershell
+# Open Windows Terminal (recommended)
+wt
 
+# Open Neovim
+nvim
+
+# Start interactive tutorial (first time users)
+,tt
+
+# Or jump right in:
+# Find and open a file
+<Ctrl-s>f
+
+# Search for text across project
+<Ctrl-s>s
+
+# Open file explorer
+<Ctrl-n>
+```
+
+#### Terminal Split & Tab Management
+
+**Ghostty (macOS/Linux):**
 ```bash
 # Splits (tmux-like bindings)
 <Ctrl-b> -      # Create horizontal split
@@ -223,7 +288,23 @@ NairoVIM is optimized for Ghostty with built-in split and tab management:
 <Ctrl-b> z      # Toggle split zoom
 ```
 
-> **Note:** tmux is still supported but considered a legacy option. Ghostty provides native split/tab management with better performance.
+**Windows Terminal:**
+```powershell
+# Splits
+<Ctrl-b> -      # Create horizontal split
+<Ctrl-b> =      # Create vertical split
+<Ctrl-b> h/j/k/l # Navigate between splits
+
+# Tabs
+<Ctrl-b> c      # Create new tab
+<Ctrl-b> n/p    # Next/previous tab
+<Ctrl-b> x      # Close pane
+
+# Zoom
+<Ctrl-b> z      # Toggle pane zoom
+```
+
+> **Note:** tmux is supported on macOS/Linux but considered legacy. Modern terminals (Ghostty/Windows Terminal) provide native split/tab management with better performance.
 
 ### Essential Workflows
 
@@ -378,34 +459,39 @@ The leader key is `,` by default. Here are the most commonly used keybindings:
 
 ## 🎨 Post-Installation Setup
 
-### 1. Configure Ghostty Terminal (Recommended)
+### 1. Configure Terminal
 
-NairoVIM includes a pre-configured Ghostty setup with:
+#### macOS / Linux (Ghostty)
 
-- **TokyoNight theme** (auto-switching dark/light modes)
-- **tmux-like keybindings** for splits and tabs
-- **Optimized font rendering**
-
-The installation script automatically links the config, but you can verify:
+Ghostty is pre-configured with the repository's settings. To customize further:
 
 ```bash
-# Check Ghostty config location
-cat ~/.config/ghostty/config
+# Edit Ghostty config
+nvim ~/.config/ghostty/config
 
-# Key features:
-# - Ctrl+b prefix (tmux-style) for splits/tabs
-# - TokyoNight theme with dark/light auto-switching
-# - Font size 12 for optimal readability
+# The config includes:
+# - TokyoNight theme (dark/light auto-switch)
+# - Tmux-like keybindings (Ctrl+b prefix)
+# - Split and tab management
 ```
 
-**Ghostty vs tmux:**
+#### Windows (Windows Terminal)
 
-- ✅ **Ghostty**: Native splits/tabs, better performance, modern GPU rendering
-- ⚠️ **tmux**: Legacy option, session persistence, remote development
+Windows Terminal settings are automatically configured during installation. To customize:
 
-> **Recommendation:** Use Ghostty for local development, tmux only for remote SSH sessions.
+1. Open Windows Terminal
+2. Press `Ctrl+,` to open Settings
+3. Customize themes, fonts, and keybindings
+
+Or manually edit the JSON config:
+```powershell
+# Edit Windows Terminal settings
+notepad "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json"
+```
 
 ### 2. Install a Nerd Font
+
+#### macOS / Linux
 
 ```bash
 # Recommended: Hack Nerd Font
@@ -413,7 +499,21 @@ brew tap homebrew/cask-fonts
 brew install --cask font-hack-nerd-font
 ```
 
-Ghostty is pre-configured to use Nerd Font-compatible rendering.
+#### Windows
+
+Nerd Fonts are automatically installed via the PowerShell script (JetBrainsMono Nerd Font). To install additional fonts:
+
+```powershell
+# Via Scoop
+scoop install FiraCode-NF-Mono
+scoop install Hack-NF-Mono
+
+# Or download manually from https://www.nerdfonts.com/
+```
+
+To set the font in Windows Terminal:
+1. Press `Ctrl+,` → **Defaults** → **Appearance**
+2. Set **Font face** to "JetBrainsMono Nerd Font Mono"
 
 ### 3. Set Up Language Servers
 
