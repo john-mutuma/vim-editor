@@ -207,6 +207,228 @@ clone_repository() {
 # MAIN INSTALLATION FUNCTIONS
 # ======================================================================
 
+install_build_tools() {
+    print_section "${GEAR} Installing Build Tools"
+    
+    print_info "Installing C compiler toolchain for Neovim plugin compilation..."
+    print_info "This enables: telescope-fzf-native, nvim-treesitter, CopilotChat"
+    
+    # Detect OS
+    local os_type="$(uname -s)"
+    
+    case "$os_type" in
+        Darwin*)
+            # macOS - Install Xcode Command Line Tools
+            if ! command_exists gcc || ! command_exists make; then
+                print_step "Installing Xcode Command Line Tools" "gcc, make, clang"
+                
+                # Check if Xcode CLI tools are already installed
+                if xcode-select -p &>/dev/null; then
+                    print_info "Xcode Command Line Tools already installed"
+                else
+                    # Install Xcode CLI tools
+                    xcode-select --install 2>/dev/null || true
+                    
+                    print_warning "Please complete the Xcode Command Line Tools installation dialog"
+                    print_info "After installation completes, re-run this script: ./install.sh"
+                    
+                    # Wait for user to complete installation
+                    echo ""
+                    read -p "Press Enter after completing the installation (or Ctrl+C to exit)..."
+                fi
+            fi
+            
+            # Install cmake via Homebrew
+            install_with_brew "cmake" "CMake"
+            ;;
+            
+        Linux*)
+            # Linux - Use package manager
+            print_step "Installing build tools" "gcc, make, cmake"
+            
+            if command_exists apt-get; then
+                # Debian/Ubuntu
+                if ! command_exists gcc || ! command_exists make; then
+                    sudo apt-get update -qq
+                    sudo apt-get install -y build-essential cmake
+                    print_success "Installed build-essential and CMake (apt)"
+                else
+                    print_info "Build tools already installed"
+                fi
+            elif command_exists dnf; then
+                # Fedora/RHEL
+                if ! command_exists gcc || ! command_exists make; then
+                    sudo dnf groupinstall -y "Development Tools"
+                    sudo dnf install -y cmake
+                    print_success "Installed Development Tools and CMake (dnf)"
+                else
+                    print_info "Build tools already installed"
+                fi
+            elif command_exists pacman; then
+                # Arch Linux
+                if ! command_exists gcc || ! command_exists make; then
+                    sudo pacman -S --noconfirm base-devel cmake
+                    print_success "Installed base-devel and CMake (pacman)"
+                else
+                    print_info "Build tools already installed"
+                fi
+            else
+                print_warning "Unsupported Linux distribution. Please install gcc, make, and cmake manually."
+            fi
+            ;;
+            
+        *)
+            print_warning "Unsupported OS: $os_type. Please install gcc, make, and cmake manually."
+            ;;
+    esac
+    
+    # Verify installations
+    print_step "Verifying build tools installation"
+    
+    local build_tools_ready=true
+    
+    if command_exists gcc; then
+        local gcc_version=$(gcc --version 2>&1 | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
+        if [[ -n "$gcc_version" ]]; then
+            print_success "GCC compiler ready (v$gcc_version)"
+        else
+            print_success "GCC compiler ready"
+        fi
+    elif command_exists clang; then
+        local clang_version=$(clang --version 2>&1 | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
+        if [[ -n "$clang_version" ]]; then
+            print_success "Clang compiler ready (v$clang_version)"
+        else
+            print_success "Clang compiler ready"
+        fi
+    else
+        print_warning "No C compiler found (gcc or clang)"
+        build_tools_ready=false
+    fi
+    
+    if command_exists make; then
+        print_success "GNU Make ready"
+    else
+        print_warning "Make not found in PATH"
+        build_tools_ready=false
+    fi
+    
+    if command_exists cmake; then
+        local cmake_version=$(cmake --version 2>&1 | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
+        if [[ -n "$cmake_version" ]]; then
+            print_success "CMake ready (v$cmake_version)"
+        else
+            print_success "CMake ready"
+        fi
+    else
+        print_warning "CMake not found in PATH"
+        build_tools_ready=false
+    fi
+    
+    if [[ "$build_tools_ready" = true ]]; then
+        print_success "Build tools configured successfully"
+    else
+        print_warning "Some build tools may require shell restart to be available"
+        print_info "Restart your terminal, then run: ./install.sh"
+    fi
+    
+    echo ""
+    print_success "Build tools installation complete!"
+}
+
+install_development_tools() {
+    print_section "${PACKAGE} Installing Development Tools (Optional)"
+    
+    print_info "Development tools enable LSP servers for various languages in Neovim"
+    print_info "Includes: Node.js (npm), Go, Python"
+    echo ""
+    
+    # Prompt user with default Y
+    read -p "Install development tools? [Y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        print_info "Skipping development tools installation"
+        print_info "You can install later with: ${bold}brew install node go python${textreset}"
+        return
+    fi
+    
+    echo ""
+    print_step "Installing development tools" "Node.js, Go, Python"
+    
+    # Detect OS and install accordingly
+    case "$(uname -s)" in
+        Darwin*)
+            # macOS - Use Homebrew
+            install_with_brew "node" "Node.js (npm)"
+            install_with_brew "go" "Go (golang)"
+            install_with_brew "python@3" "Python"
+            ;;
+        Linux*)
+            # Linux - Detect and use appropriate package manager
+            if command_exists apt-get; then
+                print_step "Installing via apt" "nodejs, npm, golang, python3"
+                sudo apt-get update -qq
+                sudo apt-get install -y nodejs npm golang python3 python3-pip
+            elif command_exists dnf; then
+                print_step "Installing via dnf" "nodejs, golang, python3"
+                sudo dnf install -y nodejs golang python3 python3-pip
+            elif command_exists pacman; then
+                print_step "Installing via pacman" "nodejs, go, python"
+                sudo pacman -S --noconfirm nodejs npm go python python-pip
+            elif command_exists zypper; then
+                print_step "Installing via zypper" "nodejs, go, python3"
+                sudo zypper install -y nodejs npm go python3 python3-pip
+            else
+                print_warning "Could not detect package manager. Please install manually:"
+                print_info "  Node.js: https://nodejs.org/"
+                print_info "  Go: https://golang.org/dl/"
+                print_info "  Python: https://www.python.org/downloads/"
+                return
+            fi
+            ;;
+        *)
+            print_warning "Unsupported OS: $(uname -s)"
+            print_info "Please install Node.js, Go, and Python manually"
+            return
+            ;;
+    esac
+    
+    echo ""
+    print_step "Verifying installations" "checking versions"
+    
+    # Verify Node.js/npm
+    if command_exists node && command_exists npm; then
+        local node_version=$(node --version 2>/dev/null || echo "unknown")
+        local npm_version=$(npm --version 2>/dev/null || echo "unknown")
+        print_success "Node.js $node_version and npm $npm_version installed"
+        print_info "${dim}  Enables: TypeScript, JavaScript, HTML, CSS, JSON LSP servers${textreset}"
+    else
+        print_warning "Node.js/npm verification failed - may need shell restart"
+    fi
+    
+    # Verify Go
+    if command_exists go; then
+        local go_version=$(go version 2>/dev/null | awk '{print $3}' || echo "unknown")
+        print_success "Go $go_version installed"
+        print_info "${dim}  Enables: Go language server (gopls), gofumpt${textreset}"
+    else
+        print_warning "Go verification failed - may need shell restart"
+    fi
+    
+    # Verify Python
+    if command_exists python3 && command_exists pip3; then
+        local python_version=$(python3 --version 2>/dev/null | awk '{print $2}' || echo "unknown")
+        print_success "Python $python_version installed"
+        print_info "${dim}  Enables: Python LSP servers and formatters${textreset}"
+    else
+        print_warning "Python verification failed - may need shell restart"
+    fi
+    
+    echo ""
+    print_success "Development tools installation complete!"
+    print_info "After installation, run ${bold}:Mason${textreset} in Neovim to install LSP servers"
+}
+
 install_dotfiles() {
     print_section "${LINK} Linking Dotfiles"
 
@@ -674,6 +896,8 @@ print_installation_summary() {
     echo "${bold}${magenta}╚══════════════════════════════════════════════════════════════════════════════════════╝${textreset}"
     echo ""
     echo "${bold}${cyan}📋 Installation Summary:${textreset}"
+    echo "${green}${CHECK_MARK}${textreset} Build tools installed (gcc/clang, make, cmake)"
+    echo "${green}${CHECK_MARK}${textreset} Development tools installed (Node.js, Go, Python) [optional]"
     echo "${green}${CHECK_MARK}${textreset} Dotfiles linked (.zshrc, .vimrc, .tmux.conf, .ripgreprc)"
     echo "${green}${CHECK_MARK}${textreset} Neovim installed and configured"
     echo "${green}${CHECK_MARK}${textreset} Tmux installed with Plugin Manager (TPM)"
@@ -729,6 +953,8 @@ main() {
     echo "${bold}${cyan}🔧 Starting installation process...${textreset}"
 
     # Execute installation steps
+    install_build_tools
+    install_development_tools
     install_dotfiles
     install_neovim
     install_tmux

@@ -20,7 +20,9 @@ Comprehensive guide to resolving common issues with NairoVIM.
 
 ## Installation Issues
 
-### Homebrew not found
+### macOS / Linux Installation Issues
+
+#### Homebrew not found
 
 **Problem:** Installation script cannot find Homebrew.
 
@@ -35,7 +37,7 @@ echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
-### Installation script fails
+#### Installation script fails
 
 **Problem:** Installation script encounters errors.
 
@@ -51,9 +53,224 @@ brew install --cask ghostty  # Recommended terminal
 
 # Verify installations
 nvim --version
-tmux -V
 fzf --version
 ```
+
+#### Permission denied errors
+
+**Problem:** Cannot create symlinks or write to directories.
+
+**Solution:**
+
+```bash
+# Ensure proper ownership
+sudo chown -R $(whoami) ~/.config
+sudo chown -R $(whoami) ~/.local
+
+# Run install script again
+./install.sh
+```
+
+### Windows Installation Issues
+
+#### PowerShell version too old
+
+**Problem:** PowerShell version is older than 5.1.
+
+**Solution:**
+
+```powershell
+# Check PowerShell version
+$PSVersionTable.PSVersion
+
+# Install PowerShell 7+ (recommended)
+winget install --id Microsoft.PowerShell --source winget
+
+# Or via Scoop
+scoop install pwsh
+
+# Restart terminal and use pwsh.exe
+pwsh
+```
+
+#### Scoop not found
+
+**Problem:** Installation script cannot find Scoop package manager.
+
+**Solution:**
+
+```powershell
+# Install Scoop manually
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod get.scoop.sh | Invoke-Expression
+
+# Verify installation
+scoop --version
+
+# Add required buckets
+scoop bucket add extras
+scoop bucket add nerd-fonts
+
+# Run install script again
+.\install.ps1
+```
+
+#### Developer Mode not enabled
+
+**Problem:** Symlink creation fails without Developer Mode.
+
+**Solution:**
+
+```powershell
+# Option 1: Enable Developer Mode (Recommended)
+# 1. Open Settings (Win + I)
+# 2. Go to System → For developers
+# 3. Enable "Developer Mode"
+# 4. Restart PowerShell and run install.ps1 again
+
+# Option 2: Run PowerShell as Administrator
+# Right-click PowerShell → "Run as Administrator"
+# Then run: .\install.ps1
+```
+
+#### Git not found on Windows
+
+**Problem:** Git is not installed or not in PATH.
+
+**Solution:**
+
+```powershell
+# Install Git via Scoop
+scoop install git
+
+# Or install Git for Windows
+winget install Git.Git
+
+# Verify installation
+git --version
+
+# Add to PATH if needed
+$env:Path += ";C:\Program Files\Git\bin"
+```
+
+#### C compiler not found (Windows)
+
+**Problem:** Neovim plugins fail to build with errors like "No C compiler found" or "gcc/make not found".
+
+**Affected Plugins:**
+- `telescope-fzf-native.nvim` - Requires make/cmake
+- `nvim-treesitter` - Requires C compiler for parser compilation
+- `CopilotChat.nvim` - Requires make for tiktoken build
+
+**Solution:**
+
+```powershell
+# Automatic (recommended) - Re-run install script
+.\install.ps1
+
+# Manual installation via Scoop
+scoop install mingw cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+
+# Restart terminal for PATH changes
+```
+
+**Rebuild plugins in Neovim:**
+
+```vim
+" Force rebuild telescope-fzf-native
+:Lazy build telescope-fzf-native.nvim
+
+" Update all treesitter parsers
+:TSUpdate all
+
+" Rebuild CopilotChat
+:Lazy build CopilotChat.nvim
+
+" Check health status
+:checkhealth telescope
+:checkhealth treesitter
+```
+
+**Alternative: Visual Studio Build Tools (Advanced)**
+
+If MinGW doesn't work, install Visual Studio Build Tools:
+
+```powershell
+# Install Visual Studio Build Tools (6GB download)
+winget install Microsoft.VisualStudio.2022.BuildTools
+
+# During installation, select:
+# - Desktop development with C++
+# - Windows 10/11 SDK
+```
+
+#### C compiler not found (macOS/Linux)
+
+**Problem:** Build tools are missing or incomplete.
+
+**Solution (macOS):**
+
+```bash
+# Install Xcode Command Line Tools
+xcode-select --install
+
+# Or install full Xcode from App Store
+# Then enable command line tools:
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+
+# If cmake missing, install via Homebrew
+brew install cmake
+```
+
+**Solution (Linux - Debian/Ubuntu):**
+
+```bash
+# Install build-essential
+sudo apt-get update
+sudo apt-get install -y build-essential cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+```
+
+**Solution (Linux - Fedora/RHEL):**
+
+```bash
+# Install Development Tools
+sudo dnf groupinstall -y "Development Tools"
+sudo dnf install -y cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+```
+
+**Solution (Linux - Arch):**
+
+```bash
+# Install base-devel
+sudo pacman -S --noconfirm base-devel cmake
+
+# Verify installation
+gcc --version
+make --version
+cmake --version
+```
+
+### Common to All Platforms
 
 ### Neovim version too old
 
@@ -214,6 +431,200 @@ git diff lazy-lock.json
 # Verify installation
 :Mason  # Check for green checkmark
 ```
+
+### Mason LSP Installation Errors
+
+#### npm/Node.js not found
+
+**Problem:** Mason fails to install LSP servers with error messages like:
+- `[ERROR] Failed to spawn process. cmd="npm", err="ENOENT: no such file or directory"`
+- `[ERROR] Installation failed for Package(name=typescript-language-server)`
+- `[ERROR] Could not find executable "npm" in PATH`
+
+**Affected packages:**
+- typescript-language-server (TypeScript/JavaScript)
+- eslint-lsp, html-lsp, css-lsp, json-lsp
+- prettierd, markdownlint, cspell
+- vscode-langservers-extracted
+
+**Solution:**
+
+**Windows:**
+```powershell
+scoop install nodejs
+```
+
+**macOS/Linux:**
+```bash
+brew install node
+```
+
+**Verify:**
+```bash
+node --version
+npm --version
+```
+
+**Retry in Neovim:**
+```vim
+:Mason
+# Navigate to failed package, press 'i' to install
+# Or use: :MasonInstall typescript-language-server
+```
+
+#### Go not found
+
+**Problem:** Mason fails with error messages like:
+- `[ERROR] Could not find executable "go" in PATH`
+- `[ERROR] Installation failed for Package(name=gopls)`
+
+**Affected packages:**
+- gopls (Go language server)
+- gofumpt (Go formatter)
+- goimports, golangci-lint
+
+**Solution:**
+
+**Windows:**
+```powershell
+scoop install go
+```
+
+**macOS/Linux:**
+```bash
+brew install go
+```
+
+**Verify:**
+```bash
+go version
+```
+
+**Retry in Neovim:**
+```vim
+:Mason
+# Navigate to gopls, press 'i' to install
+# Or use: :MasonInstall gopls
+```
+
+#### Python not found
+
+**Problem:** Mason fails with error messages like:
+- `[ERROR] Could not find executable "python" in PATH`
+- `[ERROR] Could not find executable "pip" in PATH`
+
+**Affected packages:**
+- pyright, pylsp (Python language servers)
+- black, isort, flake8 (Python formatters/linters)
+- debugpy (Python debugger)
+
+**Solution:**
+
+**Windows:**
+```powershell
+scoop install python
+```
+
+**macOS/Linux:**
+```bash
+brew install python
+```
+
+**Verify:**
+```bash
+python --version  # or python3 --version
+pip --version     # or pip3 --version
+```
+
+**Retry in Neovim:**
+```vim
+:Mason
+# Navigate to pyright, press 'i' to install
+# Or use: :MasonInstall pyright
+```
+
+#### PATH not updated after tool installation
+
+**Problem:** Tools are installed but Mason still reports "not found in PATH".
+
+**Solution:**
+
+1. **Restart your terminal** - This refreshes environment variables
+2. **Verify PATH includes tool directories:**
+
+**Windows:**
+```powershell
+# Check PATH
+$env:PATH -split ';'
+
+# Should include scoop paths like:
+# C:\Users\YourName\scoop\shims
+# C:\Users\YourName\scoop\apps\nodejs\current\bin
+```
+
+**macOS/Linux:**
+```bash
+# Check PATH
+echo $PATH | tr ':' '\n'
+
+# Should include homebrew paths like:
+# /opt/homebrew/bin (macOS Apple Silicon)
+# /usr/local/bin (macOS Intel)
+```
+
+3. **Manually add to PATH if needed:**
+
+**Windows (PowerShell profile):**
+```powershell
+# Edit profile
+notepad $PROFILE
+
+# Add scoop to PATH (if missing)
+$env:PATH = "$env:USERPROFILE\scoop\shims;" + $env:PATH
+```
+
+**macOS/Linux (shell profile):**
+```bash
+# For zsh (default on macOS)
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zshrc
+source ~/.zshrc
+
+# For bash
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+4. **Restart Neovim after fixing PATH**
+
+#### General Mason troubleshooting
+
+**Check Mason health:**
+```vim
+:checkhealth mason
+```
+
+**View Mason logs:**
+```vim
+:Mason
+# Press 'g?' to see keybindings
+# Press 'g' then 'l' to view logs for a package
+```
+
+**Clear Mason cache and reinstall:**
+```vim
+# Remove Mason data directory
+# Exit Neovim first, then:
+# Unix: rm -rf ~/.local/share/nvim/mason
+# Windows: Remove-Item -Recurse -Force ~\AppData\Local\nvim-data\mason
+
+# Restart Neovim and reinstall
+:Mason
+# Press 'I' to install all missing packages
+```
+
+**Install during setup:**
+
+If you're setting up NairoVIM for the first time, the installation scripts will prompt you to install Node.js, Go, and Python automatically. Answer "Y" to avoid these issues.
 
 ### Completions not working
 
@@ -757,7 +1168,9 @@ vim.keymap.set("n", "<key>", callback, { noremap = true })
 
 ## Terminal and Shell Issues
 
-### Ghostty terminal issues
+### macOS / Linux Terminal Issues
+
+#### Ghostty terminal issues
 
 **Problem:** Ghostty terminal not working as expected with Neovim.
 
@@ -787,7 +1200,7 @@ echo $TERM  # Should be xterm-256color
 # Ctrl+b + [ (navigate panes)
 ```
 
-### Ghostty config not loaded
+#### Ghostty config not loaded
 
 **Problem:** Custom Ghostty configuration not applying.
 
@@ -810,7 +1223,7 @@ ghostty --config-check
 echo $GHOSTTY_RESOURCES_DIR
 ```
 
-### Ghostty splits not working
+#### Ghostty splits not working
 
 **Problem:** Keybindings for splits/tabs don't work.
 
@@ -835,9 +1248,210 @@ grep "keybind" ~/.config/ghostty/config
 # Cmd + t (new tab)
 ```
 
-### Tmux integration not working (Legacy)
+### Windows Terminal Issues
 
-> **Note:** tmux is supported for legacy/remote workflows only. For local development, Ghostty terminal is recommended.
+#### Windows Terminal not installed
+
+**Problem:** Windows Terminal is not installed or not found.
+
+**Solution:**
+
+```powershell
+# Check if Windows Terminal is installed
+winget list --id Microsoft.WindowsTerminal
+
+# Install via winget
+winget install Microsoft.WindowsTerminal
+
+# Or install via Scoop
+scoop install windows-terminal
+
+# Or install from Microsoft Store
+# Open Microsoft Store and search "Windows Terminal"
+```
+
+#### Windows Terminal settings not applying
+
+**Problem:** Custom Windows Terminal configuration not loading.
+
+**Solution:**
+
+```powershell
+# Check settings file location
+Get-ChildItem "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json"
+
+# If symlink is broken, recreate it
+# First, backup existing settings
+Copy-Item "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json" `
+  "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json.backup"
+
+# Create symlink (requires Developer Mode or admin)
+$wtDir = (Get-ChildItem "$env:LOCALAPPDATA\Packages" -Filter "Microsoft.WindowsTerminal*")[0].FullName
+New-Item -ItemType SymbolicLink `
+  -Path "$wtDir\LocalState\settings.json" `
+  -Target "$(Get-Location)\windows-terminal-settings.json" -Force
+
+# Reload Windows Terminal (Ctrl+Shift+T to open new tab)
+```
+
+#### Windows Terminal keybindings not working
+
+**Problem:** Ctrl+b prefix keybindings don't work in Windows Terminal.
+
+**Solution:**
+
+```powershell
+# Check Windows Terminal settings
+# Press Ctrl+, to open Settings
+
+# Verify keybindings in settings.json
+# Look for "actions" array with "ctrl+b|..." patterns
+
+# Common fixes:
+# 1. Ensure "useAcrylicInTabRow" is false for better performance
+# 2. Check for conflicting keybindings in the actions section
+# 3. Restart Windows Terminal completely (close all windows)
+
+# Test keybindings manually:
+# Ctrl+b then - (horizontal split)
+# Ctrl+b then = (vertical split)
+# Ctrl+b then h/j/k/l (navigate panes)
+```
+
+#### Symlink creation fails on Windows
+
+**Problem:** Installation script fails to create symlinks.
+
+**Solution:**
+
+```powershell
+# Option 1: Enable Developer Mode (Recommended)
+# 1. Open Settings → System → For developers
+# 2. Enable "Developer Mode"
+# 3. Restart PowerShell
+# 4. Run install.ps1 again
+
+# Option 2: Run as Administrator
+# Right-click PowerShell → "Run as Administrator"
+# Then run: .\install.ps1
+
+# Option 3: Use hard links or junctions instead
+# Edit install.ps1 to use:
+cmd /c mklink /J "target" "source"  # For directories
+cmd /c mklink /H "target" "source"  # For files
+
+# Verify symlinks created successfully
+Get-Item "$env:LOCALAPPDATA\nvim" | Select-Object LinkType, Target
+```
+
+#### PowerShell execution policy error
+
+**Problem:** Cannot run install.ps1 due to execution policy.
+
+**Solution:**
+
+```powershell
+# Check current execution policy
+Get-ExecutionPolicy
+
+# Set execution policy for current user (recommended)
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Or bypass for single execution
+PowerShell -ExecutionPolicy Bypass -File .\install.ps1
+
+# If still blocked, unblock the script
+Unblock-File .\install.ps1
+```
+
+#### Scoop installation fails
+
+**Problem:** Scoop package manager fails to install.
+
+**Solution:**
+
+```powershell
+# Ensure prerequisites
+# 1. PowerShell 5.1 or later
+$PSVersionTable.PSVersion
+
+# 2. Set execution policy
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# 3. Manual Scoop installation
+Invoke-RestMethod get.scoop.sh | Invoke-Expression
+
+# 4. Add buckets manually if needed
+scoop bucket add extras
+scoop bucket add nerd-fonts
+
+# 5. Verify Scoop installation
+scoop --version
+scoop list
+```
+
+#### Neovim config path issues on Windows
+
+**Problem:** Neovim cannot find configuration at `%LOCALAPPDATA%\nvim`.
+
+**Solution:**
+
+```powershell
+# Check Neovim config path
+nvim --version
+# Look for "init.lua or init.vim locations"
+
+# Verify symlink exists and is valid
+Get-Item "$env:LOCALAPPDATA\nvim"
+
+# If symlink is broken, recreate it
+Remove-Item "$env:LOCALAPPDATA\nvim" -Force -ErrorAction SilentlyContinue
+New-Item -ItemType SymbolicLink -Path "$env:LOCALAPPDATA\nvim" -Target "$(Get-Location)\nvim"
+
+# Alternative: Use $env:XDG_CONFIG_HOME
+$env:XDG_CONFIG_HOME = "$env:USERPROFILE\.config"
+[Environment]::SetEnvironmentVariable("XDG_CONFIG_HOME", "$env:USERPROFILE\.config", "User")
+
+# Then create symlink at ~/.config/nvim
+New-Item -ItemType Directory -Path "$env:USERPROFILE\.config" -Force
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.config\nvim" -Target "$(Get-Location)\nvim"
+```
+
+#### Oh My Posh theme not loading
+
+**Problem:** Oh My Posh prompt theme not showing in PowerShell.
+
+**Solution:**
+
+```powershell
+# Check Oh My Posh installation
+oh-my-posh --version
+
+# Reinstall if missing
+scoop install oh-my-posh
+
+# Verify PowerShell profile exists
+Test-Path $PROFILE
+
+# Check Oh My Posh init command in profile
+Get-Content $PROFILE | Select-String "oh-my-posh"
+
+# Manually add to profile if missing
+$initCommand = @"
+oh-my-posh init pwsh --config "`$env:POSH_THEMES_PATH\tokyonight_storm.omp.json" | Invoke-Expression
+"@
+Add-Content $PROFILE $initCommand
+
+# Reload profile
+. $PROFILE
+
+# List available themes
+Get-ChildItem "$env:POSH_THEMES_PATH" | Select-Object Name
+```
+
+### Tmux integration not working (Legacy - macOS/Linux only)
+
+> **Note:** tmux is supported for legacy/remote workflows only. For local development, use Ghostty (macOS/Linux) or Windows Terminal (Windows).
 
 **Problem:** Tmux features not working with Neovim.
 
@@ -863,7 +1477,9 @@ cat ~/.tmux.conf
 echo $TERM  # Should be screen-256color or tmux-256color
 ```
 
-### Shell completions missing
+### Shell Configuration Issues
+
+#### Shell completions missing (macOS/Linux)
 
 **Problem:** Tab completions don't work in shell.
 

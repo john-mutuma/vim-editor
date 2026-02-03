@@ -4,6 +4,35 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2025-02-02: OpenCode Windows MCP Configuration Fix
+**Goal:** Fix OpenCode global configuration loading on Windows
+
+Discovered and fixed critical issue where OpenCode was not loading global configuration (including MCP servers) on Windows. OpenCode follows XDG Base Directory specification and looks for config at `%USERPROFILE%\.config\opencode`, but the install.ps1 script was incorrectly creating symlinks at `%APPDATA%\opencode`.
+
+**Root Cause:**
+- OpenCode uses XDG paths: `~/.config/opencode/opencode.json`
+- install.ps1 was using Windows AppData: `%APPDATA%\opencode`
+- Result: Global config (model, MCPs, agents) was not loading outside project directories
+
+**Solution:**
+- Updated install.ps1 to use correct XDG path: `%USERPROFILE%\.config\opencode`
+- Set OPENCODE_CONFIG_DIR environment variable to config directory
+- Migrated existing config from AppData to .config location
+- Verified MCP servers load correctly in any directory
+
+**Verified MCP Loading:**
+- ✅ context7 (remote) - Connected
+- ✅ time (local/uvx) - Connected
+- ✅ chrome-devtools (local/npx) - Connected
+- ✅ playwright (local/npx) - Connected
+- ⚠️ github (remote) - Needs GITHUB_PERSONAL_ACCESS_TOKEN env var
+
+**Impact:** OpenCode global configuration now loads correctly on Windows, enabling MCP servers system-wide  
+**Files:** install.ps1 (modified), existing config migrated  
+**Line changes:** ~5 lines modified in install.ps1
+
+---
+
 ## 2025-11-15: Interactive Tutorial System
 **Goal:** Create comprehensive guided learning experience for new users
 

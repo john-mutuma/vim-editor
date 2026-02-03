@@ -16,17 +16,15 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 ----------------------------------------------------------------------
 return {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master", -- Use stable master branch (old API)
     event = { "BufReadPre", "BufNewFile" },
-    build = function()
-        local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-        ts_update()
-    end,
+    build = ":TSUpdate",
     dependencies = {
         "windwp/nvim-ts-autotag",
     },
     config = function()
         ----------------------------------------------------------------------
-        -- 3. Treesitter Core Configuration
+        -- 3. Treesitter Core Configuration (Old API)
         ----------------------------------------------------------------------
         require("nvim-treesitter.configs").setup({
             highlight = { enable = true },
@@ -38,6 +36,7 @@ return {
                 "tsx",
                 "lua",
                 "vim",
+                "vimdoc",
                 "css",
                 "html",
                 "markdown",

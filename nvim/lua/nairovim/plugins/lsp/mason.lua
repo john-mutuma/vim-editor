@@ -54,14 +54,24 @@ return {
         })
 
         ----------------------------------------------------------------------
-        -- 6. Mason UI Setup
+        -- 6. C# Language Server Setup
+        ----------------------------------------------------------------------
+        vim.lsp.config("csharp_ls", {
+            capabilities = capabilities,
+            cmd_env = {
+                DOTNET_ROOT = "C:\\Program Files\\dotnet",
+            },
+        })
+
+        ----------------------------------------------------------------------
+        -- 7. Mason UI Setup
         ----------------------------------------------------------------------
         mason.setup({
             ui = { border = "rounded" },
         })
 
         ----------------------------------------------------------------------
-        -- 7. Mason LSPConfig Setup
+        -- 8. Mason LSPConfig Setup
         ----------------------------------------------------------------------
         mason_lspconfig.setup({
             ensure_installed = ensure_lsp,
@@ -69,7 +79,7 @@ return {
         })
 
         ----------------------------------------------------------------------
-        -- 8. Mason Null-LS Setup
+        -- 9. Mason Null-LS Setup
         ----------------------------------------------------------------------
         mason_null_ls.setup({
             ensure_installed = ensure_null_ls,
@@ -78,7 +88,7 @@ return {
         })
 
         -- --------------------------------------------------------------------
-        -- 9. (Optional) DAP Configuration Placeholders
+        -- 10. (Optional) DAP Configuration Placeholders
         -- --------------------------------------------------------------------
         -- -- Configure DAP bucket
         -- -- Configure mason-nvim-dap Debuggers
