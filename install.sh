@@ -502,6 +502,12 @@ install_tmux() {
 install_oh_my_zsh() {
     print_section "${SPARKLES} Installing Oh My Zsh"
 
+    # Check if zsh is installed first
+    if ! command_exists zsh; then
+        print_step "Installing zsh" "required for Oh My Zsh"
+        install_with_brew "zsh" "Zsh shell"
+    fi
+
     local oh_my_zsh_dir="$HOME/.oh-my-zsh"
 
     if [[ -d "$oh_my_zsh_dir" ]]; then
