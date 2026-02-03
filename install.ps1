@@ -725,11 +725,11 @@ function Install-OpenCode {
         Print-Info "OpenCode is already installed, skipping..."
     }
     
-    # Setup OpenCode configuration
-    Print-Step "Setting up OpenCode configuration" "$env:APPDATA\opencode"
+    # Setup OpenCode configuration (XDG Base Directory compliant)
+    Print-Step "Setting up OpenCode configuration" "~\.config\opencode"
     
     $opencodeConfigSource = Join-Path $PSScriptRoot "opencode_global_config"
-    $opencodeConfigTarget = Join-Path $env:APPDATA "opencode"
+    $opencodeConfigTarget = Join-Path $env:USERPROFILE ".config\opencode"
     
     if (-not (Test-Path $opencodeConfigSource)) {
         Print-Error "OpenCode configuration source not found at $opencodeConfigSource"
@@ -865,6 +865,22 @@ function Install-OpenCode {
         } else {
             New-Symlink -Source $item.FullName -Target $itemTarget -Name "OpenCode $itemName"
         }
+    }
+    
+    # Set OPENCODE_CONFIG_DIR environment variable
+    Print-Step "Setting OPENCODE_CONFIG_DIR environment variable" "for MCP server loading"
+    [Environment]::SetEnvironmentVariable("OPENCODE_CONFIG_DIR", $opencodeConfigTarget, "User")
+    Print-Success "OPENCODE_CONFIG_DIR set to: $opencodeConfigTarget"
+    
+    # Add to PowerShell profile
+    if (-not (Test-Path $PROFILE)) {
+        New-Item -ItemType File -Path $PROFILE -Force | Out-Null
+    }
+    
+    $profileContent = Get-Content $PROFILE -Raw -ErrorAction SilentlyContinue
+    if ($profileContent -notmatch "OPENCODE_CONFIG_DIR") {
+        Add-Content $PROFILE "`n# OpenCode Configuration`n`$env:OPENCODE_CONFIG_DIR = '$opencodeConfigTarget'"
+        Print-Info "Added OPENCODE_CONFIG_DIR to PowerShell profile"
     }
     
     # Show backup session summary
