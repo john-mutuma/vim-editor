@@ -60,7 +60,12 @@ print_section() {
 
 # Print step with icon
 print_step() {
-    echo "${cyan}${HOURGLASS} ${bold}$1${textreset} ${dim}$2${textreset}"
+    local description="${2:-}"  # Make second parameter optional
+    if [[ -n "$description" ]]; then
+        echo "${cyan}${HOURGLASS} ${bold}$1${textreset} ${dim}$description${textreset}"
+    else
+        echo "${cyan}${HOURGLASS} ${bold}$1${textreset}"
+    fi
 }
 
 # Print success message
