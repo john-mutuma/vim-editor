@@ -74,6 +74,22 @@ opt.backspace = { "indent", "eol", "start" }
 ----------------------------------------------------------------------
 opt.clipboard:append("unnamedplus")
 
+-- WSL2 clipboard integration with Windows
+if vim.fn.has("wsl") == 1 then
+    g.clipboard = {
+        name = "WslClipboard",
+        copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+        },
+        paste = {
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        },
+        cache_enabled = 0,
+    }
+end
+
 ----------------------------------------------------------------------
 -- 11. Split Windows
 ----------------------------------------------------------------------
