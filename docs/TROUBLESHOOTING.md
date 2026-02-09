@@ -1596,30 +1596,71 @@ nvim /tmp/test.txt
 
 **Problem:** Selecting text in OpenCode terminal shows "copied to clipboard" but doesn't paste in Windows.
 
-**Root Cause:** OpenCode's terminal uses OSC 52 escape sequences which may not bridge to Windows clipboard in WSL.
+**Root Cause:** OpenCode's terminal uses OSC 52 escape sequences which are handled internally but don't automatically bridge to Windows clipboard in WSL. This is a limitation of how OpenCode's terminal emulator works in WSL environments.
 
-**Solution:**
+**Solution 1: Use shell piping (Recommended for multi-line content)**
 
-Use shell clipboard commands instead of terminal text selection:
+Instead of selecting text with your mouse, pipe command output directly to clipboard:
 
 ```bash
-# Copy command output to clipboard
-ls -la | clip.exe
+# Copy command output
+ls -la | /mnt/c/Windows/system32/clip.exe
 
-# Copy file contents
-cat file.txt | clip.exe
+# Copy file contents (works with multiple lines)
+cat file.txt | /mnt/c/Windows/system32/clip.exe
 
-# Use aliases (after sourcing ~/.bashrc or ~/.zshrc)
-echo "test" | pbcopy
+# Copy specific output
+echo -e "Line 1\nLine 2\nLine 3" | /mnt/c/Windows/system32/clip.exe
+
+# After sourcing ~/.bashrc or ~/.zshrc, use aliases
+cat multiline.txt | pbcopy
 pbpaste
 ```
 
-**For persistent OpenCode terminal clipboard:**
+**Solution 2: Use keyboard shortcuts in OpenCode**
+
+OpenCode has a keybind for copying messages:
 
 ```bash
-# In ~/.bashrc or ~/.zshrc, add environment variables
-export COPY_CMD="clip.exe"
-export PASTE_CMD="powershell.exe -Command Get-Clipboard"
+# Focus on a message in OpenCode
+# Press: Ctrl+X then y (messages_copy keybind)
+# This copies the entire message content to clipboard
+```
+
+**Solution 3: Use cat + pipe for viewing and copying**
+
+```bash
+# Display content and copy simultaneously
+cat file.txt | tee >(/ mnt/c/Windows/system32/clip.exe)
+
+# Or simpler: display first, then copy
+cat file.txt
+cat file.txt | /mnt/c/Windows/system32/clip.exe
+```
+
+**Why mouse selection doesn't work:**
+
+OpenCode's terminal text selection operates at the application level (not shell level). When you select text:
+1. OpenCode captures the selection internally
+2. Uses OSC 52 sequences for clipboard
+3. Shows "copied to clipboard" message
+4. But OSC 52 doesn't reach Windows clipboard in WSL2
+
+The shell piping method works because it directly invokes Windows clipboard tools with full content, including all lines.
+
+**Quick aliases for frequent copying:**
+
+Add to `~/.bashrc` or `~/.zshrc`:
+
+```bash
+# Copy last command output
+alias clast='fc -ln -1 | /mnt/c/Windows/system32/clip.exe'
+
+# Copy current directory path
+alias cpwd='pwd | /mnt/c/Windows/system32/clip.exe'
+
+# Copy file with line numbers
+alias ccat='cat -n'
 ```
 
 #### Clipboard breaks after WSL restart
