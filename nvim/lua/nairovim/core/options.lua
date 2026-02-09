@@ -76,18 +76,37 @@ opt.clipboard:append("unnamedplus")
 
 -- WSL2 clipboard integration with Windows
 if vim.fn.has("wsl") == 1 then
-    g.clipboard = {
-        name = "WslClipboard",
-        copy = {
-            ["+"] = "clip.exe",
-            ["*"] = "clip.exe",
-        },
-        paste = {
-            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-        },
-        cache_enabled = 0,
-    }
+    -- Prefer win32yank if available (faster), fallback to clip.exe
+    local win32yank_path = vim.fn.expand("~/.local/bin/win32yank.exe")
+    local use_win32yank = vim.fn.executable(win32yank_path) == 1
+
+    if use_win32yank then
+        g.clipboard = {
+            name = "WslClipboard-win32yank",
+            copy = {
+                ["+"] = { win32yank_path, "-i", "--crlf" },
+                ["*"] = { win32yank_path, "-i", "--crlf" },
+            },
+            paste = {
+                ["+"] = { win32yank_path, "-o", "--lf" },
+                ["*"] = { win32yank_path, "-o", "--lf" },
+            },
+            cache_enabled = 0,
+        }
+    else
+        g.clipboard = {
+            name = "WslClipboard",
+            copy = {
+                ["+"] = "clip.exe",
+                ["*"] = "clip.exe",
+            },
+            paste = {
+                ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+                ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            },
+            cache_enabled = 0,
+        }
+    end
 end
 
 ----------------------------------------------------------------------

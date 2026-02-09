@@ -166,3 +166,32 @@ nvm use 22
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# ----------------------------------------------------------------------
+# WSL Clipboard Integration
+# ----------------------------------------------------------------------
+# Enhanced clipboard support for WSL2 + OpenCode terminal
+if [[ -n "$WSL_DISTRO_NAME" ]] || grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+    # Core clipboard functions using Windows clipboard tools
+    alias pbcopy='clip.exe'
+    
+    pbpaste() {
+        powershell.exe -Command "Get-Clipboard" 2>/dev/null | sed 's/\r$//'
+    }
+    
+    # OpenCode terminal clipboard helpers
+    if [ -n "$OPENCODE" ]; then
+        # Override common clipboard commands to use Windows clipboard
+        alias xclip='clip.exe'
+        alias xsel='clip.exe'
+        alias wl-copy='clip.exe'
+        
+        # Convenient clipboard shortcuts
+        alias copy='clip.exe'
+        alias paste='pbpaste'
+    fi
+    
+    # Export for use in scripts
+    export COPY_CMD="clip.exe"
+    export PASTE_CMD="powershell.exe -Command Get-Clipboard"
+fi

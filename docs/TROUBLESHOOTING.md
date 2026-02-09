@@ -13,6 +13,7 @@ Comprehensive guide to resolving common issues with NairoVIM.
 - [Performance Issues](#performance-issues)
 - [Keybinding Conflicts](#keybinding-conflicts)
 - [Terminal and Shell Issues](#terminal-and-shell-issues)
+  - [WSL Clipboard Integration Issues](#wsl-clipboard-integration-issues)
 - [Getting Help](#getting-help)
 - [Additional Documentation](#additional-documentation)
 
@@ -1522,6 +1523,146 @@ fzf --version
 # Test FZF manually
 fzf
 ```
+
+### WSL Clipboard Integration Issues
+
+#### Clipboard not syncing between WSL and Windows
+
+**Problem:** Text copied in Neovim or terminal doesn't paste in Windows applications (and vice versa).
+
+**Solution:**
+
+NairoVIM automatically configures WSL clipboard integration, but you may need to ensure the setup is complete:
+
+**1. Verify Neovim clipboard provider:**
+
+```bash
+# Check which clipboard provider is active
+nvim --headless -c 'lua vim.print(vim.g.clipboard.name)' +qall
+
+# Should output: WslClipboard-win32yank or WslClipboard
+```
+
+**2. Test manual clipboard operations:**
+
+```bash
+# Test copy to Windows clipboard
+echo "test from WSL" | clip.exe
+# Then paste in Windows Notepad with Ctrl+V
+
+# Test paste from Windows clipboard
+# First copy text in Windows (Ctrl+C)
+powershell.exe -Command "Get-Clipboard"
+```
+
+**3. Verify win32yank installation:**
+
+```bash
+# Check if win32yank is installed
+ls -lh ~/.local/bin/win32yank.exe
+
+# If missing, install it
+mkdir -p ~/.local/bin
+curl -sLo /tmp/win32yank.zip https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip
+python3 -m zipfile -e /tmp/win32yank.zip /tmp/
+mv /tmp/win32yank.exe ~/.local/bin/win32yank.exe
+chmod +x ~/.local/bin/win32yank.exe
+
+# Test win32yank
+echo "hello" | ~/.local/bin/win32yank.exe -i
+~/.local/bin/win32yank.exe -o
+```
+
+**4. Reload shell configuration:**
+
+```bash
+# For bash users
+source ~/.bashrc
+
+# For zsh users
+source ~/.zshrc
+```
+
+**5. Test in Neovim:**
+
+```bash
+nvim /tmp/test.txt
+# Type: iHello from WSL<Esc>
+# Copy line: yy
+# Paste in Windows Notepad: Ctrl+V should show "Hello from WSL"
+```
+
+#### OpenCode terminal clipboard not working
+
+**Problem:** Selecting text in OpenCode terminal shows "copied to clipboard" but doesn't paste in Windows.
+
+**Root Cause:** OpenCode's terminal uses OSC 52 escape sequences which may not bridge to Windows clipboard in WSL.
+
+**Solution:**
+
+Use shell clipboard commands instead of terminal text selection:
+
+```bash
+# Copy command output to clipboard
+ls -la | clip.exe
+
+# Copy file contents
+cat file.txt | clip.exe
+
+# Use aliases (after sourcing ~/.bashrc or ~/.zshrc)
+echo "test" | pbcopy
+pbpaste
+```
+
+**For persistent OpenCode terminal clipboard:**
+
+```bash
+# In ~/.bashrc or ~/.zshrc, add environment variables
+export COPY_CMD="clip.exe"
+export PASTE_CMD="powershell.exe -Command Get-Clipboard"
+```
+
+#### Clipboard breaks after WSL restart
+
+**Problem:** Clipboard integration stops working after restarting WSL.
+
+**Solution:**
+
+```bash
+# Ensure WSLg is running (provides clipboard services)
+ps aux | grep -i wsl
+
+# Restart WSLg if needed (from Windows PowerShell)
+# wsl --shutdown
+# wsl
+
+# Verify DISPLAY is set
+echo $DISPLAY  # Should show :0 or similar
+
+# Test Windows executables are accessible
+which clip.exe powershell.exe
+
+# Reinstall win32yank if path is broken
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+#### Neovim paste inserts Windows line endings (^M)
+
+**Problem:** Pasting from Windows clipboard inserts carriage returns.
+
+**Solution:**
+
+NairoVIM automatically strips `\r` characters, but if you still see them:
+
+```vim
+" In Neovim, remove manually:
+:%s/\r//g
+
+" Or configure dos2unix
+:set ff=unix
+```
+
+The clipboard provider should handle this automatically with the `--lf` flag (win32yank) or `replace("`r", "")` (PowerShell).
 
 ---
 
