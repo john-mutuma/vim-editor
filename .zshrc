@@ -173,25 +173,25 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 # Enhanced clipboard support for WSL2 + OpenCode terminal
 if [[ -n "$WSL_DISTRO_NAME" ]] || grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
     # Core clipboard functions using Windows clipboard tools
-    alias pbcopy='clip.exe'
+    alias pbcopy='/mnt/c/Windows/system32/clip.exe'
     
     pbpaste() {
-        powershell.exe -Command "Get-Clipboard" 2>/dev/null | sed 's/\r$//'
+        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command "Get-Clipboard" 2>/dev/null | sed 's/\r$//'
     }
     
     # OpenCode terminal clipboard helpers
     if [ -n "$OPENCODE" ]; then
         # Override common clipboard commands to use Windows clipboard
-        alias xclip='clip.exe'
-        alias xsel='clip.exe'
-        alias wl-copy='clip.exe'
+        alias xclip='/mnt/c/Windows/system32/clip.exe'
+        alias xsel='/mnt/c/Windows/system32/clip.exe'
+        alias wl-copy='/mnt/c/Windows/system32/clip.exe'
         
         # Convenient clipboard shortcuts
-        alias copy='clip.exe'
+        alias copy='/mnt/c/Windows/system32/clip.exe'
         alias paste='pbpaste'
     fi
     
     # Export for use in scripts
-    export COPY_CMD="clip.exe"
-    export PASTE_CMD="powershell.exe -Command Get-Clipboard"
+    export COPY_CMD="/mnt/c/Windows/system32/clip.exe"
+    export PASTE_CMD="/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -Command Get-Clipboard"
 fi
