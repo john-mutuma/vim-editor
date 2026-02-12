@@ -70,9 +70,6 @@ return {
             opts = {
                 file_types = {
                     "markdown",
-                    "Avante",
-                    "mcphub",
-                    "copilot-chat",
                     "opencode_terminal",
                     "opencode_output",
                     "opencode",
@@ -82,7 +79,7 @@ return {
                     language_border = "",
                 },
             },
-            ft = { "markdown", "Avante", "mcphub", "copilot-chat" },
+            ft = { "markdown" },
         },
     },
 

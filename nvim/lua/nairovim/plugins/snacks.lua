@@ -84,24 +84,11 @@ You are in %s
                             desc = "Git",
                             action = ":lua Snacks.lazygit()",
                         },
-                        -- { icon = " ", key = "C", desc = "GitHub Copilot", action = ":CopilotChat" },
                         {
                             icon = " ",
                             key = "O",
                             desc = "Opencode.ai - (GitHub Copilot)",
                             action = ":lua require('opencode').toggle()",
-                        },
-                        -- {
-                        --     icon = " ",
-                        --     key = "A",
-                        --     desc = "Avante AI - (GitHub Copilot)",
-                        --     action = ":AvanteFocus",
-                        -- },
-                        {
-                            icon = "󱁤",
-                            key = "M",
-                            desc = "MCP Hub",
-                            action = ":MCPHub",
                         },
                         { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
                         {

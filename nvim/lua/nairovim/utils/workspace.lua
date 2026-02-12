@@ -100,16 +100,7 @@ M.ensure_installed_null_ls = {
 }
 
 ----------------------------------------------------------------------
--- 4. Copilot Chat Configuration
-----------------------------------------------------------------------
-
---- CopilotChat configuration options.
-M.copilot_chat = {
-    layout = "vertical",
-}
-
-----------------------------------------------------------------------
--- 5. VSCode Workspace Settings Integration
+-- 4. VSCode Workspace Settings Integration
 ----------------------------------------------------------------------
 
 -- Load VSCode workspace settings and expose relevant ESLint options.

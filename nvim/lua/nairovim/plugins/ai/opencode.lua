@@ -11,7 +11,7 @@
 --                 anti_conceal = { enabled = false },
 --                 file_types = { "markdown", "opencode_output" },
 --             },
---             ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
+--             ft = { "markdown", "opencode_output" },
 --         },
 --         -- Optional, for file mentions and commands completion, pick only one
 --         "saghen/blink.cmp",

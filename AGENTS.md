@@ -4,6 +4,51 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-02-12: Remove MCPHub, Avante, and CopilotChat
+**Goal:** Simplify AI tooling by consolidating to OpenCode as primary AI assistant
+
+Removed redundant AI assistant plugins (mcphub, avante, copilot-chat) to streamline configuration and reduce maintenance overhead. OpenCode.nvim now serves as the primary AI coding assistant alongside GitHub Copilot for inline completions.
+
+**Plugins Removed:**
+- `mcphub.nvim` - Model Context Protocol hub (entire `mcp/` directory)
+- `avante.nvim` - AI coding assistant with multi-provider support
+- `CopilotChat.nvim` - GitHub Copilot chat interface
+
+**Changes Made:**
+
+1. **Plugin Deletions:**
+   - `nvim/lua/nairovim/plugins/mcp/mcphub.lua` - Deleted entire mcp directory
+   - `nvim/lua/nairovim/plugins/ai/avante.lua` - Deleted plugin config
+   - `nvim/lua/nairovim/plugins/ai/copilot-chat.lua` - Deleted plugin config
+   - `nvim/lua/nairovim/plugins/customizations/highlights/avante.lua` - Deleted highlights
+   - `nvim/lua/nairovim/plugins/customizations/keymaps/copilot-chat.lua` - Deleted keymaps
+
+2. **Configuration Cleanup:**
+   - `nvim/lua/nairovim/lazy.lua` - Removed mcp plugin import
+   - `nvim/lua/nairovim/plugins/lualine.lua` - Removed MCP status component (58 lines), removed Avante/copilot-chat filetypes
+   - `nvim/lua/nairovim/plugins/snacks.lua` - Removed MCPHub dashboard action, removed commented Avante/CopilotChat actions
+   - `nvim/lua/nairovim/plugins/init.lua` - Removed Avante/mcphub/copilot-chat from render-markdown filetypes
+   - `nvim/lua/nairovim/plugins/ai/opencode.lua` - Removed Avante/copilot-chat comment
+   - `nvim/lua/nairovim/utils/workspace.lua` - Removed CopilotChat configuration section
+
+3. **Documentation Updates:**
+   - `docs/ARCHITECTURE.md` - Updated AI plugins count (4→2), removed mcp directory from tree, removed plugin table entries
+   - `docs/FAQ.md` - Removed Avante provider switching question
+   - `docs/TROUBLESHOOTING.md` - Removed CopilotChat from build tools section
+
+**Rationale:**
+- OpenCode provides comprehensive AI assistance with Claude Sonnet 4.5
+- Multiple overlapping AI tools created configuration complexity
+- GitHub Copilot handles inline completions effectively
+- Reduced plugin count improves startup time and maintainability
+
+**Impact:** Simplified AI tooling stack, reduced configuration complexity, faster startup  
+**Branch:** `feat/remove-mcphub-avante`  
+**Files:** 14 files (7 deleted, 7 modified)  
+**Line changes:** ~400 lines removed
+
+---
+
 ## 2026-02-07: WSL Clipboard Integration
 **Goal:** Fix clipboard synchronization between WSL2 and Windows host
 

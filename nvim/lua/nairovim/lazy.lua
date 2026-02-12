@@ -25,7 +25,6 @@ require("lazy").setup({
         { import = "nairovim.plugins.lsp" },
         { import = "nairovim.plugins.dap" },
         { import = "nairovim.plugins.ai" },
-        { import = "nairovim.plugins.mcp" },
     },
     -- Configure any other settings here. See the documentation for more details.
     -- colorscheme that will be used when installing plugins.
