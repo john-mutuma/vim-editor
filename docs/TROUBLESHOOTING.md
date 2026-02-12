@@ -161,7 +161,6 @@ $env:Path += ";C:\Program Files\Git\bin"
 **Affected Plugins:**
 - `telescope-fzf-native.nvim` - Requires make/cmake
 - `nvim-treesitter` - Requires C compiler for parser compilation
-- `CopilotChat.nvim` - Requires make for tiktoken build
 
 **Solution:**
 
@@ -188,9 +187,6 @@ cmake --version
 
 " Update all treesitter parsers
 :TSUpdate all
-
-" Rebuild CopilotChat
-:Lazy build CopilotChat.nvim
 
 " Check health status
 :checkhealth telescope

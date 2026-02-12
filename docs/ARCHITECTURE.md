@@ -29,10 +29,9 @@ nvim/
 │       │   ├── options.lua    # Vim options
 │       │   └── keymaps.lua    # Core keybindings
 │       ├── plugins/           # Plugin configurations
-│       │   ├── ai/            # AI plugins (Avante, Copilot, OpenCode)
+│       │   ├── ai/            # AI plugins (Copilot, OpenCode)
 │       │   ├── dap/           # Debugging (DAP)
 │       │   ├── lsp/           # Language servers (Mason, LSP, Lspsaga)
-│       │   ├── mcp/           # Model Context Protocol (MCPHub)
 │       │   ├── customizations/
 │       │   │   ├── highlights/ # Plugin-specific highlights
 │       │   │   └── keymaps/    # Plugin-specific keybindings
@@ -160,14 +159,12 @@ nvim --startuptime startup.log +qa && tail -1 startup.log
 
 NairoVIM includes 70+ carefully selected plugins organized into functional categories.
 
-### 🤖 AI & Code Assistance (4 plugins)
+### 🤖 AI & Code Assistance (2 plugins)
 
 | Plugin | Description | Key Features |
 |--------|-------------|--------------|
 | **opencode.nvim** | AI terminal assistant | Terminal-based AI interaction, session management, Claude integration |
-| **avante.nvim** | Advanced AI coding assistant | Context-aware suggestions, slash commands, multi-provider support (Claude, GPT, Copilot) |
 | **copilot.lua** | GitHub Copilot integration | Real-time code completion, AI-powered suggestions |
-| **CopilotChat.nvim** | Copilot chat interface | Interactive AI conversations, code explanations |
 
 ### 🔍 LSP & Language Support (9 plugins)
 

@@ -79,29 +79,16 @@ You are in %s
                             action = ":lua Snacks.dashboard.pick('oldfiles')",
                         },
                         {
-                            icon = " ",
+                            icon = " ",
                             key = "G",
                             desc = "Git",
                             action = ":lua Snacks.lazygit()",
                         },
-                        -- { icon = " ", key = "C", desc = "GitHub Copilot", action = ":CopilotChat" },
                         {
-                            icon = " ",
+                            icon = " ",
                             key = "O",
                             desc = "Opencode.ai - (GitHub Copilot)",
                             action = ":lua require('opencode').toggle()",
-                        },
-                        -- {
-                        --     icon = " ",
-                        --     key = "A",
-                        --     desc = "Avante AI - (GitHub Copilot)",
-                        --     action = ":AvanteFocus",
-                        -- },
-                        {
-                            icon = "󱁤",
-                            key = "M",
-                            desc = "MCP Hub",
-                            action = ":MCPHub",
                         },
                         { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
                         {

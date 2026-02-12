@@ -208,20 +208,9 @@ If working with sensitive code, use only LSP-based features (code completion, na
 
 **A:** Yes! NairoVIM includes:
 - OpenCode (Anthropic)
-- Avante (Anthropic, OpenAI, Copilot)
 - GitHub Copilot
 
-You can have all configured and switch between them as needed.
-
-### Q: How do I switch AI providers in Avante?
-
-**A:** Edit `lua/nairovim/plugins/ai/avante.lua` and change the `provider` field:
-
-```lua
-provider = "claude",  -- or "openai", "copilot"
-```
-
-Make sure you have the corresponding API key set in your environment.
+You can have both configured and switch between them as needed.
 
 ---
 
