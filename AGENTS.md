@@ -4,6 +4,50 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-02-12: OpenCode Process Cleanup on Exit
+**Goal:** Automatically terminate OpenCode server processes when Neovim exits
+
+Implemented automatic cleanup of OpenCode server processes spawned by the current Neovim instance. When Neovim exits, the `VimLeavePre` autocmd gracefully terminates only the OpenCode processes that belong to the current session, preserving processes from other Neovim instances.
+
+**Implementation Details:**
+
+1. **Process Identification:**
+   - Uses `$NVIM` environment variable (socket path like `/run/user/1000//nvim.75732.0`)
+   - Each Neovim instance has a unique socket identifier
+   - OpenCode processes inherit `$NVIM` from parent Neovim process
+   - Socket-based matching prevents killing sessions from other instances
+
+2. **Cleanup Mechanism:**
+   - `VimLeavePre` autocmd in `opencode.lua` config function
+   - Finds all OpenCode processes: `pgrep -f 'opencode --port'`
+   - Filters by matching `$NVIM` in `/proc/$pid/environ`
+   - Graceful termination: `kill -15` (SIGTERM) allows cleanup
+   - Silent error handling: `2>/dev/null` for robustness
+
+3. **Edge Cases Handled:**
+   - Skips cleanup if `$NVIM` is empty (not in Neovim terminal)
+   - Escapes special characters in socket path for grep matching
+   - Handles multiple OpenCode sessions per Neovim instance
+   - Preserves processes from other Neovim instances in same directory
+
+**Testing Results:**
+- ✅ Current session (`nvim.75732.0`): 2 OpenCode processes identified correctly
+- ✅ Other sessions: 5 processes from different instances preserved
+- ✅ Socket-based matching superior to path-based (avoids killing all sessions in directory)
+
+**Technical Insight:**
+Socket-based tracking (`$NVIM`) is superior to path-based (`cwd`) because:
+- Path-based would kill ALL OpenCode sessions in a directory (even from other Neovim instances)
+- Socket-based only kills sessions from the exiting Neovim instance
+- Example: Two Neovim instances in `/home/user/project` → path-based kills both, socket-based only kills one
+
+**Impact:** Clean exit without orphaned OpenCode processes, preserves other Neovim sessions  
+**Commit:** `2cb01dc`  
+**Files:** 1 file modified (opencode.lua)  
+**Line changes:** +24 lines
+
+---
+
 ## 2026-02-12: Remove MCPHub, Avante, and CopilotChat
 **Goal:** Simplify AI tooling by consolidating to OpenCode as primary AI assistant
 
