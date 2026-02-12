@@ -4,6 +4,98 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-02-12: FZF Ctrl+R Command History Fix (WSL)
+**Goal:** Fix `Ctrl+R` command history search not working in WSL with Vi mode enabled
+
+Diagnosed and fixed FZF key binding issue in WSL where `Ctrl+R` command history search wasn't working due to plugin ordering bug and Vi mode overriding default keybindings. Works perfectly on macOS but failed silently in WSL.
+
+**Root Cause:**
+
+1. **Plugin Ordering Bug**:
+   - Line 81: `plugins=(git)` - FZF plugin NOT included before Oh-My-Zsh loads
+   - Line 83: `source $ZSH/oh-my-zsh.sh` - Oh-My-Zsh loads without FZF
+   - Lines 121-123: `plugins=(fzf)` - Second plugins array defined AFTER Oh-My-Zsh loaded (has no effect)
+
+2. **Version-Incompatible Manual Config**:
+   - Lines 128-135: Manual FZF sourcing logic that fails silently on WSL
+   - Checks for `~/.fzf.zsh` (doesn't exist in WSL) ❌
+   - Tries `fzf --zsh` (requires v0.48.0+, WSL has v0.44.1 Debian package) ❌
+   - Result: No key bindings loaded at all
+
+3. **Vi Mode Override**:
+   - `set -o vi` enables Vi mode which uses different keymap (viins/vicmd vs emacs)
+   - FZF key-bindings must be sourced AFTER Vi mode is set
+   - Explicit `bindkey -M viins` needed to ensure Ctrl+R works in Vi insert mode
+
+**Why macOS Works But WSL Doesn't:**
+- **macOS**: Has `~/.fzf.zsh` from Homebrew installation OR newer FZF version
+- **WSL**: No `~/.fzf.zsh`, FZF 0.44.1 (Debian), `fzf --zsh` not supported
+
+**Solution:**
+
+1. **Fixed Plugin Loading** (Line 81):
+   ```zsh
+   # Before: plugins=(git)
+   # After:  plugins=(git fzf)
+   ```
+
+2. **Commented Out Incorrect FZF_BASE** (Line 113):
+   ```zsh
+   # export FZF_BASE="$HOME/.fzf"  # Let Oh-My-Zsh auto-detect
+   ```
+
+3. **Removed Duplicate Plugins Array** (Lines 121-123):
+   - Deleted second `plugins=(fzf)` that had no effect
+
+4. **Replaced Manual Config with Explicit Binding** (Lines 125-132):
+   ```zsh
+   set -o vi
+   
+   if [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+     source /usr/share/doc/fzf/examples/key-bindings.zsh
+     # Explicitly bind after Vi mode
+     bindkey -M viins '^R' fzf-history-widget
+     bindkey -M vicmd '^R' fzf-history-widget
+   fi
+   ```
+
+5. **Kept Custom FZF Options** (Lines 136-137):
+   ```zsh
+   export FZF_DEFAULT_OPS="--extended"
+   export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+   ```
+
+**FZF Installation Details (WSL):**
+- Installed: `/usr/bin/fzf` (version 0.44.1 debian)
+- Key bindings: `/usr/share/doc/fzf/examples/key-bindings.zsh`
+- Completion: `/usr/share/doc/fzf/examples/completion.zsh`
+- Oh-My-Zsh plugin: `~/.oh-my-zsh/plugins/fzf/fzf.plugin.zsh`
+
+**Testing Instructions:**
+
+1. Open new terminal or run: `exec zsh`
+2. Run some commands to populate history: `ls`, `pwd`, `echo test`
+3. Press `Ctrl+R` - should open FZF command history search
+4. Type to filter history, press Enter to execute command
+5. Also test: `Ctrl+T` (file search), `Alt+C` (directory navigation)
+
+**Verification Commands:**
+```bash
+# Check if widget function is defined
+typeset -f fzf-history-widget | head -3
+
+# Check Vi insert mode binding
+bindkey -M viins | grep "^\^R"
+
+# Should show: "^R" fzf-history-widget
+```
+
+**Impact:** FZF command history search now works consistently across macOS and WSL with Vi mode enabled  
+**Files:** `~/.zshrc` (modified, backup created)  
+**Line changes:** +9 lines added/modified, ~10 lines removed
+
+---
+
 ## 2026-02-12: OpenCode Process Cleanup on Exit
 **Goal:** Automatically terminate OpenCode server processes when Neovim exits
 
