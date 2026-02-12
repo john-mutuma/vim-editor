@@ -704,6 +704,153 @@ function Install-Lazygit {
     }
 }
 
+function Install-WSLConfig {
+    Print-Section "$($Symbols.Gear) Configuring WSL Networking (Optional)"
+    
+    # Check if WSL is installed
+    if (-not (Test-Command "wsl")) {
+        Print-Info "WSL not detected, skipping WSL configuration"
+        return
+    }
+    
+    # Check WSL version
+    Print-Step "Detecting WSL version" "checking for WSL2"
+    
+    try {
+        $wslStatus = wsl --status 2>&1 | Out-String
+        
+        if ($wslStatus -notmatch "WSL 2" -and $wslStatus -notmatch "Default Version: 2") {
+            Print-Info "WSL2 not detected, skipping networking configuration"
+            Print-Info "Mirrored networking requires WSL2 (upgrade with: wsl --set-default-version 2)"
+            return
+        }
+        
+        Print-Success "WSL2 detected"
+    } catch {
+        Print-Warning "Could not determine WSL version, proceeding with caution..."
+    }
+    
+    # Define paths
+    $wslConfigTemplate = Join-Path $PSScriptRoot "wslconfig.template"
+    $wslConfigTarget = Join-Path $env:USERPROFILE ".wslconfig"
+    
+    if (-not (Test-Path $wslConfigTemplate)) {
+        Print-Error "WSL config template not found at $wslConfigTemplate"
+        return
+    }
+    
+    Write-Host ""
+    Print-Info "WSL networking configuration enables seamless localhost access"
+    Write-Host "  $([char]0x2022) Fixes 'localhost:PORT not working' from Windows browser"
+    Write-Host "  $([char]0x2022) Enables bidirectional localhost access (Windows ↔ WSL)"
+    Write-Host "  $([char]0x2022) Requires Windows 11 22H2+ or Windows 10 build 19041+"
+    Write-Host ""
+    
+    # Check if .wslconfig already exists
+    if (Test-Path $wslConfigTarget) {
+        Print-Step "Existing .wslconfig found" "analyzing configuration"
+        
+        $existingContent = Get-Content $wslConfigTarget -Raw
+        
+        # Check if already configured with mirrored networking
+        if ($existingContent -match "networkingMode\s*=\s*mirrored") {
+            Print-Success "WSL already configured with mirrored networking!"
+            Print-Info "Your .wslconfig already has the recommended settings"
+            return
+        }
+        
+        # Existing config without mirrored networking
+        Write-Host ""
+        Print-Warning "Existing .wslconfig found without mirrored networking"
+        Write-Host ""
+        Write-ColorOutput "Current file location: $wslConfigTarget" -Color "Cyan"
+        Write-Host ""
+        Write-ColorOutput "Options:" -Color "Yellow"
+        Write-Host "  1) Backup existing file and append networking settings (recommended)"
+        Write-Host "  2) Backup existing file and replace with template"
+        Write-Host "  3) Skip WSL configuration (keep existing file unchanged)"
+        Write-Host ""
+        
+        $choice = Read-Host "Choose [1-3] (default: 1)"
+        if ([string]::IsNullOrWhiteSpace($choice)) { $choice = "1" }
+        
+        switch ($choice) {
+            "1" {
+                # Backup and append
+                $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+                $backupPath = "${wslConfigTarget}.backup.${timestamp}"
+                
+                Copy-Item $wslConfigTarget $backupPath -Force
+                Print-Success "Backed up existing config to: $backupPath"
+                
+                # Check if [wsl2] section exists
+                if ($existingContent -match "\[wsl2\]") {
+                    # Append to existing [wsl2] section
+                    $networkingSettings = @"
+
+# ======================================================================
+# Mirrored Networking (added by NairoVIM installer)
+# ======================================================================
+networkingMode=mirrored
+dnsTunneling=true
+firewall=true
+autoProxy=true
+"@
+                    Add-Content $wslConfigTarget $networkingSettings
+                    Print-Success "Appended mirrored networking settings to existing [wsl2] section"
+                } else {
+                    # Add entire [wsl2] section
+                    $templateContent = Get-Content $wslConfigTemplate -Raw
+                    Add-Content $wslConfigTarget "`n$templateContent"
+                    Print-Success "Added [wsl2] section with mirrored networking settings"
+                }
+                
+                Print-Info "Original config preserved in: $backupPath"
+            }
+            "2" {
+                # Backup and replace
+                $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+                $backupPath = "${wslConfigTarget}.backup.${timestamp}"
+                
+                Move-Item $wslConfigTarget $backupPath -Force
+                Print-Success "Backed up existing config to: $backupPath"
+                
+                Copy-Item $wslConfigTemplate $wslConfigTarget -Force
+                Print-Success "Replaced with NairoVIM template configuration"
+                
+                Print-Warning "Your previous settings are in: $backupPath"
+                Print-Info "Review the backup and manually merge any custom settings if needed"
+            }
+            "3" {
+                Print-Info "Skipping WSL configuration (keeping existing file)"
+                Print-Info "To enable mirrored networking manually, add to .wslconfig:"
+                Write-Host "    [wsl2]"
+                Write-Host "    networkingMode=mirrored"
+                return
+            }
+            default {
+                Print-Error "Invalid choice, skipping WSL configuration"
+                return
+            }
+        }
+    } else {
+        # No existing config, create new one
+        Print-Step "Creating new .wslconfig" "with mirrored networking"
+        
+        Copy-Item $wslConfigTemplate $wslConfigTarget -Force
+        Print-Success "Created .wslconfig with recommended networking settings"
+    }
+    
+    Write-Host ""
+    Print-Success "WSL networking configuration complete!"
+    Write-Host ""
+    Print-Warning "IMPORTANT: WSL restart required for changes to take effect"
+    Write-Host "  Run in PowerShell: wsl --shutdown"
+    Write-Host "  Then start WSL again: wsl"
+    Write-Host ""
+    Print-Info "After restart, both localhost:PORT and 127.0.0.1:PORT will work from Windows"
+}
+
 function Install-OpenCode {
     Print-Section "$($Symbols.Star) Installing and Configuring OpenCode"
     
@@ -919,6 +1066,7 @@ function Print-InstallationSummary {
     Write-Host "$($Symbols.CheckMark) CLI tools installed (fzf, ripgrep, bat, git, lazygit)"
     Write-Host "$($Symbols.CheckMark) UV/UVX installed for MCP plugins"
     Write-Host "$($Symbols.CheckMark) Lazygit installed and configured"
+    Write-Host "$($Symbols.CheckMark) WSL networking configured (mirrored mode) [if WSL detected]"
     Write-Host "$($Symbols.CheckMark) OpenCode installed and configured"
     Write-Host ""
     Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F680)) Next Steps:" -Color "Yellow"
@@ -927,6 +1075,7 @@ function Print-InstallationSummary {
     Write-Host "3. Run 'nvim' to start Neovim and let plugins install"
     Write-Host "4. In Neovim, run ':Tutorial' to start the interactive tutorial"
     Write-Host "5. Configure your language servers as needed"
+    Write-Host "6. If using WSL: Run 'wsl --shutdown' then restart WSL for networking changes"
     Write-Host ""
     Write-ColorOutput "$([System.Char]::ConvertFromUtf32(0x1F4A1)) Useful Tips:" -Color "Blue"
     Write-Host "$([char]0x2022) Enable Developer Mode in Windows Settings for better symlink support"
@@ -982,6 +1131,7 @@ function Main {
     Install-CLITools
     Install-UV
     Install-Lazygit
+    Install-WSLConfig
     Install-OpenCode
     
     # Print final summary
