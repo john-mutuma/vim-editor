@@ -79,13 +79,13 @@ You are in %s
                             action = ":lua Snacks.dashboard.pick('oldfiles')",
                         },
                         {
-                            icon = " ",
+                            icon = " ",
                             key = "G",
                             desc = "Git",
                             action = ":lua Snacks.lazygit()",
                         },
                         {
-                            icon = " ",
+                            icon = " ",
                             key = "O",
                             desc = "Opencode.ai - (GitHub Copilot)",
                             action = ":lua require('opencode').toggle()",
