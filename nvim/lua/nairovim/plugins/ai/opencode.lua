@@ -1,4 +1,5 @@
 -- return {
+--
 --     "sudo-tee/opencode.nvim",
 --     config = function()
 --         require("opencode").setup({})
@@ -63,26 +64,65 @@ return {
         common_utils.map(mappings)
 
         ----------------------------------------------------------------------
-        -- Auto-cleanup OpenCode server processes on Neovim exit
+        -- Auto-cleanup OpenCode server processes
         ----------------------------------------------------------------------
-        -- When Neovim exits, gracefully terminate only the OpenCode server
-        -- processes that were spawned from this specific Neovim instance.
-        -- Uses $NVIM socket identifier to avoid killing sessions from other instances.
+        -- 1. On Neovim exit: Clean up this session's OpenCode processes
+        -- 2. On startup: Clean up orphaned OpenCode processes from dead sessions
+        
+        local function kill_opencode_processes(nvim_socket)
+            -- Find all OpenCode processes and check if they belong to this session
+            local pids = vim.fn.systemlist("pgrep -f 'opencode --port' 2>/dev/null")
+            
+            for _, pid in ipairs(pids) do
+                local environ_file = "/proc/" .. pid .. "/environ"
+                local grep_cmd = string.format("grep -qz 'NVIM=%s' %s 2>/dev/null", nvim_socket, environ_file)
+                vim.fn.system(grep_cmd)
+                
+                if vim.v.shell_error == 0 then
+                    -- Use SIGTERM first for graceful shutdown
+                    vim.fn.system(string.format("kill -15 %s 2>/dev/null", pid))
+                    -- Wait a bit, then force kill if still alive
+                    vim.defer_fn(function()
+                        vim.fn.system(string.format("kill -9 %s 2>/dev/null", pid))
+                    end, 500)
+                end
+            end
+        end
+        
+        local function cleanup_orphaned_processes()
+            -- Kill OpenCode processes whose parent Neovim is dead
+            local pids = vim.fn.systemlist("pgrep -f 'opencode --port' 2>/dev/null")
+            
+            for _, pid in ipairs(pids) do
+                local environ = vim.fn.system(string.format("cat /proc/%s/environ 2>/dev/null | tr '\\0' '\\n'", pid))
+                local nvim_socket = environ:match("NVIM=([^\n]+)")
+                
+                if nvim_socket then
+                    -- Extract Neovim PID from socket (e.g., nvim.12345.0 -> 12345)
+                    local nvim_pid = nvim_socket:match("nvim%.(%d+)%.")
+                    if nvim_pid then
+                        -- Check if that Neovim process is still running
+                        local check = vim.fn.system(string.format("ps -p %s > /dev/null 2>&1; echo $?", nvim_pid))
+                        if check:match("1") then
+                            -- Parent is dead, kill the orphan
+                            vim.fn.system(string.format("kill -9 %s 2>/dev/null", pid))
+                        end
+                    end
+                end
+            end
+        end
+
+        -- Clean up orphaned processes on startup (after a short delay to let things settle)
+        vim.defer_fn(cleanup_orphaned_processes, 2000)
+
+        -- Clean up this session's processes on exit
         vim.api.nvim_create_autocmd("VimLeavePre", {
             group = vim.api.nvim_create_augroup("OpenCodeCleanup", { clear = true }),
             callback = function()
                 local nvim_socket = vim.env.NVIM
-                if not nvim_socket or nvim_socket == "" then
-                    return -- Not in Neovim terminal or $NVIM not set
+                if nvim_socket and nvim_socket ~= "" then
+                    kill_opencode_processes(nvim_socket)
                 end
-
-                -- Find and gracefully terminate OpenCode processes with matching $NVIM socket
-                local cmd = string.format(
-                    [[bash -c "for pid in $(pgrep -f 'opencode --port' 2>/dev/null); do if grep -qz 'NVIM=%s' /proc/\$pid/environ 2>/dev/null; then kill -15 \$pid 2>/dev/null; fi; done"]],
-                    nvim_socket:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1") -- Escape special chars for grep
-                )
-
-                vim.fn.system(cmd)
             end,
         })
     end,
