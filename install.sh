@@ -313,7 +313,8 @@ install_build_tools() {
     print_section "${GEAR} Installing Build Tools"
     
     print_info "Installing C compiler toolchain for Neovim plugin compilation..."
-    print_info "This enables: telescope-fzf-native, nvim-treesitter, CopilotChat"
+    print_info "Installing archive utilities for Mason package extraction..."
+    print_info "This enables: telescope-fzf-native, nvim-treesitter, CopilotChat, Mason LSP/formatters"
     
     # Detect OS
     local os_type="$(uname -s)"
@@ -346,31 +347,31 @@ install_build_tools() {
             
         Linux*)
             # Linux - Use package manager
-            print_step "Installing build tools" "gcc, make, cmake"
+            print_step "Installing build tools" "gcc, make, cmake, unzip, tar, gzip"
             
             if command_exists apt-get; then
                 # Debian/Ubuntu
-                if ! command_exists gcc || ! command_exists make; then
+                if ! command_exists gcc || ! command_exists make || ! command_exists unzip; then
                     sudo apt-get update -qq
-                    sudo apt-get install -y build-essential cmake
-                    print_success "Installed build-essential and CMake (apt)"
+                    sudo apt-get install -y build-essential cmake unzip tar gzip
+                    print_success "Installed build-essential, CMake, and archive utilities (apt)"
                 else
                     print_info "Build tools already installed"
                 fi
             elif command_exists dnf; then
                 # Fedora/RHEL
-                if ! command_exists gcc || ! command_exists make; then
+                if ! command_exists gcc || ! command_exists make || ! command_exists unzip; then
                     sudo dnf groupinstall -y "Development Tools"
-                    sudo dnf install -y cmake
-                    print_success "Installed Development Tools and CMake (dnf)"
+                    sudo dnf install -y cmake unzip tar gzip
+                    print_success "Installed Development Tools, CMake, and archive utilities (dnf)"
                 else
                     print_info "Build tools already installed"
                 fi
             elif command_exists pacman; then
                 # Arch Linux
-                if ! command_exists gcc || ! command_exists make; then
-                    sudo pacman -S --noconfirm base-devel cmake
-                    print_success "Installed base-devel and CMake (pacman)"
+                if ! command_exists gcc || ! command_exists make || ! command_exists unzip; then
+                    sudo pacman -S --noconfirm base-devel cmake unzip tar gzip
+                    print_success "Installed base-devel, CMake, and archive utilities (pacman)"
                 else
                     print_info "Build tools already installed"
                 fi
@@ -424,6 +425,28 @@ install_build_tools() {
         fi
     else
         print_warning "CMake not found in PATH"
+        build_tools_ready=false
+    fi
+    
+    # Verify archive utilities (required by Mason)
+    if command_exists unzip; then
+        print_success "unzip ready (for Mason packages)"
+    else
+        print_warning "unzip not found - Mason may fail to install packages"
+        build_tools_ready=false
+    fi
+    
+    if command_exists tar; then
+        print_success "tar ready (for Mason packages)"
+    else
+        print_warning "tar not found - Mason may fail to install packages"
+        build_tools_ready=false
+    fi
+    
+    if command_exists gzip; then
+        print_success "gzip ready (for Mason packages)"
+    else
+        print_warning "gzip not found - Mason may fail to install packages"
         build_tools_ready=false
     fi
     
