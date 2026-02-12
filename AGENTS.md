@@ -7,44 +7,72 @@ High-level overview of development tasks for AI agents.
 ## 2026-02-12: OpenCode Process Cleanup on Exit
 **Goal:** Automatically terminate OpenCode server processes when Neovim exits
 
-Implemented automatic cleanup of OpenCode server processes spawned by the current Neovim instance. When Neovim exits, the `VimLeavePre` autocmd gracefully terminates only the OpenCode processes that belong to the current session, preserving processes from other Neovim instances.
+Implemented robust dual-phase cleanup system for OpenCode server processes. Handles both graceful shutdown on Neovim exit and automatic cleanup of orphaned processes from crashed sessions.
 
-**Implementation Details:**
+**Implementation Evolution:**
 
-1. **Process Identification:**
-   - Uses `$NVIM` environment variable (socket path like `/run/user/1000//nvim.75732.0`)
-   - Each Neovim instance has a unique socket identifier
-   - OpenCode processes inherit `$NVIM` from parent Neovim process
-   - Socket-based matching prevents killing sessions from other instances
+1. **Initial Attempt (Commit `2cb01dc`):**
+   - Used complex bash string with nested quotes and escaping
+   - Failed due to bash variable escaping issues (`\$pid` evaluated incorrectly)
+   - SIGTERM-only approach left some processes alive
 
-2. **Cleanup Mechanism:**
-   - `VimLeavePre` autocmd in `opencode.lua` config function
-   - Finds all OpenCode processes: `pgrep -f 'opencode --port'`
-   - Filters by matching `$NVIM` in `/proc/$pid/environ`
-   - Graceful termination: `kill -15` (SIGTERM) allows cleanup
-   - Silent error handling: `2>/dev/null` for robustness
+2. **Final Implementation (Commit `ac49a43`):**
+   - Pure Lua implementation eliminates bash escaping complexity
+   - Two-phase cleanup strategy for comprehensive coverage
+   - Dual kill approach: SIGTERM → 500ms delay → SIGKILL
 
-3. **Edge Cases Handled:**
-   - Skips cleanup if `$NVIM` is empty (not in Neovim terminal)
-   - Escapes special characters in socket path for grep matching
-   - Handles multiple OpenCode sessions per Neovim instance
-   - Preserves processes from other Neovim instances in same directory
+**Dual Cleanup Strategy:**
+
+1. **VimLeavePre Autocmd** (Exit Cleanup):
+   - Finds all OpenCode processes for current `$NVIM` socket
+   - Sends SIGTERM for graceful shutdown
+   - After 500ms, sends SIGKILL to force-kill stragglers
+   - Ensures clean exit even for stuck processes
+
+2. **Startup Cleanup** (Orphan Removal):
+   - Runs 2 seconds after Neovim starts (allows system to settle)
+   - Checks each OpenCode process's parent Neovim PID
+   - Kills processes whose parent Neovim is dead
+   - Prevents accumulation of orphaned processes from crashes
+
+**Process Identification:**
+- Uses `$NVIM` environment variable (e.g., `/run/user/1000//nvim.88820.0`)
+- Each Neovim instance has unique socket identifier
+- OpenCode processes inherit `$NVIM` from parent
+- Socket-based matching prevents cross-instance kills
+
+**Why Bash Approach Failed:**
+```lua
+-- This failed due to $pid escaping issues:
+local cmd = [[bash -c "for pid in $(pgrep ...); do kill -15 \$pid; done"]]
+-- Problem: \$pid evaluated at wrong time, syntax errors
+```
+
+**Pure Lua Solution:**
+```lua
+local pids = vim.fn.systemlist("pgrep -f 'opencode --port'")
+for _, pid in ipairs(pids) do
+    vim.fn.system("kill -15 " .. pid)
+    vim.defer_fn(function() vim.fn.system("kill -9 " .. pid) end, 500)
+end
+```
 
 **Testing Results:**
-- ✅ Current session (`nvim.75732.0`): 2 OpenCode processes identified correctly
-- ✅ Other sessions: 5 processes from different instances preserved
-- ✅ Socket-based matching superior to path-based (avoids killing all sessions in directory)
+- ✅ Orphaned process detection: Successfully identified parent PID from socket
+- ✅ Dual kill strategy: SIGTERM followed by SIGKILL after 500ms
+- ✅ Multi-instance safety: Preserves processes from other Neovim sessions
+- ✅ Startup cleanup: Removes orphans 2 seconds after launch
 
 **Technical Insight:**
 Socket-based tracking (`$NVIM`) is superior to path-based (`cwd`) because:
-- Path-based would kill ALL OpenCode sessions in a directory (even from other Neovim instances)
-- Socket-based only kills sessions from the exiting Neovim instance
-- Example: Two Neovim instances in `/home/user/project` → path-based kills both, socket-based only kills one
+- Path-based would kill ALL OpenCode sessions in a directory
+- Socket-based only kills sessions from specific Neovim instance
+- Example: Two Neovim instances in same directory → path-based kills both, socket-based differentiates
 
-**Impact:** Clean exit without orphaned OpenCode processes, preserves other Neovim sessions  
-**Commit:** `2cb01dc`  
+**Impact:** Comprehensive cleanup on exit + automatic orphan removal on startup  
+**Commits:** `2cb01dc` (initial), `6873485` (docs), `ac49a43` (fix)  
 **Files:** 1 file modified (opencode.lua)  
-**Line changes:** +24 lines
+**Line changes:** +54 lines (final implementation)
 
 ---
 
