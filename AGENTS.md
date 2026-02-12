@@ -4,6 +4,63 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-02-07: WSL Clipboard Integration
+**Goal:** Fix clipboard synchronization between WSL2 and Windows host
+
+Resolved clipboard integration issues where text copied in Neovim or OpenCode terminal wasn't reaching Windows clipboard (and vice versa). Implemented comprehensive solution with automatic provider detection and fallback mechanisms.
+
+**Root Cause:**
+- Neovim in WSL2 had no clipboard provider configured for Windows integration
+- OpenCode terminal uses OSC 52 escape sequences that weren't bridging to Windows clipboard
+- WSLg X11/Wayland clipboard is isolated from Windows host clipboard
+- No automatic translation between Linux clipboard tools and Windows clipboard
+
+**Solution Components:**
+
+1. **Neovim Clipboard Provider** (`nvim/lua/nairovim/core/options.lua`)
+   - Auto-detects WSL environment (`vim.fn.has("wsl")`)
+   - Prefers win32yank (faster, bidirectional) when available
+   - Falls back to clip.exe + PowerShell for copy/paste
+   - Handles both `+` and `*` registers
+   - Automatic CRLF → LF conversion for Windows line endings
+
+2. **win32yank Installation**
+   - Downloaded and installed to `~/.local/bin/win32yank.exe`
+   - Provides fast, reliable clipboard bridging
+   - Supports proper newline handling (`--crlf`, `--lf` flags)
+
+3. **Shell Integration** (`.bashrc` and `.zshrc`)
+   - Added WSL-aware clipboard aliases: `pbcopy`, `pbpaste`
+   - OpenCode-specific helpers: `copy`, `paste`, `xclip`, `xsel`
+   - Exported `COPY_CMD` and `PASTE_CMD` environment variables
+   - Conditional loading based on WSL detection
+
+4. **Documentation** (`docs/TROUBLESHOOTING.md`)
+   - New "WSL Clipboard Integration Issues" section
+   - Troubleshooting steps for common clipboard problems
+   - Installation verification procedures
+   - OpenCode terminal workarounds
+   - Updated Table of Contents
+
+**Verified Functionality:**
+- ✅ Neovim copy (`yy`) → Windows paste (Ctrl+V)
+- ✅ Windows copy (Ctrl+C) → Neovim paste (`p`)
+- ✅ Shell commands: `echo text | clip.exe`
+- ✅ win32yank: bidirectional clipboard with proper line endings
+- ✅ Automatic provider detection and fallback
+
+**Known Limitations:**
+- OpenCode terminal text selection (OSC 52) still requires manual clipboard commands
+- Terminal selection "copied to clipboard" message doesn't bridge to Windows
+- Workaround: Use `pbcopy`/`clip.exe` piping instead of mouse selection
+
+**Impact:** Full clipboard integration between WSL2 and Windows, enabling seamless workflow across environments  
+**Branch:** `fix/wsl-clipboard-integration`  
+**Files:** 4 files modified (options.lua, .bashrc, .zshrc, TROUBLESHOOTING.md)  
+**Line changes:** +145 lines total
+
+---
+
 ## 2025-02-02: OpenCode Windows MCP Configuration Fix
 **Goal:** Fix OpenCode global configuration loading on Windows
 

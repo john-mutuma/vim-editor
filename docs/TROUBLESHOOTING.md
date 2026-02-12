@@ -13,6 +13,7 @@ Comprehensive guide to resolving common issues with NairoVIM.
 - [Performance Issues](#performance-issues)
 - [Keybinding Conflicts](#keybinding-conflicts)
 - [Terminal and Shell Issues](#terminal-and-shell-issues)
+  - [WSL Clipboard Integration Issues](#wsl-clipboard-integration-issues)
 - [Getting Help](#getting-help)
 - [Additional Documentation](#additional-documentation)
 
@@ -1522,6 +1523,391 @@ fzf --version
 # Test FZF manually
 fzf
 ```
+
+### WSL Clipboard Integration Issues
+
+#### Clipboard not syncing between WSL and Windows
+
+**Problem:** Text copied in Neovim or terminal doesn't paste in Windows applications (and vice versa).
+
+**Solution:**
+
+NairoVIM automatically configures WSL clipboard integration, but you may need to ensure the setup is complete:
+
+**1. Verify Neovim clipboard provider:**
+
+```bash
+# Check which clipboard provider is active
+nvim --headless -c 'lua vim.print(vim.g.clipboard.name)' +qall
+
+# Should output: WslClipboard-win32yank or WslClipboard
+```
+
+**2. Test manual clipboard operations:**
+
+```bash
+# Test copy to Windows clipboard
+echo "test from WSL" | clip.exe
+# Then paste in Windows Notepad with Ctrl+V
+
+# Test paste from Windows clipboard
+# First copy text in Windows (Ctrl+C)
+powershell.exe -Command "Get-Clipboard"
+```
+
+**3. Verify win32yank installation:**
+
+```bash
+# Check if win32yank is installed
+ls -lh ~/.local/bin/win32yank.exe
+
+# If missing, install it
+mkdir -p ~/.local/bin
+curl -sLo /tmp/win32yank.zip https://github.com/equalsraf/win32yank/releases/download/v0.1.1/win32yank-x64.zip
+python3 -m zipfile -e /tmp/win32yank.zip /tmp/
+mv /tmp/win32yank.exe ~/.local/bin/win32yank.exe
+chmod +x ~/.local/bin/win32yank.exe
+
+# Test win32yank
+echo "hello" | ~/.local/bin/win32yank.exe -i
+~/.local/bin/win32yank.exe -o
+```
+
+**4. Reload shell configuration:**
+
+```bash
+# For bash users
+source ~/.bashrc
+
+# For zsh users
+source ~/.zshrc
+```
+
+**5. Test in Neovim:**
+
+```bash
+nvim /tmp/test.txt
+# Type: iHello from WSL<Esc>
+# Copy line: yy
+# Paste in Windows Notepad: Ctrl+V should show "Hello from WSL"
+```
+
+#### OpenCode terminal clipboard not working
+
+**Problem:** Selecting text in OpenCode terminal shows "copied to clipboard" but doesn't paste in Windows.
+
+**Root Cause:** OpenCode's terminal uses OSC 52 escape sequences which are handled internally but don't automatically bridge to Windows clipboard in WSL. This is a limitation of how OpenCode's terminal emulator works in WSL environments.
+
+**Solution 1: Use shell piping (Recommended for multi-line content)**
+
+Instead of selecting text with your mouse, pipe command output directly to clipboard:
+
+```bash
+# Copy command output
+ls -la | /mnt/c/Windows/system32/clip.exe
+
+# Copy file contents (works with multiple lines)
+cat file.txt | /mnt/c/Windows/system32/clip.exe
+
+# Copy specific output
+echo -e "Line 1\nLine 2\nLine 3" | /mnt/c/Windows/system32/clip.exe
+
+# After sourcing ~/.bashrc or ~/.zshrc, use aliases
+cat multiline.txt | pbcopy
+pbpaste
+```
+
+**Solution 2: Use keyboard shortcuts in OpenCode**
+
+OpenCode has a keybind for copying messages:
+
+```bash
+# Focus on a message in OpenCode
+# Press: Ctrl+X then y (messages_copy keybind)
+# This copies the entire message content to clipboard
+```
+
+**Solution 3: Use cat + pipe for viewing and copying**
+
+```bash
+# Display content and copy simultaneously
+cat file.txt | tee >(/ mnt/c/Windows/system32/clip.exe)
+
+# Or simpler: display first, then copy
+cat file.txt
+cat file.txt | /mnt/c/Windows/system32/clip.exe
+```
+
+**Why mouse selection doesn't work:**
+
+OpenCode's terminal text selection operates at the application level (not shell level). When you select text:
+1. OpenCode captures the selection internally
+2. Uses OSC 52 sequences for clipboard
+3. Shows "copied to clipboard" message
+4. But OSC 52 doesn't reach Windows clipboard in WSL2
+
+The shell piping method works because it directly invokes Windows clipboard tools with full content, including all lines.
+
+**Quick aliases for frequent copying:**
+
+Add to `~/.bashrc` or `~/.zshrc`:
+
+```bash
+# Copy last command output
+alias clast='fc -ln -1 | /mnt/c/Windows/system32/clip.exe'
+
+# Copy current directory path
+alias cpwd='pwd | /mnt/c/Windows/system32/clip.exe'
+
+# Copy file with line numbers
+alias ccat='cat -n'
+```
+
+#### Clipboard breaks after WSL restart
+
+**Problem:** Clipboard integration stops working after restarting WSL.
+
+**Solution:**
+
+```bash
+# Ensure WSLg is running (provides clipboard services)
+ps aux | grep -i wsl
+
+# Restart WSLg if needed (from Windows PowerShell)
+# wsl --shutdown
+# wsl
+
+# Verify DISPLAY is set
+echo $DISPLAY  # Should show :0 or similar
+
+# Test Windows executables are accessible
+which clip.exe powershell.exe
+
+# Reinstall win32yank if path is broken
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+#### Neovim paste inserts Windows line endings (^M)
+
+**Problem:** Pasting from Windows clipboard inserts carriage returns.
+
+**Solution:**
+
+NairoVIM automatically strips `\r` characters, but if you still see them:
+
+```vim
+" In Neovim, remove manually:
+:%s/\r//g
+
+" Or configure dos2unix
+:set ff=unix
+```
+
+The clipboard provider should handle this automatically with the `--lf` flag (win32yank) or `replace("`r", "")` (PowerShell).
+
+---
+
+### WSL Localhost Networking Issues
+
+#### Can't access localhost:PORT from Windows browser
+
+**Problem:** Services running in WSL (e.g., development servers on `localhost:3000`, `localhost:9090`) are not accessible from Windows browser using `localhost`, but work with `127.0.0.1`.
+
+**Example:**
+- ✅ `http://127.0.0.1:9090` works in Windows browser
+- ❌ `http://localhost:9090` doesn't work in Windows browser
+
+**Root Cause:** WSL2 uses virtualized networking with its own network adapter and IP address. Windows automatically forwards the numeric IP address `127.0.0.1` to WSL2's network, but does NOT forward the hostname `localhost` by default.
+
+**Solution:** Enable WSL2 mirrored networking mode for seamless localhost access in both directions (Windows ↔ WSL).
+
+---
+
+#### Automatic Setup (Recommended)
+
+**NairoVIM's Windows installation script automatically configures mirrored networking.**
+
+If you ran `install.ps1`, this should already be set up. To verify:
+
+```powershell
+# Check if .wslconfig exists (in PowerShell)
+Get-Content $env:USERPROFILE\.wslconfig
+
+# Should contain:
+# [wsl2]
+# networkingMode=mirrored
+```
+
+If configured, restart WSL to apply changes:
+
+```powershell
+wsl --shutdown
+wsl
+```
+
+---
+
+#### Manual Setup
+
+If you didn't use the installer or need to configure manually:
+
+**1. Create or edit `.wslconfig` file:**
+
+```powershell
+# In Windows PowerShell
+notepad $env:USERPROFILE\.wslconfig
+```
+
+**2. Add the following content:**
+
+```ini
+[wsl2]
+# Enable mirrored networking mode for seamless localhost access
+networkingMode=mirrored
+
+# Additional recommended settings
+dnsTunneling=true
+firewall=true
+autoProxy=true
+```
+
+**3. Restart WSL completely:**
+
+```powershell
+# Shut down all WSL instances
+wsl --shutdown
+
+# Start WSL again
+wsl
+```
+
+**4. Verify it works:**
+
+```bash
+# In WSL, start a test server (example with Python)
+python3 -m http.server 8080
+```
+
+Then open in Windows browser:
+- ✅ `http://localhost:8080` should now work
+- ✅ `http://127.0.0.1:8080` should also work
+
+---
+
+#### Requirements
+
+**Mirrored networking requires:**
+- Windows 11 version 22H2 (Build 22621) or later
+- OR Windows 10 with Build 19041 or later
+- WSL2 (not WSL1)
+
+**Check your Windows version:**
+
+```powershell
+# In PowerShell
+winver
+
+# Or check WSL version
+wsl --version
+```
+
+If you have an older Windows version, mirrored networking is not available. Use `127.0.0.1:PORT` instead of `localhost:PORT`.
+
+---
+
+#### Trade-offs and Considerations
+
+**Benefits:**
+- ✅ Seamless localhost access from Windows to WSL
+- ✅ Bidirectional: WSL can also access Windows services via localhost
+- ✅ Simplified development workflow (no IP lookups needed)
+- ✅ More consistent with native Linux/macOS behavior
+
+**Potential Issues:**
+- ⚠️ **Port conflicts:** If the same port is used by services in both Windows and WSL, conflicts may occur
+- ⚠️ **Firewall rules:** Windows Firewall rules now apply to WSL (controlled by `firewall=true` setting)
+- ⚠️ **Network troubleshooting:** Some networking diagnostic tools may behave differently
+
+---
+
+#### Troubleshooting Mirrored Networking
+
+**Issue: Mirrored networking not working after configuring**
+
+```bash
+# 1. Verify WSL is completely shut down
+wsl --shutdown
+
+# 2. Wait 8-10 seconds for full shutdown
+Start-Sleep -Seconds 10
+
+# 3. Restart WSL
+wsl
+
+# 4. Check network configuration in WSL
+ip addr show eth0
+
+# With mirrored mode, networking behavior should match Windows more closely
+```
+
+**Issue: Port conflicts after enabling mirrored mode**
+
+If you get "Address already in use" errors:
+
+```bash
+# Check what's using the port in Windows
+netstat -ano | findstr :PORT_NUMBER
+
+# Or check in WSL
+lsof -i :PORT_NUMBER
+ss -tunlp | grep PORT_NUMBER
+```
+
+**Solution:** Use different ports for Windows and WSL services, or stop the conflicting service.
+
+---
+
+#### Alternative: Port Forwarding (Legacy Method)
+
+If mirrored networking is not available or causes issues, use manual port forwarding:
+
+**Option 1: Use numeric IP address**
+
+```bash
+# In WSL, find WSL IP address
+ip addr show eth0 | grep inet
+
+# Use this IP from Windows browser:
+# http://172.xx.xx.xx:9090
+```
+
+**Option 2: PowerShell port forwarding script**
+
+```powershell
+# Get WSL IP address
+$wslIp = wsl hostname -I
+$wslIp = $wslIp.Trim()
+
+# Forward port 9090
+netsh interface portproxy add v4tov4 `
+    listenport=9090 `
+    listenaddress=127.0.0.1 `
+    connectport=9090 `
+    connectaddress=$wslIp
+
+# To remove forwarding later:
+# netsh interface portproxy delete v4tov4 listenport=9090 listenaddress=127.0.0.1
+```
+
+**Note:** Port forwarding requires running as Administrator and must be reconfigured if WSL IP changes (after restarts).
+
+---
+
+#### Additional Resources
+
+- [Microsoft WSL Networking Documentation](https://learn.microsoft.com/en-us/windows/wsl/networking)
+- [WSL Configuration (.wslconfig) Reference](https://learn.microsoft.com/en-us/windows/wsl/wsl-config)
+- [Mirrored Networking Mode Guide](https://learn.microsoft.com/en-us/windows/wsl/networking#mirrored-mode-networking)
 
 ---
 

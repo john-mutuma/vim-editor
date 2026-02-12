@@ -209,6 +209,103 @@ clone_repository() {
 }
 
 # ======================================================================
+# WSL DETECTION & HELPER FUNCTIONS
+# ======================================================================
+
+# Detect if script is running inside WSL
+detect_wsl() {
+    if grep -qiE "(microsoft|wsl)" /proc/version 2>/dev/null; then
+        return 0  # Is WSL
+    fi
+    return 1  # Not WSL
+}
+
+# Get Windows username from WSL environment
+get_windows_username() {
+    # Method 1: Try using powershell.exe to get Windows username
+    if command_exists powershell.exe; then
+        local win_user=$(powershell.exe -NoProfile -Command '$env:USERNAME' 2>/dev/null | tr -d '\r\n')
+        if [[ -n "$win_user" ]]; then
+            echo "$win_user"
+            return 0
+        fi
+    fi
+    
+    # Method 2: Check if WSL username matches a Windows user directory
+    if [[ -d "/mnt/c/Users/$USER" ]]; then
+        echo "$USER"
+        return 0
+    fi
+    
+    # Method 3: List available Windows users and prompt
+    if [[ -d "/mnt/c/Users" ]]; then
+        local users=($(ls -1 /mnt/c/Users 2>/dev/null | grep -v "^Public$\|^Default$\|^All Users$"))
+        if [[ ${#users[@]} -eq 1 ]]; then
+            # Only one user found
+            echo "${users[0]}"
+            return 0
+        elif [[ ${#users[@]} -gt 1 ]]; then
+            # Multiple users found, prompt
+            print_warning "Multiple Windows user accounts detected"
+            echo ""
+            echo "Available Windows users:"
+            local i=1
+            for user in "${users[@]}"; do
+                echo "  ${cyan}$i)${textreset} $user"
+                ((i++))
+            done
+            echo ""
+            echo -n "${yellow}Enter Windows username or number [1-${#users[@]}]: ${textreset}"
+            read -r choice
+            
+            # Check if input is a number
+            if [[ "$choice" =~ ^[0-9]+$ ]] && [[ $choice -ge 1 ]] && [[ $choice -le ${#users[@]} ]]; then
+                echo "${users[$((choice-1))]}"
+                return 0
+            elif [[ -n "$choice" ]]; then
+                echo "$choice"
+                return 0
+            fi
+        fi
+    fi
+    
+    return 1  # Failed to detect
+}
+
+# Check if mirrored networking is already configured
+check_wsl_config_has_mirrored() {
+    local config_file=$1
+    
+    if [[ ! -f "$config_file" ]]; then
+        return 1  # File doesn't exist
+    fi
+    
+    # Check if file contains networkingMode=mirrored under [wsl2] section
+    local in_wsl2_section=false
+    while IFS= read -r line; do
+        # Remove leading/trailing whitespace and comments
+        line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//;s/#.*//')
+        
+        # Check for section headers
+        if [[ "$line" =~ ^\[.*\]$ ]]; then
+            if [[ "$line" == "[wsl2]" ]]; then
+                in_wsl2_section=true
+            else
+                in_wsl2_section=false
+            fi
+            continue
+        fi
+        
+        # Check for networkingMode=mirrored in [wsl2] section
+        if [[ "$in_wsl2_section" == true ]] && [[ "$line" =~ ^networkingMode[[:space:]]*=[[:space:]]*mirrored[[:space:]]*$ ]]; then
+            return 0  # Found mirrored networking
+        fi
+    done < "$config_file"
+    
+    return 1  # Mirrored networking not found
+}
+
+# ======================================================================
 # MAIN INSTALLATION FUNCTIONS
 # ======================================================================
 
@@ -216,7 +313,8 @@ install_build_tools() {
     print_section "${GEAR} Installing Build Tools"
     
     print_info "Installing C compiler toolchain for Neovim plugin compilation..."
-    print_info "This enables: telescope-fzf-native, nvim-treesitter, CopilotChat"
+    print_info "Installing archive utilities for Mason package extraction..."
+    print_info "This enables: telescope-fzf-native, nvim-treesitter, CopilotChat, Mason LSP/formatters"
     
     # Detect OS
     local os_type="$(uname -s)"
@@ -249,31 +347,31 @@ install_build_tools() {
             
         Linux*)
             # Linux - Use package manager
-            print_step "Installing build tools" "gcc, make, cmake"
+            print_step "Installing build tools" "gcc, make, cmake, unzip, tar, gzip"
             
             if command_exists apt-get; then
                 # Debian/Ubuntu
-                if ! command_exists gcc || ! command_exists make; then
+                if ! command_exists gcc || ! command_exists make || ! command_exists unzip; then
                     sudo apt-get update -qq
-                    sudo apt-get install -y build-essential cmake
-                    print_success "Installed build-essential and CMake (apt)"
+                    sudo apt-get install -y build-essential cmake unzip tar gzip
+                    print_success "Installed build-essential, CMake, and archive utilities (apt)"
                 else
                     print_info "Build tools already installed"
                 fi
             elif command_exists dnf; then
                 # Fedora/RHEL
-                if ! command_exists gcc || ! command_exists make; then
+                if ! command_exists gcc || ! command_exists make || ! command_exists unzip; then
                     sudo dnf groupinstall -y "Development Tools"
-                    sudo dnf install -y cmake
-                    print_success "Installed Development Tools and CMake (dnf)"
+                    sudo dnf install -y cmake unzip tar gzip
+                    print_success "Installed Development Tools, CMake, and archive utilities (dnf)"
                 else
                     print_info "Build tools already installed"
                 fi
             elif command_exists pacman; then
                 # Arch Linux
-                if ! command_exists gcc || ! command_exists make; then
-                    sudo pacman -S --noconfirm base-devel cmake
-                    print_success "Installed base-devel and CMake (pacman)"
+                if ! command_exists gcc || ! command_exists make || ! command_exists unzip; then
+                    sudo pacman -S --noconfirm base-devel cmake unzip tar gzip
+                    print_success "Installed base-devel, CMake, and archive utilities (pacman)"
                 else
                     print_info "Build tools already installed"
                 fi
@@ -327,6 +425,28 @@ install_build_tools() {
         fi
     else
         print_warning "CMake not found in PATH"
+        build_tools_ready=false
+    fi
+    
+    # Verify archive utilities (required by Mason)
+    if command_exists unzip; then
+        print_success "unzip ready (for Mason packages)"
+    else
+        print_warning "unzip not found - Mason may fail to install packages"
+        build_tools_ready=false
+    fi
+    
+    if command_exists tar; then
+        print_success "tar ready (for Mason packages)"
+    else
+        print_warning "tar not found - Mason may fail to install packages"
+        build_tools_ready=false
+    fi
+    
+    if command_exists gzip; then
+        print_success "gzip ready (for Mason packages)"
+    else
+        print_warning "gzip not found - Mason may fail to install packages"
         build_tools_ready=false
     fi
     
@@ -900,6 +1020,210 @@ install_opencode() {
     print_success "OpenCode installation and configuration complete!"
 }
 
+install_wsl_networking() {
+    print_section "${GEAR} Configuring WSL Networking"
+    
+    # Check if running inside WSL
+    if ! detect_wsl; then
+        print_info "Not running in WSL environment, skipping WSL networking configuration"
+        print_info "This step only applies when running the script inside WSL2"
+        return 0
+    fi
+    
+    print_info "Detected WSL environment"
+    print_info "Configuring mirrored networking for seamless localhost access..."
+    echo ""
+    
+    # Get Windows username
+    print_step "Detecting Windows username" "for .wslconfig path"
+    local win_username=$(get_windows_username)
+    
+    if [[ -z "$win_username" ]]; then
+        print_error "Failed to detect Windows username"
+        print_warning "Please configure .wslconfig manually if needed"
+        return 1
+    fi
+    
+    print_success "Windows username: $win_username"
+    
+    # Construct Windows .wslconfig path (accessed via WSL mount)
+    local wsl_config_path="/mnt/c/Users/$win_username/.wslconfig"
+    print_info "Target: $wsl_config_path"
+    echo ""
+    
+    # Check if Windows filesystem is accessible
+    if [[ ! -d "/mnt/c/Users/$win_username" ]]; then
+        print_error "Cannot access Windows user directory: /mnt/c/Users/$win_username"
+        print_warning "Please ensure Windows filesystem is mounted at /mnt/c/"
+        return 1
+    fi
+    
+    # Check if .wslconfig already has mirrored networking
+    if [[ -f "$wsl_config_path" ]]; then
+        print_step "Checking existing .wslconfig" "parsing configuration"
+        
+        if check_wsl_config_has_mirrored "$wsl_config_path"; then
+            print_success "Mirrored networking already configured!"
+            print_info "Your .wslconfig is already set up correctly"
+            echo ""
+            echo "${dim}    Current config: $wsl_config_path${textreset}"
+            return 0
+        fi
+        
+        # Existing config without mirrored networking
+        print_warning "Existing .wslconfig found without mirrored networking"
+        echo ""
+        echo "${bold}${yellow}Your .wslconfig needs mirrored networking configuration${textreset}"
+        echo ""
+        echo "${dim}Current file: $wsl_config_path${textreset}"
+        echo ""
+        echo "${bold}${cyan}Options:${textreset}"
+        echo "  ${cyan}1)${textreset} Backup and append mirrored networking settings (recommended)"
+        echo "  ${cyan}2)${textreset} Backup and replace with template configuration"
+        echo "  ${cyan}3)${textreset} Skip WSL networking configuration"
+        echo ""
+        echo -n "${yellow}Choose [1-3] (default: 1): ${textreset}"
+        read -r choice
+        choice=${choice:-1}  # Default to option 1
+        
+        case "$choice" in
+            1)
+                # Backup and append
+                local backup_path="${wsl_config_path}.backup.$(date +%Y%m%d_%H%M%S)"
+                print_step "Backing up existing .wslconfig" "$backup_path"
+                
+                if cp "$wsl_config_path" "$backup_path"; then
+                    print_success "Backup created: $backup_path"
+                else
+                    print_error "Failed to create backup! Aborting."
+                    return 1
+                fi
+                
+                print_step "Appending mirrored networking settings" "merging configuration"
+                
+                # Check if [wsl2] section exists
+                if grep -q "^\[wsl2\]" "$wsl_config_path" 2>/dev/null; then
+                    # Append to existing [wsl2] section
+                    # Create temporary file with merged content
+                    local temp_file=$(mktemp)
+                    local in_wsl2=false
+                    local added_settings=false
+                    
+                    while IFS= read -r line; do
+                        echo "$line" >> "$temp_file"
+                        
+                        if [[ "$line" =~ ^\[wsl2\] ]]; then
+                            in_wsl2=true
+                        elif [[ "$line" =~ ^\[.*\] ]]; then
+                            if [[ "$in_wsl2" == true ]] && [[ "$added_settings" == false ]]; then
+                                # Add settings before new section
+                                echo "" >> "$temp_file"
+                                echo "# Added by NairoVIM installer - $(date +%Y-%m-%d)" >> "$temp_file"
+                                echo "networkingMode=mirrored" >> "$temp_file"
+                                echo "dnsTunneling=true" >> "$temp_file"
+                                echo "firewall=true" >> "$temp_file"
+                                echo "autoProxy=true" >> "$temp_file"
+                                added_settings=true
+                            fi
+                            in_wsl2=false
+                        fi
+                    done < "$wsl_config_path"
+                    
+                    # If we're still in [wsl2] section at EOF, add settings
+                    if [[ "$in_wsl2" == true ]] && [[ "$added_settings" == false ]]; then
+                        echo "" >> "$temp_file"
+                        echo "# Added by NairoVIM installer - $(date +%Y-%m-%d)" >> "$temp_file"
+                        echo "networkingMode=mirrored" >> "$temp_file"
+                        echo "dnsTunneling=true" >> "$temp_file"
+                        echo "firewall=true" >> "$temp_file"
+                        echo "autoProxy=true" >> "$temp_file"
+                    fi
+                    
+                    mv "$temp_file" "$wsl_config_path"
+                else
+                    # No [wsl2] section, append entire section
+                    echo "" >> "$wsl_config_path"
+                    echo "# Added by NairoVIM installer - $(date +%Y-%m-%d)" >> "$wsl_config_path"
+                    echo "[wsl2]" >> "$wsl_config_path"
+                    echo "networkingMode=mirrored" >> "$wsl_config_path"
+                    echo "dnsTunneling=true" >> "$wsl_config_path"
+                    echo "firewall=true" >> "$wsl_config_path"
+                    echo "autoProxy=true" >> "$wsl_config_path"
+                fi
+                
+                print_success "Mirrored networking settings appended"
+                ;;
+            2)
+                # Backup and replace
+                local backup_path="${wsl_config_path}.backup.$(date +%Y%m%d_%H%M%S)"
+                print_step "Backing up existing .wslconfig" "$backup_path"
+                
+                if cp "$wsl_config_path" "$backup_path"; then
+                    print_success "Backup created: $backup_path"
+                else
+                    print_error "Failed to create backup! Aborting."
+                    return 1
+                fi
+                
+                print_step "Replacing with template configuration" "wslconfig.template"
+                
+                local template_path="$(pwd)/wslconfig.template"
+                if [[ ! -f "$template_path" ]]; then
+                    print_error "Template file not found: $template_path"
+                    return 1
+                fi
+                
+                if cp "$template_path" "$wsl_config_path"; then
+                    print_success "Configuration replaced with template"
+                else
+                    print_error "Failed to replace configuration"
+                    return 1
+                fi
+                ;;
+            3)
+                print_info "Skipping WSL networking configuration"
+                print_info "You can configure manually later: $wsl_config_path"
+                return 0
+                ;;
+            *)
+                print_error "Invalid choice, skipping WSL networking configuration"
+                return 1
+                ;;
+        esac
+    else
+        # No existing .wslconfig, create from template
+        print_step "Creating .wslconfig from template" "enabling mirrored networking"
+        
+        local template_path="$(pwd)/wslconfig.template"
+        if [[ ! -f "$template_path" ]]; then
+            print_error "Template file not found: $template_path"
+            print_warning "Please create .wslconfig manually if needed"
+            return 1
+        fi
+        
+        if cp "$template_path" "$wsl_config_path"; then
+            print_success "Created .wslconfig with mirrored networking"
+        else
+            print_error "Failed to create .wslconfig"
+            return 1
+        fi
+    fi
+    
+    # Show restart warning
+    echo ""
+    print_warning "WSL restart required for changes to take effect!"
+    echo ""
+    echo "${bold}${yellow}To apply networking changes:${textreset}"
+    echo "  ${cyan}1.${textreset} Open PowerShell or Windows Terminal (on Windows side)"
+    echo "  ${cyan}2.${textreset} Run: ${bold}${cyan}wsl --shutdown${textreset}"
+    echo "  ${cyan}3.${textreset} Restart your WSL session"
+    echo ""
+    print_info "After restart, both localhost:PORT and 127.0.0.1:PORT will work"
+    echo ""
+    
+    print_success "WSL networking configuration complete!"
+}
+
 print_installation_summary() {
     echo ""
     echo "${bold}${magenta}╔══════════════════════════════════════════════════════════════════════════════════════╗${textreset}"
@@ -917,12 +1241,22 @@ print_installation_summary() {
     echo "${green}${CHECK_MARK}${textreset} UV/UVX installed for MCP plugins"
     echo "${green}${CHECK_MARK}${textreset} Lazygit installed and configured"
     echo "${green}${CHECK_MARK}${textreset} OpenCode installed and configured"
+    
+    if detect_wsl; then
+        echo "${green}${CHECK_MARK}${textreset} WSL networking configured (mirrored mode)"
+    fi
+    
     echo ""
     echo "${bold}${yellow}🚀 Next Steps:${textreset}"
     echo "${cyan}1.${textreset} Run ${bold}${cyan}tmux${textreset} to start your enhanced terminal session"
     echo "${cyan}2.${textreset} Run ${bold}${cyan}nvim${textreset} to start Neovim and let plugins install"
     echo "${cyan}3.${textreset} In tmux, press ${bold}${cyan}prefix + I${textreset} to install tmux plugins"
     echo "${cyan}4.${textreset} Consider installing ${bold}${cyan}powerlevel10k${textreset} theme for enhanced zsh experience"
+    
+    if detect_wsl; then
+        echo "${cyan}5.${textreset} ${bold}${yellow}[WSL]${textreset} Run ${bold}${cyan}wsl --shutdown${textreset} in PowerShell, then restart WSL for networking changes"
+    fi
+    
     echo ""
     echo "${bold}${green}🎊 Happy coding with NairoVIM! 🎊${textreset}"
     echo ""
@@ -974,6 +1308,7 @@ main() {
     install_uv
     install_lazygit
     install_opencode
+    install_wsl_networking
 
     # Print final summary
     print_installation_summary
