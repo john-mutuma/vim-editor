@@ -61,5 +61,29 @@ return {
         local common_utils = require("nairovim.utils.common")
         -- Apply the keymaps using the common utility function
         common_utils.map(mappings)
+
+        ----------------------------------------------------------------------
+        -- Auto-cleanup OpenCode server processes on Neovim exit
+        ----------------------------------------------------------------------
+        -- When Neovim exits, gracefully terminate only the OpenCode server
+        -- processes that were spawned from this specific Neovim instance.
+        -- Uses $NVIM socket identifier to avoid killing sessions from other instances.
+        vim.api.nvim_create_autocmd("VimLeavePre", {
+            group = vim.api.nvim_create_augroup("OpenCodeCleanup", { clear = true }),
+            callback = function()
+                local nvim_socket = vim.env.NVIM
+                if not nvim_socket or nvim_socket == "" then
+                    return -- Not in Neovim terminal or $NVIM not set
+                end
+
+                -- Find and gracefully terminate OpenCode processes with matching $NVIM socket
+                local cmd = string.format(
+                    [[bash -c "for pid in $(pgrep -f 'opencode --port' 2>/dev/null); do if grep -qz 'NVIM=%s' /proc/\$pid/environ 2>/dev/null; then kill -15 \$pid 2>/dev/null; fi; done"]],
+                    nvim_socket:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1") -- Escape special chars for grep
+                )
+
+                vim.fn.system(cmd)
+            end,
+        })
     end,
 }
