@@ -78,7 +78,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git fzf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -110,7 +110,7 @@ fi
 #
 
 
-export FZF_BASE="$HOME/.fzf"
+# export FZF_BASE="$HOME/.fzf"  # Commented out - let Oh-My-Zsh auto-detect FZF location
 
 # Uncomment the following line to disable fuzzy completion
 # export DISABLE_FZF_AUTO_COMPLETION="true"
@@ -118,21 +118,20 @@ export FZF_BASE="$HOME/.fzf"
 # Uncomment the following line to disable key bindings (CTRL-T, CTRL-R, ALT-C)
 # export DISABLE_FZF_KEY_BINDINGS="true"
 
-plugins=(
-  fzf
-)
+# Removed duplicate plugins=(fzf) array - already included in line 81 before Oh-My-Zsh loads
 
 set -o vi
 
-# FZF configuration (if installed)
-if [ -f ~/.fzf.zsh ]; then
-  source ~/.fzf.zsh
-elif command -v fzf &> /dev/null; then
-  # Try modern fzf setup
-  if fzf --zsh &> /dev/null; then
-    source <(fzf --zsh)
-  fi
+# Re-bind FZF keys after enabling Vi mode (Vi mode overrides default bindings)
+# Note: The Oh-My-Zsh FZF plugin sources key-bindings, but Vi mode needs explicit rebinding
+if [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+  source /usr/share/doc/fzf/examples/key-bindings.zsh
+  # Explicitly bind Ctrl+R in Vi insert mode (in case Vi mode reset it)
+  bindkey -M viins '^R' fzf-history-widget
+  bindkey -M vicmd '^R' fzf-history-widget
 fi
+
+# Removed conflicting manual FZF configuration - Oh-My-Zsh FZF plugin handles setup automatically
 
 export FZF_DEFAULT_OPS="--extended"
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
