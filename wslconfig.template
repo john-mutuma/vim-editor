@@ -1,0 +1,45 @@
+[wsl2]
+# ======================================================================
+# WSL2 Networking Configuration - NairoVIM
+# ======================================================================
+# This configuration enables seamless localhost access between Windows
+# and WSL2, fixing the common issue where:
+#   - 127.0.0.1:PORT works ✓
+#   - localhost:PORT doesn't work ✗
+#
+# With mirrored networking mode, both work identically in both directions.
+# ======================================================================
+
+# Enable mirrored networking mode for seamless localhost access
+# Requires: Windows 11 22H2+ or Windows 10 build 19041+
+networkingMode=mirrored
+
+# DNS tunneling - improves DNS resolution in WSL
+dnsTunneling=true
+
+# Firewall integration - allows Windows firewall rules to apply to WSL
+firewall=true
+
+# Automatic proxy configuration - inherits Windows proxy settings
+autoProxy=true
+
+# ======================================================================
+# Optional Performance Settings (uncomment to customize)
+# ======================================================================
+
+# Memory allocation limit (default: 50% of total RAM on Windows 11, 80% on Windows 10)
+# memory=8GB
+
+# Processor limit (default: all available logical processors)
+# processors=4
+
+# Swap space configuration
+# swap=8GB
+# swapFile=%USERPROFILE%\\AppData\\Local\\Temp\\wsl-swap.vhdx
+
+# ======================================================================
+# Notes
+# ======================================================================
+# - Changes require WSL restart: wsl --shutdown (in PowerShell)
+# - Mirrored networking may cause port conflicts if same port used in Windows & WSL
+# - Documentation: https://learn.microsoft.com/en-us/windows/wsl/wsl-config
