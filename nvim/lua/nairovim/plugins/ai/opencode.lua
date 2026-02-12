@@ -40,7 +40,7 @@ return {
             provider = {
                 snacks = {
                     win = {
-                        width = 100,
+                        width = 0.45, -- 45% of screen width
                         wo = {
                             winfixwidth = true,
                         },
