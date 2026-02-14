@@ -29,7 +29,10 @@ return {
                 git_ignored = true,
             },
             view = {
-                width = 50,
+                width = {
+                    min = 30,
+                    max = 50,
+                },
             },
             renderer = {
                 indent_markers = {
