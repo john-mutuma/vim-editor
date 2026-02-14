@@ -1,76 +1,101 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": [
+    "actions": 
+    [
         {
-            "command": "find",
-            "id": "User.FindText"
-        },
-        {
-            "command": {
-                "action": "splitPane",
-                "split": "down"
-            },
-            "id": "User.SplitPaneDown"
-        },
-        {
-            "command": {
-                "action": "splitPane",
-                "split": "right"
-            },
-            "id": "User.SplitPaneRight"
-        },
-        {
-            "command": {
-                "action": "resizePane",
-                "direction": "down"
-            },
-            "id": "User.ResizePaneDown"
-        },
-        {
-            "command": {
-                "action": "resizePane",
-                "direction": "up"
-            },
-            "id": "User.ResizePaneUp"
-        },
-        {
-            "command": {
-                "action": "resizePane",
-                "direction": "left"
-            },
-            "id": "User.ResizePaneLeft"
-        },
-        {
-            "command": {
+            "command": 
+            {
                 "action": "resizePane",
                 "direction": "right"
             },
             "id": "User.ResizePaneRight"
         },
         {
-            "command": {
-                "action": "moveFocus",
+            "command": "find",
+            "id": "User.FindText"
+        },
+        {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "right"
+            },
+            "id": "User.SplitPaneRight"
+        },
+        {
+            "command": 
+            {
+                "action": "resizePane",
                 "direction": "down"
             },
-            "id": "User.MoveFocusDown"
+            "id": "User.ResizePaneDown"
         },
         {
-            "command": {
-                "action": "moveFocus",
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "down"
+            },
+            "id": "User.SplitPaneDown"
+        },
+        {
+            "command": 
+            {
+                "action": "resizePane",
                 "direction": "up"
             },
-            "id": "User.MoveFocusUp"
+            "id": "User.ResizePaneUp"
         },
         {
-            "command": {
+            "command": 
+            {
                 "action": "moveFocus",
                 "direction": "right"
             },
             "id": "User.MoveFocusRight"
         },
         {
-            "command": {
+            "command": 
+            {
+                "action": "newTab"
+            },
+            "id": "User.NewTab"
+        },
+        {
+            "command": 
+            {
+                "action": "resizePane",
+                "direction": "left"
+            },
+            "id": "User.ResizePaneLeft"
+        },
+        {
+            "command": 
+            {
+                "action": "moveFocus",
+                "direction": "down"
+            },
+            "id": "User.MoveFocusDown"
+        },
+        {
+            "command": 
+            {
+                "action": "nextTab"
+            },
+            "id": "User.NextTab"
+        },
+        {
+            "command": 
+            {
+                "action": "moveFocus",
+                "direction": "up"
+            },
+            "id": "User.MoveFocusUp"
+        },
+        {
+            "command": 
+            {
                 "action": "moveFocus",
                 "direction": "left"
             },
@@ -81,19 +106,8 @@
             "id": "User.TogglePaneZoom"
         },
         {
-            "command": {
-                "action": "newTab"
-            },
-            "id": "User.NewTab"
-        },
-        {
-            "command": {
-                "action": "nextTab"
-            },
-            "id": "User.NextTab"
-        },
-        {
-            "command": {
+            "command": 
+            {
                 "action": "prevTab"
             },
             "id": "User.PrevTab"
@@ -107,7 +121,10 @@
             "id": "User.Paste"
         },
         {
-            "command": "copy",
+            "command": 
+            {
+                "action": "copy"
+            },
             "id": "User.Copy"
         }
     ],
@@ -117,76 +134,76 @@
     "keybindings": 
     [
         {
-            "keys": "ctrl+shift+f",
-            "id": "User.FindText"
+            "id": "User.SplitPaneRight",
+            "keys": "ctrl+alt+plus"
         },
         {
-            "keys": "ctrl+alt+minus",
-            "id": "User.SplitPaneDown"
+            "id": "User.Paste",
+            "keys": "ctrl+shift+v"
         },
         {
-            "keys": "ctrl+alt+plus",
-            "id": "User.SplitPaneRight"
+            "id": "User.FindText",
+            "keys": "ctrl+shift+f"
         },
         {
-            "keys": "ctrl+alt+down",
-            "id": "User.ResizePaneDown"
+            "id": "User.ResizePaneUp",
+            "keys": "ctrl+alt+up"
         },
         {
-            "keys": "ctrl+alt+up",
-            "id": "User.ResizePaneUp"
+            "id": "User.ResizePaneRight",
+            "keys": "ctrl+alt+right"
         },
         {
-            "keys": "ctrl+alt+left",
-            "id": "User.ResizePaneLeft"
+            "id": "User.SplitPaneDown",
+            "keys": "ctrl+alt+minus"
         },
         {
-            "keys": "ctrl+alt+right",
-            "id": "User.ResizePaneRight"
+            "id": "User.ResizePaneDown",
+            "keys": "ctrl+alt+down"
         },
         {
-            "keys": "alt+j",
-            "id": "User.MoveFocusDown"
+            "id": "User.ResizePaneLeft",
+            "keys": "ctrl+alt+left"
         },
         {
-            "keys": "alt+k",
-            "id": "User.MoveFocusUp"
+            "id": "User.MoveFocusDown",
+            "keys": "alt+j"
         },
         {
-            "keys": "alt+l",
-            "id": "User.MoveFocusRight"
+            "id": "User.MoveFocusUp",
+            "keys": "alt+k"
         },
         {
-            "keys": "alt+h",
-            "id": "User.MoveFocusLeft"
+            "id": "User.MoveFocusRight",
+            "keys": "alt+l"
         },
         {
-            "keys": "ctrl+alt+z",
-            "id": "User.TogglePaneZoom"
+            "id": "User.MoveFocusLeft",
+            "keys": "alt+h"
         },
         {
-            "keys": "ctrl+alt+c",
-            "id": "User.NewTab"
+            "id": "User.TogglePaneZoom",
+            "keys": "ctrl+alt+z"
         },
         {
-            "keys": "ctrl+alt+n",
-            "id": "User.NextTab"
+            "id": "User.NewTab",
+            "keys": "ctrl+alt+c"
         },
         {
-            "keys": "ctrl+alt+p",
-            "id": "User.PrevTab"
+            "id": "User.NextTab",
+            "keys": "ctrl+alt+n"
         },
         {
-            "keys": "ctrl+alt+x",
-            "id": "User.ClosePane"
+            "id": "User.PrevTab",
+            "keys": "ctrl+alt+p"
         },
         {
-            "keys": "ctrl+v",
-            "id": "User.Paste"
+            "id": "User.ClosePane",
+            "keys": "ctrl+alt+x"
         },
         {
-            "keys": "ctrl+shift+c",
-            "id": "User.Copy"
+            "id": "User.Copy",
+            "keys": "ctrl+shift+c"
         }
     ],
     "newTabMenu": 
@@ -199,7 +216,7 @@
     {
         "defaults": 
         {
-            "colorScheme": "TokyoNight",
+            "colorScheme": "TokyoNight Day",
             "font": 
             {
                 "face": "JetBrainsMono Nerd Font Mono",
@@ -235,6 +252,12 @@
                 "hidden": true,
                 "name": "Visual Studio Debug Console",
                 "source": "VSDebugConsole"
+            },
+            {
+                "guid": "{16668846-4777-599a-bd09-27be6b838325}",
+                "hidden": false,
+                "name": "Ubuntu",
+                "source": "Microsoft.WSL"
             }
         ]
     },
