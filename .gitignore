@@ -1,3 +1,7 @@
 **/**/*.swp
 **/node_modules/**
 nvim/plugin/packer_compiled.lua
+
+# Node.js dependencies for commitizen
+node_modules/
+package-lock.json
