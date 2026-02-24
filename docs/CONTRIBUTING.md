@@ -358,6 +358,15 @@ nvim/lua/nairovim/
 
 ## Commit Guidelines
 
+### Automated Commits with Commitizen
+
+This repository uses **Commitizen** for automated commit message formatting. See [COMMITIZEN.md](COMMITIZEN.md) for complete setup and usage guide.
+
+**Quick Start:**
+```bash
+npm run commit  # Interactive commit prompt (recommended)
+```
+
 ### Commit Message Format
 
 Use [Conventional Commits](https://www.conventionalcommits.org/) format:
