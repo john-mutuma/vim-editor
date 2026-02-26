@@ -63,7 +63,23 @@ return {
             build = function(plugin)
                 local app_dir = plugin.dir .. "/app"
                 if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-                    vim.system({ "cmd.exe", "/c", "install.cmd" }, { cwd = app_dir }):wait()
+                    local bin_dir = app_dir .. "/bin"
+                    vim.fn.mkdir(bin_dir, "p")
+                    local zip = bin_dir .. "/markdown-preview-win.zip"
+                    vim.system({
+                        "curl",
+                        "-sL",
+                        "-o",
+                        zip,
+                        "https://github.com/iamcco/markdown-preview.nvim/releases/latest/download/markdown-preview-win.zip",
+                    }):wait()
+                    vim.system({
+                        "powershell",
+                        "-NoProfile",
+                        "-Command",
+                        "Expand-Archive -Path '" .. zip .. "' -DestinationPath '" .. bin_dir .. "' -Force",
+                    }):wait()
+                    os.remove(zip)
                 else
                     vim.system({ "bash", "install.sh" }, { cwd = app_dir }):wait()
                 end
