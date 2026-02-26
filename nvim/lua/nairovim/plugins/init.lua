@@ -60,24 +60,16 @@ return {
             "iamcco/markdown-preview.nvim",
             cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
             ft = { "markdown" },
-            build = "cd app && npx --yes yarn install",
+            build = function(plugin)
+                local app_dir = plugin.dir .. "/app"
+                if vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
+                    vim.system({ "cmd.exe", "/c", "install.cmd" }, { cwd = app_dir }):wait()
+                else
+                    vim.system({ "bash", "install.sh" }, { cwd = app_dir }):wait()
+                end
+            end,
             init = function()
                 vim.g.mkdp_echo_preview_url = 1
-                if vim.fn.has("wsl") == 1 then
-                    vim.g.mkdp_browserfunc = "MkdpOpenBrowser"
-                    vim.cmd([[
-                        function! MkdpOpenBrowser(url)
-                            silent execute '!wslview ' . shellescape(a:url) . ' &'
-                        endfunction
-                    ]])
-                elseif vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1 then
-                    vim.g.mkdp_browserfunc = "MkdpOpenBrowser"
-                    vim.cmd([[
-                        function! MkdpOpenBrowser(url)
-                            silent execute '!start "" ' . shellescape(a:url)
-                        endfunction
-                    ]])
-                end
             end,
         },
         {
