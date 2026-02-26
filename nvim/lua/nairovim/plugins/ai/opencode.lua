@@ -81,15 +81,50 @@ return {
         common_utils.map(mappings)
 
         ----------------------------------------------------------------------
-        -- Auto-cleanup OpenCode server process on exit
+        -- Auto-cleanup OpenCode server processes on exit
         ----------------------------------------------------------------------
-        -- Simply call the configured stop() function when Neovim exits.
-        -- This leverages the built-in server lifecycle management.
-        
+        -- OpenCode (Bun/TS) ignores SIGHUP, which is what Neovim sends when
+        -- a terminal buffer is deleted. The built-in stop() alone is
+        -- insufficient on Linux/macOS — the process survives as an orphan.
+        -- On Windows, Neovim uses TerminateProcess() so stop() works fine.
+        -- See: https://github.com/anomalyco/opencode/issues/14504
+        --      https://github.com/anomalyco/opencode/issues/12767
+
         vim.api.nvim_create_autocmd("VimLeavePre", {
             group = vim.api.nvim_create_augroup("OpenCodeCleanup", { clear = true }),
             callback = function()
+                -- Graceful: close the Snacks terminal buffer
                 pcall(require("opencode").stop)
+
+                -- Safety net: explicitly kill processes for this project
+                if vim.fn.has("unix") == 1 then
+                    local cwd = vim.fn.getcwd()
+                    local pids = vim.fn.systemlist("pgrep -f 'opencode --port' 2>/dev/null")
+
+                    for _, pid in ipairs(pids) do
+                        pid = vim.trim(pid)
+                        if pid ~= "" then
+                            local proc_cwd = ""
+                            if vim.fn.has("linux") == 1 then
+                                proc_cwd = vim.trim(vim.fn.system(
+                                    string.format("readlink /proc/%s/cwd 2>/dev/null", pid)
+                                ))
+                            elseif vim.fn.has("mac") == 1 then
+                                proc_cwd = vim.trim(vim.fn.system(
+                                    string.format("lsof -a -p %s -d cwd -Fn 2>/dev/null | grep '^n' | cut -c2-", pid)
+                                ))
+                            end
+
+                            if proc_cwd == cwd then
+                                -- Negative PID kills the entire process group (child LSPs too)
+                                vim.fn.system(string.format("kill -15 -%s 2>/dev/null", pid))
+                                vim.defer_fn(function()
+                                    vim.fn.system(string.format("kill -9 -%s 2>/dev/null", pid))
+                                end, 500)
+                            end
+                        end
+                    end
+                end
             end,
         })
     end,
