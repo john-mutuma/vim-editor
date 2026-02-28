@@ -15,6 +15,9 @@ Implemented full sidekick.nvim configuration with zellij backend, tool-specific 
    - Preferred over tmux to avoid colorscheme rendering issues
    - Enabled with `mux.backend = "zellij"`
    - Full multiplexer session support
+   - **Windows Compatibility**: Disabled on Windows native (`enabled = vim.fn.has("win32") == 0`)
+   - Zellij has no Windows native build, only Linux/macOS binaries
+   - WSL users still get full zellij support
 
 2. **Terminal Window Layout**:
    - Position: Right side of screen (`layout = "right"`)
@@ -76,7 +79,7 @@ nvim/lua/nairovim/plugins/
 **Branch:** `feat/sidekick-ctrl-p-fix`  
 **Files:** 2 new files (sidekick.lua, keymaps/sidekick.lua)  
 **Line changes:** +152 lines total  
-**Commits:** 2 commits (plugin config + lazy-lock update)
+**Commits:** 4 commits (plugin config, lazy-lock update, Windows compatibility fix, install script fix)
 
 ---
 
