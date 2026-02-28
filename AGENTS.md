@@ -7,17 +7,17 @@ High-level overview of development tasks for AI agents.
 ## 2026-02-28: Sidekick Plugin Configuration & Keymap Refactoring
 **Goal:** Add complete sidekick.nvim plugin configuration with clean keymap organization
 
-Implemented full sidekick.nvim configuration with zellij backend, tool-specific overrides, and extracted all keymaps to dedicated customizations file following project conventions. Part of the broader OpenCode Ctrl+P fix initiative.
+Implemented full sidekick.nvim configuration with platform-specific multiplexer backend (psmux on Windows, zellij on macOS/Linux), tool-specific overrides, and extracted all keymaps to dedicated customizations file following project conventions. Part of the broader OpenCode Ctrl+P fix initiative.
 
 **Configuration Components:**
 
-1. **Multiplexer Backend** (zellij):
-   - Preferred over tmux to avoid colorscheme rendering issues
-   - Enabled with `mux.backend = "zellij"`
-   - Full multiplexer session support
-   - **Windows Compatibility**: Disabled on Windows native (`enabled = vim.fn.has("win32") == 0`)
-   - Zellij has no Windows native build, only Linux/macOS binaries
-   - WSL users still get full zellij support
+1. **Multiplexer Backend** (platform-specific):
+   - **Windows**: Uses tmux backend (provided by psmux installation)
+   - **macOS/Linux**: Uses zellij backend (preferred to avoid tmux colorscheme issues)
+   - **Detection**: `vim.fn.has("win32") == 1 and "tmux" or "zellij"`
+   - **psmux**: Native Windows terminal multiplexer in Rust, 100% tmux-compatible
+   - Installs `psmux`, `pmux`, and `tmux` binaries (sidekick detects `tmux` on PATH)
+   - Full multiplexer session support on all platforms
 
 2. **Terminal Window Layout**:
    - Position: Right side of screen (`layout = "right"`)
@@ -79,7 +79,7 @@ nvim/lua/nairovim/plugins/
 **Branch:** `feat/sidekick-ctrl-p-fix`  
 **Files:** 2 new files (sidekick.lua, keymaps/sidekick.lua)  
 **Line changes:** +152 lines total  
-**Commits:** 4 commits (plugin config, lazy-lock update, Windows compatibility fix, install script fix)
+**Commits:** 6 commits (plugin config, lazy-lock update, zellij install, docs, psmux switch, psmux install)
 
 ---
 
