@@ -4,10 +4,9 @@ return {
         -- add any options here
         cli = {
             mux = {
-                backend = "zellij",
-                -- backend = "tmux",
-                -- Disable on Windows native (Zellij not available), keep enabled on macOS/Linux/WSL
-                enabled = vim.fn.has("win32") == 0,
+                -- Platform-specific backend: psmux (tmux-compatible) on Windows, zellij on macOS/Linux
+                backend = vim.fn.has("win32") == 1 and "tmux" or "zellij",
+                enabled = true,
             },
             win = {
                 layout = "right", -- Terminal appears on right side
