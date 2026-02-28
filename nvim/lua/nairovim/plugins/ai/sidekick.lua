@@ -6,7 +6,8 @@ return {
             mux = {
                 backend = "zellij",
                 -- backend = "tmux",
-                enabled = true,
+                -- Disable on Windows native (Zellij not available), keep enabled on macOS/Linux/WSL
+                enabled = vim.fn.has("win32") == 0,
             },
             win = {
                 layout = "right", -- Terminal appears on right side
