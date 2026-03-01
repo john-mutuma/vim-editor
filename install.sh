@@ -619,6 +619,15 @@ install_tmux() {
     print_success "Tmux and TPM setup complete!"
 }
 
+install_zellij() {
+    print_section "${GEAR} Installing Zellij"
+
+    install_with_brew "zellij" "Zellij"
+
+    echo ""
+    print_success "Zellij installation complete!"
+}
+
 install_oh_my_zsh() {
     print_section "${SPARKLES} Installing Oh My Zsh"
 
@@ -1236,6 +1245,7 @@ print_installation_summary() {
     echo "${green}${CHECK_MARK}${textreset} Dotfiles linked (.zshrc, .vimrc, .tmux.conf, .ripgreprc)"
     echo "${green}${CHECK_MARK}${textreset} Neovim installed and configured"
     echo "${green}${CHECK_MARK}${textreset} Tmux installed with Plugin Manager (TPM)"
+    echo "${green}${CHECK_MARK}${textreset} Zellij installed (terminal multiplexer)"
     echo "${green}${CHECK_MARK}${textreset} Oh My Zsh installed"
     echo "${green}${CHECK_MARK}${textreset} CLI tools installed (fzf, ripgrep, bat, scooter)"
     echo "${green}${CHECK_MARK}${textreset} UV/UVX installed for MCP plugins"
@@ -1303,6 +1313,7 @@ main() {
     install_dotfiles
     install_neovim
     install_tmux
+    install_zellij
     install_oh_my_zsh
     install_cli_tools
     install_uv

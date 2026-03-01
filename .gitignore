@@ -5,3 +5,6 @@ nvim/plugin/packer_compiled.lua
 # Node.js dependencies for commitizen
 node_modules/
 package-lock.json
+
+# Zellij tarball (not used by install scripts)
+zellij-*.tar.gz

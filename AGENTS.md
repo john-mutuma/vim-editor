@@ -4,6 +4,227 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-02-28: Platform-Aware Dashboard AI Entries
+**Goal:** Add Agency CLI to Snacks dashboard with platform-specific ordering
+
+Refactored Snacks dashboard to display both OpenCode and Agency CLI with platform-aware prioritization. Windows shows OpenCode as preferred (stable), macOS/Linux shows Agency CLI as preferred (since it can launch OpenCode via sidekick tool picker).
+
+**Platform-Specific Entries:**
+
+1. **Windows Dashboard:**
+   - `O` → OpenCode (Preferred) - Direct toggle, stable on Windows
+   - `A` → Agency CLI (Preview) - Opens sidekick tool picker, preview status
+
+2. **macOS/Linux Dashboard:**
+   - `A` → Agency CLI (Preferred) - Opens sidekick tool picker (can launch OpenCode)
+   - `O` → OpenCode - Direct toggle, secondary option
+
+**Implementation Details:**
+
+- **Structure**: Keys table split into three parts (`keys_before`, `ai_entries`, `keys_after`) merged with `vim.list_extend`
+- **Platform Detection**: `vim.fn.has("win32") == 1` determines which entry set to use
+- **Icons**: Both use ` ` (AI/robot icon) for visual consistency
+- **Actions**:
+  - OpenCode: `:lua require('opencode').toggle()` (direct toggle)
+  - Agency CLI: `:lua require('sidekick.cli').select()` (tool picker)
+- **IIFE Pattern**: Dashboard keys use immediately-invoked function expression to build dynamic array
+
+**Why Agency CLI Primary on macOS/Linux:**
+- Sidekick tool picker provides access to ALL AI tools (OpenCode, Claude, Copilot, etc.)
+- Can launch OpenCode from within sidekick if needed
+- More flexible entry point for multi-tool workflows
+- Works better with zellij backend (no colorscheme issues)
+
+**Why OpenCode Primary on Windows:**
+- More stable/mature on Windows platform
+- Agency CLI marked as "Preview" due to psmux limitations (scrolling, newline, set-option issues)
+- Direct OpenCode toggle provides immediate access to stable tool
+
+**Code Pattern:**
+
+```lua
+keys = (function()
+    local keys_before = { -- f, n, t, F, g, r, G entries -- }
+    
+    local ai_entries = vim.fn.has("win32") == 1 and {
+        { icon = " ", key = "O", desc = "OpenCode (Preferred)", ... },
+        { icon = " ", key = "A", desc = "Agency CLI (Preview)", ... },
+    } or {
+        { icon = " ", key = "A", desc = "Agency CLI (Preferred)", ... },
+        { icon = " ", key = "O", desc = "OpenCode", ... },
+    }
+    
+    local keys_after = { -- l, c, s, m, q entries -- }
+    
+    return vim.list_extend(vim.list_extend(keys_before, ai_entries), keys_after)
+end)(),
+```
+
+**Impact:** Users see preferred AI tool first, both tools accessible via single key, platform-appropriate recommendations  
+**Branch:** `feat/sidekick-ctrl-p-fix`  
+**Files:** 1 file modified (snacks.lua)  
+**Line changes:** +81, -51 (139 lines total, was 109)  
+**Commit:** `82f0ef1`
+
+---
+
+## 2026-02-28: Sidekick Plugin Configuration & Keymap Refactoring
+**Goal:** Add complete sidekick.nvim plugin configuration with clean keymap organization
+
+Implemented full sidekick.nvim configuration with platform-specific multiplexer backend (psmux on Windows, zellij on macOS/Linux), tool-specific overrides, and extracted all keymaps to dedicated customizations file following project conventions. Part of the broader OpenCode Ctrl+P fix initiative.
+
+**Configuration Components:**
+
+1. **Multiplexer Backend** (platform-specific):
+   - **Windows**: Uses tmux backend (provided by psmux installation)
+   - **macOS/Linux**: Uses zellij backend (preferred to avoid tmux colorscheme issues)
+   - **Detection**: `vim.fn.has("win32") == 1 and "tmux" or "zellij"`
+   - **psmux**: Native Windows terminal multiplexer in Rust, 100% tmux-compatible
+   - Installs `psmux`, `pmux`, and `tmux` binaries (sidekick detects `tmux` on PATH)
+   - Full multiplexer session support on all platforms
+
+2. **Terminal Window Layout**:
+   - Position: Right side of screen (`layout = "right"`)
+   - Width: 45% of screen (`split.width = 0.45`)
+   - Height: Full height auto-calculated (`split.height = 0`)
+   - Matches OpenCode terminal dimensions for consistency
+
+3. **Tool-Specific Overrides**:
+   - **OpenCode**: Alt+P for sidekick prompt (frees Ctrl+P for OpenCode's command list)
+   - **Copilot**: Ctrl+S for submit/send (custom keybinding for terminal interaction)
+
+4. **Keymap Organization**:
+   - Extracted all 10 keybindings to `customizations/keymaps/sidekick.lua`
+   - Converted from lazy.nvim `keys` table to `nairovim.KeymapDef[]` format
+   - Loaded via `common.map()` utility in plugin `config` function
+   - Maintains consistency with other plugin keymaps (telescope, opencode, lazygit, etc.)
+
+**Keybindings Included:**
+
+| Key | Mode | Action | Description |
+|-----|------|--------|-------------|
+| `<tab>` | n | `nes_jump_or_apply()` | Next Edit Suggestion jump/apply |
+| `<c-.>` | n,t,i,x | `toggle()` | Toggle sidekick CLI |
+| `<leader>aa` | n | `toggle()` | Toggle sidekick CLI (mnemonic) |
+| `<leader>as` | n | `select()` | Select CLI tool |
+| `<leader>ad` | n | `close()` | Detach/close session |
+| `<leader>at` | n,x | `send({ msg = "{this}" })` | Send current context |
+| `<leader>af` | n | `send({ msg = "{file}" })` | Send entire file |
+| `<leader>av` | x | `send({ msg = "{selection}" })` | Send visual selection |
+| `<leader>ap` | n,x | `prompt()` | Select prompt |
+| `<leader>ac` | n | `toggle({ name = "claude" })` | Toggle Claude directly |
+
+**Implementation Pattern:**
+
+```lua
+-- Plugin file: nvim/lua/nairovim/plugins/ai/sidekick.lua
+config = function(_, opts)
+    require("sidekick").setup(opts)
+    
+    -- Load keymaps from customizations
+    local mappings = require("nairovim.plugins.customizations.keymaps.sidekick").mappings
+    local common_utils = require("nairovim.utils.common")
+    common_utils.map(mappings)
+end
+```
+
+**Files Structure:**
+
+```
+nvim/lua/nairovim/plugins/
+├── ai/
+│   └── sidekick.lua              # Plugin configuration + tool overrides
+└── customizations/
+    └── keymaps/
+        └── sidekick.lua          # All keybindings (nairovim.KeymapDef[])
+```
+
+**Impact:** Clean separation of concerns, follows project conventions, maintainable keymap organization  
+**Branch:** `feat/sidekick-ctrl-p-fix`  
+**Files:** 2 new files (sidekick.lua, keymaps/sidekick.lua)  
+**Line changes:** +152 lines total  
+**Commits:** 6 commits (plugin config, lazy-lock update, zellij install, docs, psmux switch, psmux install)
+
+---
+
+## 2026-02-28: Sidekick OpenCode Ctrl+P Fix
+**Goal:** Enable OpenCode's native Ctrl+P command list functionality when running in sidekick terminal
+
+Applied official fix from upstream PR #176 to resolve keybinding conflict where sidekick's prompt picker was intercepting Ctrl+P before it could reach OpenCode's TUI. OpenCode v1.0.15+ uses Ctrl+P for its built-in command list menu.
+
+**Root Cause:**
+
+Sidekick's default terminal keybindings included `prompt = { "<c-p>", "prompt", mode = "t" }` which intercepted Ctrl+P in ALL terminal sessions. When OpenCode runs inside a sidekick terminal, this prevented OpenCode's native Ctrl+P functionality from working.
+
+**Why Setting `prompt = false` Didn't Work:**
+
+Initial attempts to set `opts.cli.win.keys.prompt = false` in user config were insufficient because:
+1. Sidekick's tool-specific defaults have higher precedence in the merge order
+2. The keybinding wasn't being created, but no alternative was configured
+3. Result: Ctrl+P did nothing (neither sidekick nor OpenCode handled it)
+
+**Solution Applied (PR #176):**
+
+Modified user config to override Ctrl+P for OpenCode tool specifically using tool-specific configuration:
+
+```lua
+-- File: nvim/lua/nairovim/plugins/ai/sidekick.lua
+tools = {
+    opencode = {
+        -- OpenCode uses <c-p> for its own command list functionality
+        -- Override sidekick's default to use Alt+P instead
+        keys = { prompt = { "<a-p>", "prompt" } },
+    },
+}
+```
+
+This follows the same pattern as the `crush` tool (which also needs Ctrl+P for native functionality).
+
+**Changes Made:**
+
+1. **Sidekick Config** (`nvim/lua/nairovim/plugins/ai/sidekick.lua` lines 18-22):
+   - Added tool-specific OpenCode override: `keys = { prompt = { "<a-p>", "prompt" } }`
+   - Frees Ctrl+P for OpenCode, moves sidekick prompt picker to Alt+P
+
+2. **Zellij Config** (`~/.config/zellij/config.kdl`):
+   - Commented out line 21: `bind "Ctrl p" { SwitchToMode "normal"; }` in pane mode
+   - Commented out line 175: `bind "Ctrl p" { SwitchToMode "pane"; }` in shared bindings
+   - Reason: Zellij was intercepting Ctrl+P before it could reach OpenCode terminal
+   - User doesn't actively use Zellij pane mode, so removing this binding has no impact
+   - Backup created at `~/.config/zellij/config.kdl.backup`
+
+**Result:**
+
+- ✅ Ctrl+P in OpenCode terminal → Opens OpenCode command list
+- ✅ Alt+P in OpenCode terminal → Opens sidekick prompt/context picker
+- ✅ Ctrl+P in other AI tools (Claude, Copilot) → Opens sidekick prompt picker (default behavior)
+- ✅ Works with Zellij backend (no tmux colorscheme issues)
+- ✅ Configuration will align with upstream when PR #176 merges
+
+**Testing:**
+
+```bash
+# 1. Open OpenCode via sidekick
+:lua require("sidekick.cli").toggle("opencode")
+
+# 2. In terminal mode, press Ctrl+P
+# Expected: OpenCode command list appears ✅
+
+# 3. In terminal mode, press Alt+P
+# Expected: Sidekick prompt picker appears ✅
+
+# 4. Verify keybinding
+:verbose map <c-p>
+# In terminal mode: No sidekick mapping (passes through to OpenCode)
+```
+
+**Impact:** OpenCode's native Ctrl+P command list now works correctly in sidekick terminals  
+**Reference:** [GitHub Issue #175](https://github.com/folke/sidekick.nvim/issues/175) | [PR #176](https://github.com/folke/sidekick.nvim/pull/176)  
+**Files:** 2 files modified (sidekick.lua, zellij config.kdl)  
+**Line changes:** +5 lines (sidekick.lua), 2 lines commented (zellij config.kdl)
+
+---
+
 ## 2026-02-12: FZF Ctrl+R Command History Fix (WSL)
 **Goal:** Fix `Ctrl+R` command history search not working in WSL with Vi mode enabled
 

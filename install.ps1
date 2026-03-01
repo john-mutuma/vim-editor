@@ -521,6 +521,70 @@ function Install-Neovim {
     Print-Success "Neovim installation and configuration complete!"
 }
 
+function Install-PSMux {
+    Print-Section "$($Symbols.Gear) Installing psmux (tmux for Windows)"
+    
+    # Check if psmux is already installed
+    if (Test-Command "psmux") {
+        Print-Info "psmux is already installed, skipping..."
+        return
+    }
+    
+    # Try winget first (preferred method)
+    if (Test-Command "winget") {
+        Print-Step "Installing psmux" "via winget"
+        try {
+            winget install --id psmux --silent --accept-package-agreements --accept-source-agreements 2>&1 | Out-Null
+            if (Test-Command "psmux") {
+                Print-Success "psmux installed successfully via winget"
+                return
+            }
+        }
+        catch {
+            Print-Warning "winget installation failed, trying Chocolatey..."
+        }
+    }
+    
+    # Try Chocolatey as fallback
+    if (Test-Command "choco") {
+        Print-Step "Installing psmux" "via Chocolatey"
+        try {
+            choco install psmux -y 2>&1 | Out-Null
+            if (Test-Command "psmux") {
+                Print-Success "psmux installed successfully via Chocolatey"
+                return
+            }
+        }
+        catch {
+            Print-Warning "Chocolatey installation failed, trying Cargo..."
+        }
+    }
+    
+    # Try Cargo as last resort
+    if (Test-Command "cargo") {
+        Print-Step "Installing psmux" "via Cargo"
+        try {
+            cargo install psmux 2>&1 | Out-Null
+            if (Test-Command "psmux") {
+                Print-Success "psmux installed successfully via Cargo"
+                return
+            }
+        }
+        catch {
+            Print-Error "Failed to install psmux via Cargo"
+        }
+    }
+    
+    # If we get here, all methods failed
+    Print-Warning "Could not install psmux automatically. Please install manually:"
+    Print-Info "  Option 1: winget install psmux"
+    Print-Info "  Option 2: choco install psmux"
+    Print-Info "  Option 3: cargo install psmux"
+    Print-Info "  Option 4: Download from https://github.com/marlocarlo/psmux/releases"
+    
+    Write-Host ""
+}
+
 function Install-WindowsTerminal {
     Print-Section "$($Symbols.Gear) Installing Windows Terminal"
     
@@ -1061,6 +1125,7 @@ function Print-InstallationSummary {
     Write-Host "$($Symbols.CheckMark) Development tools installed (Node.js, Go, Python) [optional]"
     Write-Host "$($Symbols.CheckMark) Dotfiles linked (.ripgreprc, scooter config)"
     Write-Host "$($Symbols.CheckMark) Neovim installed and configured"
+    Write-Host "$($Symbols.CheckMark) psmux installed (tmux-compatible multiplexer for Windows)"
     Write-Host "$($Symbols.CheckMark) Windows Terminal installed and configured"
     Write-Host "$($Symbols.CheckMark) Oh My Posh installed with TokyoNight theme"
     Write-Host "$($Symbols.CheckMark) CLI tools installed (fzf, ripgrep, bat, git, lazygit)"
@@ -1126,6 +1191,7 @@ function Main {
     Install-DevelopmentTools
     Install-Dotfiles
     Install-Neovim
+    Install-PSMux
     Install-WindowsTerminal
     Install-OhMyPosh
     Install-CLITools
