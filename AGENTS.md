@@ -4,6 +4,70 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-02-28: Platform-Aware Dashboard AI Entries
+**Goal:** Add Agency CLI to Snacks dashboard with platform-specific ordering
+
+Refactored Snacks dashboard to display both OpenCode and Agency CLI with platform-aware prioritization. Windows shows OpenCode as preferred (stable), macOS/Linux shows Agency CLI as preferred (since it can launch OpenCode via sidekick tool picker).
+
+**Platform-Specific Entries:**
+
+1. **Windows Dashboard:**
+   - `O` → OpenCode (Preferred) - Direct toggle, stable on Windows
+   - `A` → Agency CLI (Preview) - Opens sidekick tool picker, preview status
+
+2. **macOS/Linux Dashboard:**
+   - `A` → Agency CLI (Preferred) - Opens sidekick tool picker (can launch OpenCode)
+   - `O` → OpenCode - Direct toggle, secondary option
+
+**Implementation Details:**
+
+- **Structure**: Keys table split into three parts (`keys_before`, `ai_entries`, `keys_after`) merged with `vim.list_extend`
+- **Platform Detection**: `vim.fn.has("win32") == 1` determines which entry set to use
+- **Icons**: Both use ` ` (AI/robot icon) for visual consistency
+- **Actions**:
+  - OpenCode: `:lua require('opencode').toggle()` (direct toggle)
+  - Agency CLI: `:lua require('sidekick.cli').select()` (tool picker)
+- **IIFE Pattern**: Dashboard keys use immediately-invoked function expression to build dynamic array
+
+**Why Agency CLI Primary on macOS/Linux:**
+- Sidekick tool picker provides access to ALL AI tools (OpenCode, Claude, Copilot, etc.)
+- Can launch OpenCode from within sidekick if needed
+- More flexible entry point for multi-tool workflows
+- Works better with zellij backend (no colorscheme issues)
+
+**Why OpenCode Primary on Windows:**
+- More stable/mature on Windows platform
+- Agency CLI marked as "Preview" due to psmux limitations (scrolling, newline, set-option issues)
+- Direct OpenCode toggle provides immediate access to stable tool
+
+**Code Pattern:**
+
+```lua
+keys = (function()
+    local keys_before = { -- f, n, t, F, g, r, G entries -- }
+    
+    local ai_entries = vim.fn.has("win32") == 1 and {
+        { icon = " ", key = "O", desc = "OpenCode (Preferred)", ... },
+        { icon = " ", key = "A", desc = "Agency CLI (Preview)", ... },
+    } or {
+        { icon = " ", key = "A", desc = "Agency CLI (Preferred)", ... },
+        { icon = " ", key = "O", desc = "OpenCode", ... },
+    }
+    
+    local keys_after = { -- l, c, s, m, q entries -- }
+    
+    return vim.list_extend(vim.list_extend(keys_before, ai_entries), keys_after)
+end)(),
+```
+
+**Impact:** Users see preferred AI tool first, both tools accessible via single key, platform-appropriate recommendations  
+**Branch:** `feat/sidekick-ctrl-p-fix`  
+**Files:** 1 file modified (snacks.lua)  
+**Line changes:** +81, -51 (139 lines total, was 109)  
+**Commit:** `82f0ef1`
+
+---
+
 ## 2026-02-28: Sidekick Plugin Configuration & Keymap Refactoring
 **Goal:** Add complete sidekick.nvim plugin configuration with clean keymap organization
 
