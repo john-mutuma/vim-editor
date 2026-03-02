@@ -17,6 +17,15 @@ M.mappings = {
         end,
         opts = { expr = true, desc = "Goto/Apply Next Edit Suggestion" },
     },
+    
+    {
+        mode = { "n", "x" },
+        key_sequence = "<leader>aF",
+        handler = function()
+            require("sidekick.cli").toggle()
+        end,
+        opts = { desc = "Sidekick Focus" },
+    },
     -- Sidekick Toggle (all modes)
     {
         mode = { "n", "t", "i", "x" },
