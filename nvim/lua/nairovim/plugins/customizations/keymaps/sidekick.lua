@@ -17,12 +17,12 @@ M.mappings = {
         end,
         opts = { expr = true, desc = "Goto/Apply Next Edit Suggestion" },
     },
-    
+    -- Sidekick Focus (normal, visual, modes)
     {
         mode = { "n", "x" },
         key_sequence = "<leader>aF",
         handler = function()
-            require("sidekick.cli").toggle()
+            require("sidekick.cli").focus()
         end,
         opts = { desc = "Sidekick Focus" },
     },
