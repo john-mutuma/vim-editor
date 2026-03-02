@@ -21,6 +21,24 @@ M.mappings = {
         end,
         opts = { expr = true, silent = true, desc = "Copilot: Accept suggestion or Tab" },
     },
+    -- Alt+]: Next Copilot suggestion
+    {
+        mode = "i",
+        key_sequence = "<M-]>",
+        handler = function()
+            require("copilot.suggestion").next()
+        end,
+        opts = { silent = true, desc = "Copilot: Next suggestion" },
+    },
+    -- Alt+[: Previous Copilot suggestion
+    {
+        mode = "i",
+        key_sequence = "<M-[>",
+        handler = function()
+            require("copilot.suggestion").prev()
+        end,
+        opts = { silent = true, desc = "Copilot: Previous suggestion" },
+    },
     -- Ctrl+]: Dismiss Copilot suggestion
     {
         mode = "i",
