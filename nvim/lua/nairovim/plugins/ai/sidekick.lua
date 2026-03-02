@@ -11,7 +11,7 @@ return {
             win = {
                 layout = "right", -- Terminal appears on right side
                 split = {
-                    width = 0.45, -- 45% of screen width (matches OpenCode config)
+                    width = 0.35, -- 35% of screen width (matches OpenCode config)
                     height = 0, -- Full height (0 = auto)
                 },
             },

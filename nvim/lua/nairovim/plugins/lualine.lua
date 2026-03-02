@@ -9,18 +9,22 @@ local Blank = {
         "packer",
         "filetree",
         "bufferlist",
-        "opencode",
-        "opencode_terminal",
         "NvimTree",
     },
 }
 
-local Snacks_Dashboard = {
+local GitBranch = {
     sections = {
         lualine_a = { "" },
         lualine_b = { "branch" },
     },
-    filetypes = { "snacks_dashboard" },
+    filetypes = {
+        "snacks_dashboard",
+        "snacks_terminal",
+        "opencode",
+        "opencode_terminal",
+        "sidekick_terminal",
+    },
 }
 
 return {
@@ -38,14 +42,9 @@ return {
                         path = 1, -- 0 = just filename, 1 = relative path, 2 = absolute path
                     },
                 },
-                lualine_z = {
-                    {
-                        require("opencode").statusline,
-                    },
-                },
             },
             extensions = {
-                Snacks_Dashboard,
+                GitBranch,
                 Blank,
             },
             -- options = { theme = "grubbox" },
