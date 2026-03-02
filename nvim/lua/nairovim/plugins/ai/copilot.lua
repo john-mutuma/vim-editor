@@ -7,15 +7,6 @@ return {
             suggestion = {
                 enabled = true,
                 auto_trigger = true,
-                keymap = {
-                    -- Disable built-in keymaps (we register them explicitly in customizations/keymaps/copilot.lua)
-                    accept = false,
-                    accept_word = false,
-                    accept_line = false,
-                    next = false,
-                    prev = false,
-                    dismiss = false,
-                },
             },
         })
 
