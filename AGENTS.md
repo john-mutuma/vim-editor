@@ -4,6 +4,96 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-03-02: GitHub Copilot Tab Completion Fix
+**Goal:** Fix Tab key not accepting Copilot suggestions in Neovim
+
+Resolved critical issue where pressing Tab with Copilot ghost text visible was inserting a tab character instead of accepting the suggestion. Root cause was timing/buffer-attachment issues in Copilot's built-in keymap registration system.
+
+**Root Cause:**
+
+Copilot's automatic keymap system (`suggestion.setup()` → `buf_attach()` → `set_keymap()`) was unreliable:
+1. `suggestion.setup()` and autocmds were being created successfully
+2. However, keymaps were NOT registering on buffer attachment in live sessions
+3. Neovim's built-in `vim.snippet.jump` Tab mapping (sid: -8) remained active
+4. `InsertEnter` event timing exacerbated the registration failure
+
+**Diagnostic Evidence:**
+
+```lua
+-- BEFORE fix:
+:verbose map <Tab>  → "vim.snippet.jump if active, otherwise <Tab>" (Neovim built-in)
+require('copilot.suggestion').context  → {} (empty, no buffers tracked)
+
+-- AFTER fix:
+:verbose map <Tab>  → "Copilot: Accept suggestion or Tab" (custom keymap)
+Tab reliably accepts suggestions when is_visible() returns true
+```
+
+**Solution:**
+
+Bypassed Copilot's unreliable built-in keymap system entirely:
+
+1. **Disabled Built-in Keymaps** (`copilot.lua` lines 11-17):
+   ```lua
+   keymap = {
+       accept = false,
+       accept_word = false,
+       accept_line = false,
+       next = false,
+       prev = false,
+       dismiss = false,
+   }
+   ```
+
+2. **Manual Keymap Registration** (new file `keymaps/copilot.lua`):
+   - Tab keymap with `is_visible()` check
+   - Fallback to `vim.snippet.jump(1)` when in snippet
+   - Fallback to normal `<Tab>` otherwise
+   - Ctrl+] dismiss keymap
+
+3. **Improved Loading Timing**:
+   - Changed event from `InsertEnter` → `VimEnter`
+   - Load keymaps via `common_utils.map()` after plugin setup
+
+**Tab Keymap Logic:**
+
+```lua
+function()
+    local suggestion = require("copilot.suggestion")
+    if suggestion.is_visible() then
+        suggestion.accept()
+        return ""
+    else
+        return vim.snippet.active({ direction = 1 }) 
+            and "<Cmd>lua vim.snippet.jump(1)<CR>" 
+            or "<Tab>"
+    end
+end
+```
+
+**Why Manual Registration Works:**
+
+- Copilot's `register_keymap_with_passthrough()` relies on buffer attachment timing
+- Manual `vim.keymap.set()` after plugin loads guarantees keymap exists
+- Follows project conventions (consistent with telescope, opencode, sidekick keymaps)
+- Direct access to `suggestion.is_visible()` API for reliable check
+
+**Technical Investigation:**
+
+Examined Copilot plugin source code to understand failure:
+- `suggestion/init.lua` line 124-139: `set_keymap()` function
+- `keymaps/init.lua` line 77-126: `register_keymap_with_passthrough()` 
+- `client/init.lua` line 104-106: Buffer attach logic
+- Confirmed autocmds exist but keymaps don't register in practice
+
+**Impact:** Tab now reliably accepts Copilot suggestions, maintains proper fallback behavior  
+**Branch:** `develop`  
+**Files:** 2 files (copilot.lua modified, keymaps/copilot.lua created)  
+**Line changes:** +49, -3 lines  
+**Commit:** `4b5ac56`
+
+---
+
 ## 2026-02-28: Platform-Aware Dashboard AI Entries
 **Goal:** Add Agency CLI to Snacks dashboard with platform-specific ordering
 
