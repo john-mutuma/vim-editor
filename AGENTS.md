@@ -46,10 +46,10 @@ Bypassed Copilot's unreliable built-in keymap system entirely:
    ```
 
 2. **Manual Keymap Registration** (new file `keymaps/copilot.lua`):
-   - Tab keymap with `is_visible()` check
-   - Fallback to `vim.snippet.jump(1)` when in snippet
-   - Fallback to normal `<Tab>` otherwise
-   - Ctrl+] dismiss keymap
+   - Tab: Accept suggestion with `is_visible()` check, fallback to snippet jump or tab
+   - Alt+]: Cycle to next suggestion
+   - Alt+[: Cycle to previous suggestion  
+   - Ctrl+]: Dismiss suggestion
 
 3. **Improved Loading Timing**:
    - Changed event from `InsertEnter` → `VimEnter`
@@ -86,11 +86,17 @@ Examined Copilot plugin source code to understand failure:
 - `client/init.lua` line 104-106: Buffer attach logic
 - Confirmed autocmds exist but keymaps don't register in practice
 
-**Impact:** Tab now reliably accepts Copilot suggestions, maintains proper fallback behavior  
+**Keybindings:**
+- `Tab`: Accept suggestion (or snippet jump/normal tab if no suggestion)
+- `Alt+]`: Next suggestion
+- `Alt+[`: Previous suggestion
+- `Ctrl+]`: Dismiss suggestion
+
+**Impact:** Tab reliably accepts suggestions, users can cycle through alternatives before accepting  
 **Branch:** `develop`  
 **Files:** 2 files (copilot.lua modified, keymaps/copilot.lua created)  
-**Line changes:** +49, -3 lines  
-**Commit:** `4b5ac56`
+**Line changes:** +67, -3 lines  
+**Commits:** `4b5ac56` (initial fix), `dbb51a2` (next/prev keymaps)
 
 ---
 
