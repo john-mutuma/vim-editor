@@ -87,32 +87,12 @@ You are in %s
                             },
                         }
 
-                        -- Platform-aware AI tool entries
-                        local ai_entries = vim.fn.has("win32") == 1 and {
-                            {
-                                icon = " ",
-                                key = "O",
-                                desc = "OpenCode (Preferred)",
-                                action = ":lua require('opencode').toggle()",
-                            },
+                        local ai_entries = {
                             {
                                 icon = " ",
                                 key = "A",
-                                desc = "Agency CLI (Preview)",
+                                desc = "AI Hub (Agent CLIs)",
                                 action = ":lua require('sidekick.cli').select()",
-                            },
-                        } or {
-                            {
-                                icon = " ",
-                                key = "A",
-                                desc = "Agency CLI (Preferred)",
-                                action = ":lua require('sidekick.cli').select()",
-                            },
-                            {
-                                icon = " ",
-                                key = "O",
-                                desc = "OpenCode",
-                                action = ":lua require('opencode').toggle()",
                             },
                         }
 
