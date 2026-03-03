@@ -4,6 +4,44 @@ High-level overview of development tasks for AI agents.
 
 ---
 
+## 2026-03-03: Dashboard AI Entry Consolidation
+**Goal:** Simplify dashboard AI entries into a single unified entry across all platforms
+
+Replaced platform-specific AI dashboard entries with a single unified entry. Previously, Windows showed "OpenCode (Preferred)" + "Agency CLI (Preview)" while macOS/Linux showed "Agency CLI (Preferred)" + "OpenCode", using an IIFE with `vim.fn.has("win32")` branching. This complexity is no longer needed since Agency CLI (sidekick) is now stable on all platforms including Windows.
+
+**What Changed:**
+
+1. **Removed:**
+   - Platform-specific IIFE branching logic (`vim.fn.has("win32") == 1 and ... or ...`)
+   - `O` → OpenCode dashboard entry (direct toggle via `require('opencode').toggle()`)
+   - Separate "Preferred"/"Preview" labeling per platform
+
+2. **Added:**
+   - Single unified entry: `A` → "AI Hub (Agent CLIs)" via `require('sidekick.cli').select()`
+   - Works identically on Windows, macOS, and Linux
+   - Simplified keys table (flat array, no IIFE needed)
+
+**OpenCode Remains Fully Accessible:**
+
+- `<leader>ot` → Direct OpenCode toggle (keymap unchanged)
+- `<leader>o*` → All OpenCode keymaps remain functional
+- Sidekick tool picker (`A` on dashboard) → Can launch OpenCode from tool list
+- OpenCode plugin configuration and sidekick tool integration unchanged
+
+**Why:**
+
+- Agency CLI (psmux backend) is now stable on Windows, eliminating the "Preview" distinction
+- Single entry reduces dashboard clutter and decision fatigue
+- Sidekick tool picker provides access to all AI tools (OpenCode, Claude, Copilot, etc.)
+- Platform-specific branching was unnecessary complexity
+
+**Impact:** Simplified dashboard with single AI entry point, consistent across all platforms  
+**Branch:** `user/johnmutuma/windows-terminal-CTRL_V_binding`  
+**Files:** 1 file modified (snacks.lua)  
+**Line changes:** +8, -27 lines
+
+---
+
 ## 2026-03-02: GitHub Copilot Tab Completion Fix
 **Goal:** Fix Tab key not accepting Copilot suggestions in Neovim
 
