@@ -126,6 +126,10 @@
                 "action": "copy"
             },
             "id": "User.Copy"
+        },
+        {
+            "command": "toggleFullscreen",
+            "id": "User.ToggleFullscreen"
         }
     ],
     "copyFormatting": "none",
@@ -204,6 +208,26 @@
         {
             "id": "User.Copy",
             "keys": "ctrl+shift+c"
+        },
+        {
+            "id": "User.ToggleFullscreen",
+            "keys": "alt+enter"
+        },
+        {
+            "id": "User.MoveFocusDown",
+            "keys": "alt+down"
+        },
+        {
+            "id": "User.MoveFocusUp",
+            "keys": "alt+up"
+        },
+        {
+            "id": "User.MoveFocusRight",
+            "keys": "alt+right"
+        },
+        {
+            "id": "User.MoveFocusLeft",
+            "keys": "alt+left"
         }
     ],
     "newTabMenu": 
@@ -217,6 +241,7 @@
         "defaults": 
         {
             "colorScheme": "TokyoNight Day",
+            "experimental.input.forceVT": true,
             "font": 
             {
                 "face": "JetBrainsMono Nerd Font Mono",

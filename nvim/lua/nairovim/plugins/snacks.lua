@@ -19,6 +19,13 @@ return {
             terminal = { enabled = true },
 
             lazygit = {
+                configure = true,
+                config = {
+                    os = {
+                        -- nvim-remote generates bash syntax that fails on cmd.exe
+                        editPreset = vim.fn.has("win32") == 1 and "nvim" or "nvim-remote",
+                    },
+                },
                 win = {
                     border = "rounded",
                     width = 0.8,
