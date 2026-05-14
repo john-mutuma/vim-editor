@@ -6,8 +6,12 @@ return {
 
         -- Keymaps for LazyGit
         local common_utils = require("nairovim.utils.common")
-        local mappings = require("nairovim.plugins.customizations.keymaps.lazygit").mappings
-        common_utils.map(mappings)
+        local lazygit_mappings = require("nairovim.plugins.customizations.keymaps.lazygit").mappings
+        common_utils.map(lazygit_mappings)
+
+        -- Keymaps for Snacks Picker
+        local picker_mappings = require("nairovim.plugins.customizations.keymaps.snacks-picker").mappings
+        common_utils.map(picker_mappings)
     end,
     config = function()
         local Snacks = require("snacks")
@@ -17,6 +21,22 @@ return {
             words = { enabled = true },
             scroll = { enabled = true },
             terminal = { enabled = true },
+
+            picker = {
+                enabled = true,
+                win = {
+                    input = {
+                        keys = {
+                            ["<C-j>"] = { "move_down", mode = { "i", "n" } },
+                            ["<C-k>"] = { "move_up", mode = { "i", "n" } },
+                            ["?"] = "help",
+                        },
+                    },
+                },
+                layout = {
+                    backdrop = { bg = "#000000", blend = 85 },
+                },
+            },
 
             lazygit = {
                 configure = true,
