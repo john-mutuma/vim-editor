@@ -2140,3 +2140,28 @@ If you've tried troubleshooting and still need help:
 ---
 
 *Last updated: 2025-10-31*
+
+### Copilot CLI `<C-s>` Save Not Working in Sidekick
+
+**Problem:** Pressing `<C-s>` in Copilot CLI (running in sidekick terminal) doesn't save, instead switches to Zellij scroll mode.
+
+**Root Cause:**
+Zellij intercepts `<C-s>` globally to enter scroll mode, preventing the keybinding from reaching terminal applications.
+
+**Solution:**
+Comment out Zellij's `Ctrl s` binding in `~/.config/zellij/config.kdl`:
+
+```kdl
+shared_except "locked" "scroll" "search" {
+    // bind "Ctrl s" { SwitchToMode "scroll"; }  // Commented to allow terminal apps to use Ctrl+S
+}
+```
+
+**Alternative scroll mode access:**
+- Press `e` in normal mode
+- Use mouse scroll
+- Use `PgUp`/`PgDn` keys
+
+**Restart Required:**
+Kill existing Zellij sessions or restart terminal for changes to take effect.
+
