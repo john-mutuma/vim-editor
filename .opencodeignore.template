@@ -1,0 +1,102 @@
+# OpenCode Ignore Template for Large Monorepos
+# Copy this to your monorepo root as .opencodeignore
+# Customize patterns based on your specific directory structure
+
+# ============================================
+# Documentation Directories (Common Culprits)
+# ============================================
+# These can be massive in monorepos and slow down OpenCode
+**/docs/**
+**/documentation/**
+**/doc/**
+**/api-docs/**
+**/wiki/**
+
+# ============================================
+# Build Outputs and Dependencies
+# ============================================
+**/node_modules/**
+**/dist/**
+**/build/**
+**/out/**
+**/.next/**
+**/.nuxt/**
+**/coverage/**
+**/__pycache__/**
+**/target/**        # Rust/Java builds
+**/bin/**
+**/obj/**           # C#/.NET
+
+# ============================================
+# Generated and Minified Files
+# ============================================
+**/*.min.js
+**/*.min.css
+**/*.bundle.js
+**/*.generated.*
+**/generated/**
+**/proto/**         # Protobuf generated files
+**/.storybook-static/**
+
+# ============================================
+# Large Asset Directories
+# ============================================
+**/assets/**
+**/static/**
+**/public/**
+**/images/**
+**/media/**
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.svg
+**/*.ico
+**/*.woff
+**/*.woff2
+**/*.ttf
+**/*.eot
+
+# ============================================
+# Test Fixtures and Test Data
+# ============================================
+**/fixtures/**
+**/test-data/**
+**/__snapshots__/**
+**/__fixtures__/**
+**/.jest/**
+
+# ============================================
+# Version Control and IDE
+# ============================================
+**/.git/**
+**/.svn/**
+**/.hg/**
+**/.vscode/**
+**/.idea/**
+**/.DS_Store
+
+# ============================================
+# Logs and Temporary Files
+# ============================================
+**/logs/**
+**/*.log
+**/tmp/**
+**/temp/**
+**/.cache/**
+
+# ============================================
+# Package Lock Files (can be huge)
+# ============================================
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+**/bun.lockb
+
+# ============================================
+# Custom Exclusions for 1JS
+# ============================================
+# Add your specific large directories here
+# Example:
+# **/your-large-doc-directory/**
+# **/specific-module/generated/**
