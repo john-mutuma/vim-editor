@@ -23,15 +23,7 @@ return {
                 },
                 copilot = {
                     cmd = { "agency", "copilot" },
-                    -- Optional: custom keymaps for this tool
-                    keys = {
-                        submit = {
-                            "<c-s>",
-                            function(t)
-                                t:send("\n")
-                            end,
-                        },
-                    },
+                    -- Let Copilot CLI handle its own keybindings (including <C-s> for save)
                 },
             },
         },
