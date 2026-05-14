@@ -394,6 +394,27 @@ function Install-DevelopmentTools {
         $toolsReady = $false
     }
     
+    # Install tree-sitter CLI (required by nvim-treesitter main branch)
+    if (Test-Command "npm") {
+        Print-Step "Installing tree-sitter CLI" "via npm"
+        if (-not (Test-Command "tree-sitter")) {
+            try {
+                npm install -g tree-sitter-cli 2>&1 | Out-Null
+            } catch {
+                Print-Warning "tree-sitter CLI install failed - run 'npm install -g tree-sitter-cli' manually"
+            }
+        }
+        if (Test-Command "tree-sitter") {
+            try {
+                $tsOutput = tree-sitter --version 2>&1
+                $tsVersion = if ($tsOutput -match 'tree-sitter (\d+\.\d+\.\d+)') { $matches[1] } else { "unknown" }
+                Print-Success "tree-sitter CLI ready (v$tsVersion)"
+            } catch {
+                Print-Success "tree-sitter CLI installed"
+            }
+        }
+    }
+    
     if (Test-Command "go") {
         try {
             $goOutput = go version 2>&1
