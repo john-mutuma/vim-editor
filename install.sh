@@ -531,6 +531,21 @@ install_development_tools() {
         print_warning "Node.js/npm verification failed - may need shell restart"
     fi
     
+    # Install tree-sitter CLI (required by nvim-treesitter main branch)
+    if command_exists npm; then
+        print_step "Installing tree-sitter CLI" "via npm"
+        if ! command_exists tree-sitter; then
+            npm install -g tree-sitter-cli 2>&1 | grep -v "^npm warn" || true
+        fi
+        if command_exists tree-sitter; then
+            local ts_version=$(tree-sitter --version 2>/dev/null | awk '{print $2}' || echo "unknown")
+            print_success "tree-sitter CLI $ts_version installed"
+            print_info "${dim}  Required by nvim-treesitter for parser builds${textreset}"
+        else
+            print_warning "tree-sitter CLI install failed - run 'npm install -g tree-sitter-cli' manually"
+        fi
+    fi
+    
     # Verify Go
     if command_exists go; then
         local go_version=$(go version 2>/dev/null | awk '{print $3}' || echo "unknown")

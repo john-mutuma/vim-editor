@@ -8,6 +8,7 @@ Comprehensive guide to resolving common issues with NairoVIM.
 - [Plugin Issues](#plugin-issues)
 - [LSP Issues](#lsp-issues)
 - [AI Assistant Issues](#ai-assistant-issues)
+  - [OpenCode Slow in Large Repositories/Monorepos](#opencode-slow-in-large-repositoriesmonorepos)
 - [Git Integration Issues](#git-integration-issues)
 - [UI and Display Issues](#ui-and-display-issues)
 - [Performance Issues](#performance-issues)
@@ -773,6 +774,136 @@ env | grep -i api
 - **GitHub Copilot:** Subscription-based, shouldn't have limits
 - Wait a few minutes before retrying
 - Consider upgrading API tier if hitting limits frequently
+
+### OpenCode slow in large repositories/monorepos
+
+**Problem:** OpenCode becomes very slow after adding large directories (especially documentation) to git sparse-checkout or working in large monorepos.
+
+**Symptoms:**
+- Long response times (seconds → minutes)
+- OpenCode hangs during file indexing
+- High disk usage in `~/.local/share/opencode/`
+- Sluggish chat interactions
+
+**Root Cause:**
+
+OpenCode creates repository snapshots and indexes all files for context gathering. Large documentation directories or monorepos with thousands of files can result in:
+- Multi-GB snapshot directories
+- Massive session diff files (500MB+)
+- Slow file traversal on every query
+
+**Investigation:**
+
+```bash
+# Check OpenCode cache sizes
+du -sh ~/.local/share/opencode/snapshot/*    # Repository snapshots
+du -sh ~/.local/share/opencode/storage/*     # Session data, diffs
+du -sh ~/.local/share/opencode/opencode.db*  # Database
+
+# Identify which repositories have snapshots
+for dir in ~/.local/share/opencode/snapshot/*/; do
+  if [ -f "$dir/config" ]; then
+    echo "=== Snapshot: $(basename $dir) ==="
+    du -sh "$dir"
+    grep worktree "$dir/config"
+    echo ""
+  fi
+done
+```
+
+**Solution 1: Clear Cache for Specific Repository**
+
+```bash
+# 1. Stop OpenCode first (in Neovim)
+:lua require("opencode").stop()
+
+# 2. Find the snapshot hash for your slow repository
+ls -lah ~/.local/share/opencode/snapshot/
+# Look at the config files to identify your repo
+
+# 3. Remove the specific snapshot (replace HASH with actual hash)
+rm -rf ~/.local/share/opencode/snapshot/HASH
+
+# 4. Optional: Clear large session diffs
+find ~/.local/share/opencode/storage/session_diff/ -type f -size +100M -delete
+
+# 5. Verify cleanup
+du -sh ~/.local/share/opencode/
+```
+
+**Solution 2: Create `.opencodeignore` File**
+
+Prevent OpenCode from indexing unnecessary files by creating `.opencodeignore` in your repository root:
+
+```gitignore
+# Documentation directories
+**/docs/**
+**/documentation/**
+**/doc/**
+
+# Build outputs and dependencies
+**/node_modules/**
+**/dist/**
+**/build/**
+**/.next/**
+
+# Generated files
+**/*.min.js
+**/*.generated.*
+**/generated/**
+
+# Large assets
+**/assets/**
+**/static/**
+**/*.png
+**/*.jpg
+
+# Test fixtures
+**/fixtures/**
+**/__snapshots__/**
+
+# Lock files
+**/package-lock.json
+**/yarn.lock
+```
+
+**Solution 3: Nuclear Option (Clear All Cache)**
+
+```bash
+# Stop OpenCode first
+:lua require("opencode").stop()
+
+# Clear all cache (CAUTION: Loses all conversation history)
+rm -rf ~/.local/share/opencode/snapshot/*
+rm -rf ~/.local/share/opencode/storage/*
+rm ~/.local/share/opencode/opencode.db*
+
+# This will recover several GB of disk space
+```
+
+**Prevention:**
+
+1. **Always use `.opencodeignore`** in large repositories
+2. **Be selective with sparse-checkout** - avoid adding massive doc directories
+3. **Periodic maintenance** - Clear old snapshots monthly
+4. **Monitor cache size** - Check `~/.local/share/opencode/` size regularly
+
+**Template:**
+
+A comprehensive `.opencodeignore` template is available at:
+```
+/path/to/vim-editor/.opencodeignore.template
+```
+
+Copy this to your repository root and customize for your needs.
+
+**Expected Results:**
+
+After clearing cache and adding `.opencodeignore`:
+- ✅ OpenCode startup time: < 2 seconds
+- ✅ First query response: < 5 seconds  
+- ✅ Cache size: < 500MB per repository
+- ✅ No more multi-GB snapshots
 
 ---
 
@@ -2009,3 +2140,28 @@ If you've tried troubleshooting and still need help:
 ---
 
 *Last updated: 2025-10-31*
+
+### Copilot CLI `<C-s>` Save Not Working in Sidekick
+
+**Problem:** Pressing `<C-s>` in Copilot CLI (running in sidekick terminal) doesn't save, instead switches to Zellij scroll mode.
+
+**Root Cause:**
+Zellij intercepts `<C-s>` globally to enter scroll mode, preventing the keybinding from reaching terminal applications.
+
+**Solution:**
+Comment out Zellij's `Ctrl s` binding in `~/.config/zellij/config.kdl`:
+
+```kdl
+shared_except "locked" "scroll" "search" {
+    // bind "Ctrl s" { SwitchToMode "scroll"; }  // Commented to allow terminal apps to use Ctrl+S
+}
+```
+
+**Alternative scroll mode access:**
+- Press `e` in normal mode
+- Use mouse scroll
+- Use `PgUp`/`PgDn` keys
+
+**Restart Required:**
+Kill existing Zellij sessions or restart terminal for changes to take effect.
+

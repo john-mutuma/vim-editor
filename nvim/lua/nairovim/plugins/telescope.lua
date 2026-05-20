@@ -5,6 +5,7 @@
 return {
     "nvim-telescope/telescope.nvim",
     branch = "0.1.x",
+    cmd = "Telescope", -- Lazy-load on :Telescope command to avoid keymap conflicts
     dependencies = {
         { "nvim-lua/plenary.nvim" },
         {
