@@ -159,5 +159,12 @@ return {
         -- runtime — so we force a `tmux respawn-pane -k` restart of the CLI.
         -- See nvim/lua/nairovim/utils/sidekick_theme_sync.lua for details.
         require("nairovim.utils.sidekick_theme_sync").setup()
+
+        -- Auto-kill sidekick tmux sessions on nvim exit so Copilot CLI releases
+        -- its session-state lock. Without this, next nvim spawns a new UUID
+        -- session while the old process keeps running; /resume then reports
+        -- "in use by another".
+        -- See nvim/lua/nairovim/utils/sidekick_cleanup.lua for details.
+        require("nairovim.utils.sidekick_cleanup").setup()
     end,
 }
