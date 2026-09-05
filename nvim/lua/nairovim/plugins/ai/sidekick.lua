@@ -117,9 +117,11 @@ return {
         -- add any options here
         cli = {
             mux = {
-                backend = vim.fn.has("win32") == 1 and "tmux" or "zellij",
+                -- backend = vim.fn.has("win32") == 1 and "tmux" or "zellij",
+                backend = "tmux",
                 -- Copilot's palette probes can time out behind psmux/tmux in Windows Terminal.
                 enabled = not is_windows_terminal,
+                -- enabled = true, -- Enable mux even in Windows Terminal (for Copilot CLI)
             },
             win = {
                 layout = "right", -- Terminal appears on right side
@@ -149,5 +151,13 @@ return {
         local mappings = require("nairovim.plugins.customizations.keymaps.sidekick").mappings
         local common_utils = require("nairovim.utils.common")
         common_utils.map(mappings)
+
+        -- Auto-restart CLI process in-place on ColorScheme so palettes re-detect bg.
+        -- Complements the terminal theme bridge above: the bridge sends OSC 997
+        -- "color scheme changed" notifications for CLIs that honor them (e.g.
+        -- ghostty-native tools), but Copilot CLI does not re-read its palette at
+        -- runtime — so we force a `tmux respawn-pane -k` restart of the CLI.
+        -- See nvim/lua/nairovim/utils/sidekick_theme_sync.lua for details.
+        require("nairovim.utils.sidekick_theme_sync").setup()
     end,
 }
