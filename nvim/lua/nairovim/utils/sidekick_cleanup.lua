@@ -3,22 +3,31 @@
 ----------------------------------------------------------------------
 --- Sidekick.nvim's tmux backend deliberately keeps the tmux session (and
 --- the running CLI process — e.g. Copilot CLI, Claude, etc.) alive across
---- nvim exits. That's fine as a design choice, but for Copilot CLI it
---- causes concrete pain:
+--- nvim exits. In the `:terminal` (non-mux) backend, Copilot may also
+--- survive if it ignores SIGHUP or is spawned in its own process group.
+--- Either way, for Copilot CLI it causes concrete pain:
 ---
 --- - Each Copilot CLI process holds an `inuse.<pid>.lock` on its
 ---   `~/.copilot/session-state/<uuid>/` directory.
---- - When nvim exits, the tmux session survives; the lock stays.
+--- - When nvim exits, the lock stays.
 --- - Next nvim → new sidekick session UUID → old session is hidden from
 ---   the "Sessions" tab; `/resume` finds it but reports "in use by
 ---   another".
---- - Orphaned tmux sessions accumulate over time.
+--- - Orphaned processes accumulate over time.
 ---
 --- This utility follows the pattern already used for OpenCode
 --- (`nvim/lua/nairovim/plugins/ai/opencode.lua`): on `VimLeavePre`,
 --- explicitly tear down sidekick's CLI processes so they release their
---- locks and don't linger. It also does a defensive startup sweep to
---- clean up sessions orphaned by a previous nvim crash.
+--- locks and don't linger. Handles both backends:
+---
+---   * tmux (mux enabled) → `tmux kill-session` on sidekick-owned sessions
+---   * :terminal (mux disabled, e.g. Windows Terminal in this project) →
+---     kill each session's process group (TERM then KILL after 500 ms)
+---     using the pids sidekick already tracks in
+---     `sidekick.cli.terminal.terminals[id].pids`.
+---
+--- A defensive startup sweep also cleans up sessions/processes orphaned
+--- by prior nvim crashes.
 
 local M = {}
 
@@ -104,13 +113,55 @@ local function kill_session(session_name)
     vim.fn.system({ "tmux", "kill-session", "-t", session_name })
 end
 
+--- Kill a process group two-phase: SIGTERM, then SIGKILL after a delay
+--- for stragglers. Uses negative PID form so the whole process group
+--- (Copilot + its child LSPs / MCP servers) goes down.
+--- @param pid integer|string
+local function kill_process_group(pid)
+    local pid_str = tostring(pid)
+    if pid_str == "" or pid_str == "0" then
+        return
+    end
+    vim.fn.system(string.format("kill -15 -%s 2>/dev/null", pid_str))
+    vim.defer_fn(function()
+        vim.fn.system(string.format("kill -9 -%s 2>/dev/null", pid_str))
+    end, KILL_DELAY_MS)
+end
+
+--- Kill Copilot CLI processes launched by *this* nvim inside sidekick's
+--- :terminal (non-mux) backend. Iterates sidekick.cli.terminal.terminals
+--- for sessions without a mux_session and terminates their process
+--- groups.
+local function kill_terminal_sessions()
+    local ok, terminal = pcall(require, "sidekick.cli.terminal")
+    if not ok then
+        return
+    end
+    for _, session in pairs(terminal.terminals or {}) do
+        if not session.mux_session then
+            for _, pid in ipairs(session.pids or {}) do
+                kill_process_group(pid)
+            end
+        end
+    end
+end
+
 --- Kill CLI processes launched inside sidekick's tmux sessions **owned by
---- this nvim instance**, then release their session locks.
+--- this nvim instance**, then release their session locks. Also kills
+--- :terminal-backend sessions (used when sidekick's mux is disabled, e.g.
+--- on Windows Terminal in this project's config).
 function M.cleanup_on_exit()
+    -- :terminal backend: iterate sidekick's live sessions and kill their
+    -- process groups so Copilot releases its ~/.copilot/session-state/<uuid>
+    -- lock.
+    kill_terminal_sessions()
+
+    -- tmux backend: kill sidekick-owned tmux sessions. `kill-session`
+    -- triggers detach-on-destroy and terminates the pane's foreground
+    -- process (Copilot CLI), releasing its lock.
     if vim.fn.executable("tmux") ~= 1 then
         return
     end
-
     for _, name in ipairs(list_sidekick_tmux_sessions()) do
         if is_our_session(name) then
             kill_session(name)
@@ -118,34 +169,65 @@ function M.cleanup_on_exit()
     end
 end
 
---- Best-effort startup cleanup: kill sidekick tmux sessions whose owning
---- nvim (based on the `tmux new -A -s <name>` process's ppid) is no
---- longer running. Runs once shortly after startup so it doesn't slow
---- down nvim boot.
+--- Best-effort startup cleanup: kill sidekick-owned CLI leftovers whose
+--- owning nvim is no longer running. Covers both:
+---   * tmux sessions whose starter's parent nvim is gone
+---   * bare `copilot --session-id ...` processes whose parent chain does
+---     not reach a live nvim (i.e. orphaned `:terminal` children).
+--- Runs once shortly after startup so it doesn't slow down nvim boot.
 function M.cleanup_orphans_on_startup()
-    if vim.fn.has("linux") ~= 1 or vim.fn.executable("tmux") ~= 1 then
+    if vim.fn.has("linux") ~= 1 then
         return
     end
 
-    local sessions = list_sidekick_tmux_sessions()
-    for _, name in ipairs(sessions) do
-        -- Find the `tmux new -A -s <name>` process that started this session.
-        local starters = vim.fn.systemlist({
-            "pgrep",
-            "-f",
-            "tmux new -A -s " .. name,
-        })
-        if #starters == 0 then
-            -- Its starter is gone; kill the orphaned session.
-            kill_session(name)
-        else
-            -- Check whether the parent nvim of the starter is still alive.
-            local pid = vim.trim(starters[1])
-            if pid ~= "" then
-                local ppid = vim.trim(vim.fn.system("ps -o ppid= -p " .. pid .. " 2>/dev/null"))
-                if ppid == "" or vim.fn.system("kill -0 " .. ppid .. " 2>/dev/null; echo $?"):match("^1") then
-                    kill_session(name)
+    -- Part A: orphaned tmux sessions.
+    if vim.fn.executable("tmux") == 1 then
+        local sessions = list_sidekick_tmux_sessions()
+        for _, name in ipairs(sessions) do
+            local starters = vim.fn.systemlist({
+                "pgrep",
+                "-f",
+                "tmux new -A -s " .. name,
+            })
+            if #starters == 0 then
+                kill_session(name)
+            else
+                local pid = vim.trim(starters[1])
+                if pid ~= "" then
+                    local ppid = vim.trim(vim.fn.system("ps -o ppid= -p " .. pid .. " 2>/dev/null"))
+                    if ppid == "" or vim.fn.system("kill -0 " .. ppid .. " 2>/dev/null; echo $?"):match("^1") then
+                        kill_session(name)
+                    end
                 end
+            end
+        end
+    end
+
+    -- Part B: orphaned :terminal-backend Copilot CLI processes.
+    -- Match `copilot --session-id ...` (the actual TUI binary), then check
+    -- whether any ancestor is still a live nvim. If not, kill the process
+    -- group.
+    local copilot_pids = vim.fn.systemlist("pgrep -f 'copilot .*--session-id' 2>/dev/null")
+    for _, pid in ipairs(copilot_pids) do
+        pid = vim.trim(pid)
+        if pid ~= "" and pid ~= tostring(vim.fn.getpid()) then
+            -- Walk ancestor chain looking for a live nvim.
+            local has_live_nvim = false
+            local cur = pid
+            for _ = 1, 10 do -- bound the walk
+                local ppid = vim.trim(vim.fn.system("ps -o ppid= -p " .. cur .. " 2>/dev/null"))
+                if ppid == "" or ppid == "0" or ppid == "1" then
+                    break
+                end
+                local comm = vim.trim(vim.fn.system("ps -o comm= -p " .. ppid .. " 2>/dev/null"))
+                if comm == "nvim" then
+                    has_live_nvim = true
+                    break
+                end
+                cur = ppid
+            end
+            if not has_live_nvim then
+                kill_process_group(pid)
             end
         end
     end
